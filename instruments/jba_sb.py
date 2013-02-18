@@ -414,12 +414,12 @@ class Instr(Instrument):
     
     
   def adjustSwitchingLevel(self,level = 0.2,accuracy = 0.05):#,verbose = False,minSensitivity = 15.0,microwaveOff = True,nmax = 100):
+      fitfuncS = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
     def fitS(x,y,x0,dx):
-      fitfunc = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
       errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y),2.0)
       ps=[x0,dx]
-      p1s = scipy.optimize.fmin(errfunc, ps,args=(x,y,fitfunc),retall=False,disp=False)
-      rsquare = 1.0-numpy.cov(y-fitfunc(p1s,x))/numpy.cov(y)
+      p1s = scipy.optimize.fmin(errfunc, ps,args=(x,y,fitfuncS),retall=False,disp=False)
+      rsquare = 1.0-numpy.cov(y-fitfuncS(p1s,x))/numpy.cov(y)
       return p1s.tolist()
       
     def levelAt(amplitude,nLoops=1,**args):
@@ -439,10 +439,20 @@ class Instr(Instrument):
     
     addToArray(vmin)
     addToArray(vmax)
+    print self.x, self.y
     for i in [1,2,3,4,5,6,7]:
       params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
       print params
       addToArray(params[0])
+      print self.x,self.y
+    
+    # Define the invert function from center-2linewidth to center+2linewidth
+    x = linspace(params[0]-2*params[1],params[0]-2*params[1],1000)
+    f = lambda x: fitfunc(params,x)
+    y = map(f,x)
+    
+    
+    
     
     
     
