@@ -1,0 +1,32 @@
+﻿Build started 06/01/2012 00:18:18.
+     1>Project "L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Release\acqiris.unsuccessfulbuild".
+       ClCompile:
+         All outputs are up-to-date.
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Ic:\python26\include /nologo /W3 /WX- /Ox /Ob1 /Oi /Ot /Oy /GT /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D EXAMPLE_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt acqiris_wrap.cxx
+         acqiris_wrap.cxx
+       ResourceCompile:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /l"0x0409" /nologo /fo"Release\app.res" app.rc 
+       _SWIG:
+       Skipping target "_SWIG" because all output files are up-to-date with respect to the input files.
+       Link:
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"_acqiris.pyd" /INCREMENTAL:NO /NOLOGO /MANIFEST /ManifestFile:"Release\_acqiris.pyd.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"L:\python\qubit_setup\lib\swig\acqiris\Release\_acqiris.pdb" /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"L:\python\qubit_setup\lib\swig\acqiris\Release\__acqiris.lib" /MACHINE:X86 /DLL Release\app.res
+         Release\acqiris.obj
+         Release\acqiris_wrap.obj
+         Release\Stdafx.obj
+         acqiris.obj : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+            Creating library L:\python\qubit_setup\lib\swig\acqiris\Release\__acqiris.lib and object L:\python\qubit_setup\lib\swig\acqiris\Release\__acqiris.exp
+         Generating code
+         Finished generating code
+         acqiris.vcxproj -> L:\python\qubit_setup\lib\swig\acqiris\_acqiris.pyd
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"_acqiris.pyd;#2" /manifest Release\_acqiris.pyd.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\acqiris.unsuccessfulbuild".
+         Touching "Release\acqiris.lastbuildstate".
+     1>Done Building Project "L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.79

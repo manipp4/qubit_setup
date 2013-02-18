@@ -1,0 +1,11 @@
+swig Package
+============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    qubit_setup.lib.swig.acqiris
+    qubit_setup.lib.swig.tools
+

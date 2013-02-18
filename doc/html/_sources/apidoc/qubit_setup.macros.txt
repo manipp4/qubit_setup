@@ -1,0 +1,27 @@
+macros Package
+==============
+
+:mod:`fluxline_response_function` Module
+----------------------------------------
+
+.. automodule:: qubit_setup.macros.fluxline_response_function
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`iq_level_optimization` Module
+-----------------------------------
+
+.. automodule:: qubit_setup.macros.iq_level_optimization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`qubit_functions` Module
+-----------------------------
+
+.. automodule:: qubit_setup.macros.qubit_functions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

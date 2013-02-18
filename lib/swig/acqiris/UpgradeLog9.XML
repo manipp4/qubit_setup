@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="acqiris">
+</Property><Property Name="Solution File" Value="L:\python\qubit_setup\lib\swig\acqiris\acqiris.sln">
+</Property><Property Name="User Options File" Value="L:\python\qubit_setup\lib\swig\acqiris\acqiris.suo">
+</Property><Property Name="Date" Value="mercredi 23 novembre 2011">
+</Property><Property Name="Time" Value="15:53">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="acqiris.sln" Description="Error creating backup file: L:\python\qubit_setup\lib\swig\acqiris\acqiris.sln.old">
+</Event><Event ErrorLevel="2" Project="" Source="acqiris.suo" Description="Error creating backup file: L:\python\qubit_setup\lib\swig\acqiris\acqiris.suo.old">
+</Event><Event ErrorLevel="0" Project="acqiris" Source="acqiris.vcproj" Description="Converting project file 'L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcproj'.">
+</Event><Event ErrorLevel="0" Project="acqiris" Source="swig.rules" Description="Converting 'L:\python\qubit_setup\lib\swig\acqiris\swig.rules'.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="swig.rules" Description="Semicolon is the only supported separator in MSBuild. Usage of any other separator for Custom Build Rule string properties is invalid after conversion.">
+</Event><Event ErrorLevel="0" Project="acqiris" Source="swig.rules" Description="Done processing 'L:\python\qubit_setup\lib\swig\acqiris\swig.rules'.">
+</Event><Event ErrorLevel="3" Project="acqiris" Source="swig.rules" Description="Converted">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="Attribute 'CopyLocalDependencies' of 'AssemblyReference' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="Attribute 'UseDependenciesInBuild' of 'AssemblyReference' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="Attribute 'CopyLocalDependencies' of 'AssemblyReference' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="Attribute 'UseDependenciesInBuild' of 'AssemblyReference' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="Attribute 'CopyLocalDependencies' of 'AssemblyReference' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="Attribute 'UseDependenciesInBuild' of 'AssemblyReference' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="MSB8012: $(TargetName) ('acqiris') does not match the Linker's OutputFile property value '_acqiris.pyd' ('_acqiris') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetName) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="MSB8012: $(TargetExt) ('.dll') does not match the Linker's OutputFile property value '_acqiris.pyd' ('.pyd') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetExt) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="MSB8012: $(TargetPath) ('L:\python\qubit_setup\lib\swig\acqiris\Debug\acqiris.dll') does not match the Linker's OutputFile property value '_acqiris.pyd' ('L:\python\qubit_setup\lib\swig\acqiris\_acqiris.pyd') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="MSB8012: $(TargetName) ('acqiris') does not match the Linker's OutputFile property value '_acqiris.pyd' ('_acqiris') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetName) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="MSB8012: $(TargetExt) ('.dll') does not match the Linker's OutputFile property value '_acqiris.pyd' ('.pyd') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetExt) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="acqiris" Source="acqiris.vcproj" Description="MSB8012: $(TargetPath) ('L:\python\qubit_setup\lib\swig\acqiris\Release\acqiris.dll') does not match the Linker's OutputFile property value '_acqiris.pyd' ('L:\python\qubit_setup\lib\swig\acqiris\_acqiris.pyd') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="acqiris" Source="acqiris.vcproj" Description="Done converting to new project file 'L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="acqiris" Source="acqiris.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="acqiris.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="acqiris.sln" Description="No Conversion Required">
+</Event></UpgradeLog>

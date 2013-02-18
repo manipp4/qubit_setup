@@ -1,0 +1,75 @@
+scripts Package
+===============
+
+:mod:`analyze_flux_tomography` Module
+-------------------------------------
+
+.. automodule:: qubit_setup.scripts.analyze_flux_tomography
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`flux_tomography` Module
+-----------------------------
+
+.. automodule:: qubit_setup.scripts.flux_tomography
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`flux_tomography_response_function` Module
+-----------------------------------------------
+
+.. automodule:: qubit_setup.scripts.flux_tomography_response_function
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fluxline_crosstalk` Module
+--------------------------------
+
+.. automodule:: qubit_setup.scripts.fluxline_crosstalk
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fluxline_response_function` Module
+----------------------------------------
+
+.. automodule:: qubit_setup.scripts.fluxline_response_function
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`qulib` Module
+-------------------
+
+.. automodule:: qubit_setup.scripts.qulib
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`start_ide` Module
+-----------------------
+
+.. automodule:: qubit_setup.scripts.start_ide
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`start_server` Module
+--------------------------
+
+.. automodule:: qubit_setup.scripts.start_server
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    qubit_setup.scripts.experiment
+    qubit_setup.scripts.state_tomography
+

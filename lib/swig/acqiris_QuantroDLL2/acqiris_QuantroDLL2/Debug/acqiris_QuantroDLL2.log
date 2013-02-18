@@ -1,0 +1,13 @@
+﻿Build started 30/03/2012 17:23:51.
+     1>Project "L:\python\qubit_setup\lib\swig\acqiris_QuantroDLL2\acqiris_QuantroDLL2\acqiris_QuantroDLL2.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\acqiris_QuantroDLL2.unsuccessfulbuild".
+       CustomBuild:
+         Performing Custom Build Tools
+         Must specify an input file. Use -help for available options.
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets(151,5): error MSB6006: "cmd.exe" exited with code 1.
+     1>Done Building Project "L:\python\qubit_setup\lib\swig\acqiris_QuantroDLL2\acqiris_QuantroDLL2\acqiris_QuantroDLL2.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.68

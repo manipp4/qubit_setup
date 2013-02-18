@@ -1,0 +1,23 @@
+qubit_setup Package
+===================
+
+:mod:`tests_vs` Module
+----------------------
+
+.. automodule:: qubit_setup.tests_vs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    qubit_setup.config
+    qubit_setup.frontpanels
+    qubit_setup.instruments
+    qubit_setup.lib
+    qubit_setup.macros
+    qubit_setup.scripts
+

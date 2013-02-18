@@ -1,0 +1,44 @@
+﻿Build started 16/03/2011 14:42:56.
+     1>Project "L:\python\qubit_setup\lib\swig\tools\numerical.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Release\numerical.lastbuildstate".
+       InitializeBuildStatus:
+         Touching "Release\numerical.unsuccessfulbuild".
+       _SWIG:
+         cmd.exe /C "C:\Documents and Settings\administrateur\Local Settings\Temp\6736e17bb06e4d939bd78e607bd1bd9e.cmd"
+         echo In order to function correctly, please ensure the following environment variables are correctly set:
+         echo PYTHON_INCLUDE: %PYTHON_INCLUDE%
+         echo PYTHON_LIB: %PYTHON_LIB%
+         echo on
+         swig.exe -c++ -python L:\python\qubit_setup\lib\swig\tools\numerical.i
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Ic:\python26\include /nologo /W3 /WX- /Ox /Ob1 /Oi /Ot /Oy /GT /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D EXAMPLE_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\numerical.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Stdafx.cpp
+         Stdafx.cpp
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Ic:\python26\include /nologo /W3 /WX- /Ox /Ob1 /Oi /Ot /Oy /GT /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D EXAMPLE_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt numerical.cpp numerical_wrap.cxx
+         numerical.cpp
+         numerical_wrap.cxx
+       ResourceCompile:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /l"0x0409" /nologo /fo"Release\app.res" app.rc 
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(L:\python\qubit_setup\lib\swig\tools\Release\numerical.dll) does not match the Linker's OutputFile property value (L:\python\qubit_setup\lib\swig\tools\_numerical.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(991,5): warning MSB8012: TargetExt(.dll) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(numerical) does not match the Linker's OutputFile property value (_numerical). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"_numerical.pyd" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\numerical.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"L:\python\qubit_setup\lib\swig\tools\Release\numerical.pdb" /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"L:\python\qubit_setup\lib\swig\tools\Release\_numerical.lib" /MACHINE:X86 /DLL Release\app.res
+         Release\numerical.obj
+         Release\numerical_wrap.obj
+         Release\Stdafx.obj
+         numerical.obj : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+            Creating library L:\python\qubit_setup\lib\swig\tools\Release\_numerical.lib and object L:\python\qubit_setup\lib\swig\tools\Release\_numerical.exp
+         Generating code
+         Finished generating code
+         numerical.vcxproj -> L:\python\qubit_setup\lib\swig\tools\Release\numerical.dll
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"_numerical.pyd;#2" /manifest Release\numerical.dll.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\numerical.unsuccessfulbuild".
+         Touching "Release\numerical.lastbuildstate".
+     1>Done Building Project "L:\python\qubit_setup\lib\swig\tools\numerical.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.54

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="acqiris">
+</Property><Property Name="Solution File" Value="L:\python\qubit_setup\lib\swig\acqiris\acqiris.sln">
+</Property><Property Name="User Options File" Value="L:\python\qubit_setup\lib\swig\acqiris\acqiris.suo">
+</Property><Property Name="Date" Value="mercredi 23 novembre 2011">
+</Property><Property Name="Time" Value="17:44">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="acqiris.sln" Description="Error creating backup file: L:\python\qubit_setup\lib\swig\acqiris\acqiris.sln.old">
+</Event><Event ErrorLevel="2" Project="" Source="acqiris.suo" Description="Error creating backup file: L:\python\qubit_setup\lib\swig\acqiris\acqiris.suo.old">
+</Event><Event ErrorLevel="3" Project="acqiris" Source="acqiris.vcproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="" Source="acqiris.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="acqiris.sln" Description="No Conversion Required">
+</Event></UpgradeLog>

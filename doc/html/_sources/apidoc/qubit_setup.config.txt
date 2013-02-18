@@ -1,0 +1,27 @@
+config Package
+==============
+
+:mod:`environment` Module
+-------------------------
+
+.. automodule:: qubit_setup.config.environment
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`instruments` Module
+-------------------------
+
+.. automodule:: qubit_setup.config.instruments
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`startup` Module
+---------------------
+
+.. automodule:: qubit_setup.config.startup
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

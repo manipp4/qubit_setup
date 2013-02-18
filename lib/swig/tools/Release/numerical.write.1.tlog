@@ -1,0 +1,5 @@
+^numerical.i
+L:\python\qubit_setup\lib\swig\tools\numerical_wrap.cxx
+^L:\python\qubit_setup\lib\swig\tools\numerical.vcxproj
+L:\python\qubit_setup\lib\swig\tools\Release\_numerical.lib
+L:\python\qubit_setup\lib\swig\tools\Release\_numerical.exp

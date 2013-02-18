@@ -1,0 +1,219 @@
+experiment Package
+==================
+
+:mod:`Copie (2) de measure` Module
+----------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.Copie (2) de measure
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`Copie de measure` Module
+------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.Copie de measure
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`SetFluxVoltage` Module
+----------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.SetFluxVoltage
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`bellviolationmesurement` Module
+-------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.bellviolationmesurement
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`calibrate iq mixers` Module
+---------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.calibrate iq mixers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fit_scurves` Module
+-------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.fit_scurves
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`grover` Module
+--------------------
+
+.. automodule:: qubit_setup.scripts.experiment.grover
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`iq_rabi` Module
+---------------------
+
+.. automodule:: qubit_setup.scripts.experiment.iq_rabi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`iq_tomography` Module
+---------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.iq_tomography
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`measure` Module
+---------------------
+
+.. automodule:: qubit_setup.scripts.experiment.measure
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`measure_bell_inequality` Module
+-------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.measure_bell_inequality
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`measure_cavity_phase` Module
+----------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.measure_cavity_phase
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`measure_detection_matrix` Module
+--------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.measure_detection_matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`measure_phase_error` Module
+---------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.measure_phase_error
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`measure_t1_survey` Module
+-------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.measure_t1_survey
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`optimize_readout_crosstalk` Module
+----------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.optimize_readout_crosstalk
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`quantum_swap` Module
+--------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.quantum_swap
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`qubit_waveforms` Module
+-----------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.qubit_waveforms
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`run_iq_optimization` Module
+---------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.run_iq_optimization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`spectroRabiRelax_vs_Vflux` Module
+---------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.spectroRabiRelax_vs_Vflux
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`state_tomography` Module
+------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.state_tomography
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`test_iq_mixer` Module
+---------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.test_iq_mixer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`test_qubit_fidelities` Module
+-----------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.test_qubit_fidelities
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`test_readout_crosstalk` Module
+------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.test_readout_crosstalk
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`visualize_qubit_pulses` Module
+------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.visualize_qubit_pulses
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`vna_measure_bifurcation` Module
+-------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.vna_measure_bifurcation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`vna_measure_reflected_phase` Module
+-----------------------------------------
+
+.. automodule:: qubit_setup.scripts.experiment.vna_measure_reflected_phase
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

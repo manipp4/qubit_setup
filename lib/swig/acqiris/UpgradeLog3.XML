@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="acqiris">
+</Property><Property Name="Solution File" Value="L:\python\qubit_setup\lib\swig\acqiris\acqiris.sln">
+</Property><Property Name="User Options File" Value="L:\python\qubit_setup\lib\swig\acqiris\acqiris.suo">
+</Property><Property Name="Date" Value="jeudi 17 mars 2011">
+</Property><Property Name="Time" Value="13:14">
+</Property><Property Name="Log Number" Value="3">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="acqiris.sln" Description="Error creating backup file: L:\python\qubit_setup\lib\swig\acqiris\acqiris.sln.old">
+</Event><Event ErrorLevel="2" Project="" Source="acqiris.suo" Description="Error creating backup file: L:\python\qubit_setup\lib\swig\acqiris\acqiris.suo.old">
+</Event><Event ErrorLevel="0" Project="acqiris" Source="acqiris.vcproj" Description="Converting project file 'L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcproj'.">
+</Event><Event ErrorLevel="2" Project="L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcproj" Source="" Description="The following error has occurred during XML parsing:&#xA;&#xA;File: L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcproj&#xA;Line: 1&#xA;Column: 2&#xA;Error Message:&#xA;Illegal qualified name character.&#xA;&#xA;The file 'L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcproj' has failed to load.">
+</Event><Event ErrorLevel="2" Project="acqiris" Source="acqiris.vcproj" Description="End tag 'xs:choice' does not match the start tag 'xs:sequence'.&#xA;">
+</Event><Event ErrorLevel="2" Project="acqiris" Source="acqiris.vcproj" Description="Project upgrade failed.">
+</Event><Event ErrorLevel="3" Project="acqiris" Source="acqiris.vcproj" Description="Not Converted">
+</Event><Event ErrorLevel="0" Project="" Source="acqiris.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="acqiris.sln" Description="No Conversion Required">
+</Event></UpgradeLog>

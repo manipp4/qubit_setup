@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VisualStudioToolFile
+	Name="SWIG"
+	Version="8,00"
+	>
+	<Rules>
+		<CustomBuildRule
+			Name="SWIG"
+			CommandLine="echo In order to function correctly, please ensure the following environment variables are correctly set:&#x0D;&#x0A;echo PYTHON_INCLUDE: %PYTHON_INCLUDE%&#x0D;&#x0A;echo PYTHON_LIB: %PYTHON_LIB%&#x0D;&#x0A;echo on&#x0D;&#x0A;swig.exe -c++ -python $(InputPath)"
+			Outputs="$(InputName)_wrap.cxx"
+			FileExtensions="*.i"
+			>
+			<Properties>
+			</Properties>
+		</CustomBuildRule>
+	</Rules>
+</VisualStudioToolFile>

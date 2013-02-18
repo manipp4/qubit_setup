@@ -1,0 +1,19 @@
+acqiris Package
+===============
+
+:mod:`acqiris` Module
+---------------------
+
+.. automodule:: qubit_setup.lib.swig.acqiris.acqiris
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`example` Module
+---------------------
+
+.. automodule:: qubit_setup.lib.swig.acqiris.example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

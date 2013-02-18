@@ -1,0 +1,155 @@
+instruments Package
+===================
+
+:mod:`instruments` Package
+--------------------------
+
+.. automodule:: qubit_setup.instruments
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`acqiris` Module
+---------------------
+
+.. automodule:: qubit_setup.instruments.acqiris
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`afg` Module
+-----------------
+
+.. automodule:: qubit_setup.instruments.afg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`agilent_mwg` Module
+-------------------------
+
+.. automodule:: qubit_setup.instruments.agilent_mwg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`anritsu_mwg` Module
+-------------------------
+
+.. automodule:: qubit_setup.instruments.anritsu_mwg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`awg` Module
+-----------------
+
+.. automodule:: qubit_setup.instruments.awg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fsp` Module
+-----------------
+
+.. automodule:: qubit_setup.instruments.fsp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`helium_level` Module
+--------------------------
+
+.. automodule:: qubit_setup.instruments.helium_level
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`iqmixer` Module
+---------------------
+
+.. automodule:: qubit_setup.instruments.iqmixer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`jba` Module
+-----------------
+
+.. automodule:: qubit_setup.instruments.jba
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`lecroy_sda_7` Module
+--------------------------
+
+.. automodule:: qubit_setup.instruments.lecroy_sda_7
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pulse_generator` Module
+-----------------------------
+
+.. automodule:: qubit_setup.instruments.pulse_generator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`qubit` Module
+-------------------
+
+.. automodule:: qubit_setup.instruments.qubit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`register` Module
+----------------------
+
+.. automodule:: qubit_setup.instruments.register
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`temperature` Module
+-------------------------
+
+.. automodule:: qubit_setup.instruments.temperature
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`test` Module
+------------------
+
+.. automodule:: qubit_setup.instruments.test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`visualizer` Module
+------------------------
+
+.. automodule:: qubit_setup.instruments.visualizer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`vna` Module
+-----------------
+
+.. automodule:: qubit_setup.instruments.vna
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`yokogawa` Module
+----------------------
+
+.. automodule:: qubit_setup.instruments.yokogawa
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

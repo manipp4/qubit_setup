@@ -1,0 +1,31 @@
+﻿Build started 16/03/2011 12:59:16.
+     1>Project "L:\python\qubit_setup\lib\swig\tools\numerical.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\numerical.unsuccessfulbuild".
+       _SWIG:
+         cmd.exe /C "C:\Documents and Settings\administrateur\Local Settings\Temp\6f4bda56f23e413d801dbf76565bf7eb.cmd"
+         echo In order to function correctly, please ensure the following environment variables are correctly set:
+         echo PYTHON_INCLUDE: %PYTHON_INCLUDE%
+         echo PYTHON_LIB: %PYTHON_LIB%
+         echo on
+         swig.exe -c++ -python L:\python\qubit_setup\lib\swig\tools\numerical.i
+       ClCompile:
+         All outputs are up-to-date.
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _MBCS /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt numerical_wrap.cxx
+         numerical_wrap.cxx
+       ResourceCompile:
+         All outputs are up-to-date.
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(L:\python\qubit_setup\lib\swig\tools\Debug\numerical.dll) does not match the Linker's OutputFile property value (L:\python\qubit_setup\lib\swig\tools\_numerical.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(991,5): warning MSB8012: TargetExt(.dll) does not match the Linker's OutputFile property value (.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(numerical) does not match the Linker's OutputFile property value (_numerical). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"_numerical.pyd" /INCREMENTAL:NO /NOLOGO /MANIFEST /ManifestFile:"Debug\numerical.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"L:\python\qubit_setup\lib\swig\tools\Debug\numerical.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"L:\python\qubit_setup\lib\swig\tools\Debug\numerical.lib" /MACHINE:X86 /DLL Debug\app.res
+         Debug\numerical.obj
+         Debug\numerical_wrap.obj
+         Debug\Stdafx.obj
+     1>LINK : fatal error LNK1104: cannot open file 'python26_d.lib'
+     1>Done Building Project "L:\python\qubit_setup\lib\swig\tools\numerical.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.56

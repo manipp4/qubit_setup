@@ -1,0 +1,23 @@
+﻿Build started 05/01/2012 23:50:26.
+     1>Project "L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\acqiris.unsuccessfulbuild".
+       _SWIG:
+       Skipping target "_SWIG" because all output files are up-to-date with respect to the input files.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       ResourceCompile:
+         All outputs are up-to-date.
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(L:\python\qubit_setup\lib\swig\acqiris\Debug\_acqiris.pyd) does not match the Linker's OutputFile property value (L:\python\qubit_setup\lib\swig\acqiris\_acqiris.pyd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"_acqiris.pyd" /INCREMENTAL:NO /NOLOGO /MANIFEST /ManifestFile:"Debug\_acqiris.pyd.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"L:\python\qubit_setup\lib\swig\acqiris\Debug\_acqiris.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"L:\python\qubit_setup\lib\swig\acqiris\Debug\__acqiris.lib" /MACHINE:X86 /DLL Debug\app.res
+         Debug\acqiris.obj
+         Debug\acqiris_wrap.obj
+         Debug\Stdafx.obj
+     1>LINK : fatal error LNK1104: cannot open file 'python26_d.lib'
+     1>Done Building Project "L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.39

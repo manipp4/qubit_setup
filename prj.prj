@@ -1,0 +1,26 @@
+parameters: {}
+tree:
+- Folder
+- {name: '[project]'}
+- - - Folder
+    - {name: folder 1}
+    - - - File
+        - {url: 'L:/local-expdata/2012 Runs/Squeezed Vacuum/RSVXZ2-A4/python script/trial2.py'}
+        - []
+      - - File
+        - {url: 'L:/local-expdata/2012 Runs/Squeezed Vacuum/RSVXZ2-A4/python script/trial1.py'}
+        - []
+  - - Folder
+    - {name: Startup}
+    - - - File
+        - {url: 'L:/python/qubit_setup/config/gui.py'}
+        - []
+      - - File
+        - {url: 'L:/python/qubit_setup/config/instrumentsDebug.py'}
+        - []
+  - - File
+    - {url: 'L:/local-expdata/2012 Runs/Squeezed Vacuum/RSVXZ2-A4/python script/scope.py'}
+    - []
+  - - File
+    - {url: 'L:/local-expdata/2012 Runs/Squeezed Vacuum/RSVXZ2-A4/python script/esszai.py'}
+    - []

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(SWIGBeforeTargets)' == '' and '$(SWIGAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <SWIGBeforeTargets>Midl</SWIGBeforeTargets>
+    <SWIGAfterTargets>CustomBuild</SWIGAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SWIGDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(SWIGDependsOn)</SWIGDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <SWIG>
+      <CommandLineTemplate>echo In order to function correctly, please ensure the following environment variables are correctly set:
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE%
+echo PYTHON_LIB: %PYTHON_LIB%
+echo on
+swig.exe -c++ -python %(FullPath)</CommandLineTemplate>
+      <Outputs>%(Filename)_wrap.cxx</Outputs>
+    </SWIG>
+  </ItemDefinitionGroup>
+</Project>

@@ -1,0 +1,59 @@
+state_tomography Package
+========================
+
+:mod:`chsh_estimation_of_crosstalk_error` Module
+------------------------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.chsh_estimation_of_crosstalk_error
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`plot_density_matrix` Module
+---------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.plot_density_matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`plot_multiple_density_matrix` Module
+------------------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.plot_multiple_density_matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`process_tomography` Module
+--------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.process_tomography
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`reconstruct_density_matrix` Module
+----------------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.reconstruct_density_matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`simulate_xy_sequence` Module
+----------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.simulate_xy_sequence
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`state_simulation` Module
+------------------------------
+
+.. automodule:: qubit_setup.scripts.state_tomography.state_simulation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

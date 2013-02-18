@@ -1,0 +1,5 @@
+^acqiris.i
+L:\python\qubit_setup\lib\swig\acqiris\acqiris_wrap.cxx
+^L:\python\qubit_setup\lib\swig\acqiris\acqiris.vcxproj
+L:\python\qubit_setup\lib\swig\acqiris\Release\__acqiris.lib
+L:\python\qubit_setup\lib\swig\acqiris\Release\__acqiris.exp

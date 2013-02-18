@@ -1,0 +1,27 @@
+tools Package
+=============
+
+:mod:`example` Module
+---------------------
+
+.. automodule:: qubit_setup.lib.swig.tools.example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`numerical` Module
+-----------------------
+
+.. automodule:: qubit_setup.lib.swig.tools.numerical
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`test_tools` Module
+------------------------
+
+.. automodule:: qubit_setup.lib.swig.tools.test_tools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

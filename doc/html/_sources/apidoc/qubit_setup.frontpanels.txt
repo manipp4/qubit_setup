@@ -1,0 +1,123 @@
+frontpanels Package
+===================
+
+:mod:`acqiris` Module
+---------------------
+
+.. automodule:: qubit_setup.frontpanels.acqiris
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`afg` Module
+-----------------
+
+.. automodule:: qubit_setup.frontpanels.afg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`agilent_mwg` Module
+-------------------------
+
+.. automodule:: qubit_setup.frontpanels.agilent_mwg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`anritsu_mwg` Module
+-------------------------
+
+.. automodule:: qubit_setup.frontpanels.anritsu_mwg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`awg` Module
+-----------------
+
+.. automodule:: qubit_setup.frontpanels.awg
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fsp` Module
+-----------------
+
+.. automodule:: qubit_setup.frontpanels.fsp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`helium_level` Module
+--------------------------
+
+.. automodule:: qubit_setup.frontpanels.helium_level
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`iqmixer` Module
+---------------------
+
+.. automodule:: qubit_setup.frontpanels.iqmixer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`jba` Module
+-----------------
+
+.. automodule:: qubit_setup.frontpanels.jba
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pulse_generator` Module
+-----------------------------
+
+.. automodule:: qubit_setup.frontpanels.pulse_generator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`qubit` Module
+-------------------
+
+.. automodule:: qubit_setup.frontpanels.qubit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`temperature` Module
+-------------------------
+
+.. automodule:: qubit_setup.frontpanels.temperature
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`visualizer` Module
+------------------------
+
+.. automodule:: qubit_setup.frontpanels.visualizer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`vna` Module
+-----------------
+
+.. automodule:: qubit_setup.frontpanels.vna
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`yokogawa` Module
+----------------------
+
+.. automodule:: qubit_setup.frontpanels.yokogawa
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
