@@ -414,7 +414,7 @@ class Instr(Instrument):
     
     
   def adjustSwitchingLevel(self,level = 0.2,accuracy = 0.05,nLoops=10):#,verbose = False,minSensitivity = 15.0,microwaveOff = True,nmax = 100):
-      fitfuncS = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
+    fitfuncS = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
     def fitS(x,y,x0,dx):
       errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y),2.0)
       ps=[x0,dx]
@@ -433,7 +433,7 @@ class Instr(Instrument):
       self.y.append(ny)    
     
     
-    def defineFunction:  
+    def defineFunction():  
       self.x=[]
       self.y=[]
       
@@ -455,11 +455,11 @@ class Instr(Instrument):
       
       # Define the invert function from center-2linewidth to center+2linewidth
       x = linspace(params[0]-2*params[1],params[0]-2*params[1],1000)
-      f = lambda x: fitfunc(params,x)
+      f = lambda x: fitfuncS(params,x)
       y = map(f,x)
       self.sfunction=scipy.interpolate.interp1d(y,x)
     
-    if not(if hasattr(self,'sfunction')):
+    if not(hasattr(self,'sfunction')):
       defineFunction()
     if abs(levelAt(self.sfunction(level),nLoops=nLoops)-level)>accuracy:
       defineFunction()
