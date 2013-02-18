@@ -413,7 +413,7 @@ class Instr(Instrument):
 
     
     
-  def adjustSwitchingLevel(self,level = 0.2,accuracy = 0.05):#,verbose = False,minSensitivity = 15.0,microwaveOff = True,nmax = 100):
+  def adjustSwitchingLevel(self,level = 0.2,accuracy = 0.05,nLoops=10):#,verbose = False,minSensitivity = 15.0,microwaveOff = True,nmax = 100):
       fitfuncS = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
     def fitS(x,y,x0,dx):
       errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y),2.0)
@@ -431,30 +431,40 @@ class Instr(Instrument):
       print nx,ny
       self.x.append(nx)    
       self.y.append(ny)    
+    
+    
+    def defineFunction:  
+      self.x=[]
+      self.y=[]
       
-    self.x=[]
-    self.y=[]
-    
-    [vmin,vmax]=[0.8*self._vMaxAmplitude,1.2*self._vMaxAmplitude]#[self._vMaxAmplitude-2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0])),self._vMaxAmplitude+2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0]))]
-    
-    addToArray(vmin)
-    addToArray(vmax)
-    print self.x, self.y
-    for i in [1,2,3,4,5,6,7]:
+      [vmin,vmax]=[0.8*self._vMaxAmplitude,1.2*self._vMaxAmplitude]#[self._vMaxAmplitude-2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0])),self._vMaxAmplitude+2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0]))]
+      
+      addToArray(vmin)
+      addToArray(vmax)
+      print self.x, self.y
+      for i in [1,2,3,4,5,6]:
+        params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
+        print params
+        addToArray(params[0])
+        print self.x,self.y
+      addToArray(params[0]-params[1]/2)
+      addToArray(params[0]+params[1]/2)
       params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
-      print params
-      addToArray(params[0])
-      print self.x,self.y
+        
+        
+      
+      # Define the invert function from center-2linewidth to center+2linewidth
+      x = linspace(params[0]-2*params[1],params[0]-2*params[1],1000)
+      f = lambda x: fitfunc(params,x)
+      y = map(f,x)
+      self.sfunction=scipy.interpolate.interp1d(y,x)
     
-    # Define the invert function from center-2linewidth to center+2linewidth
-    x = linspace(params[0]-2*params[1],params[0]-2*params[1],1000)
-    f = lambda x: fitfunc(params,x)
-    y = map(f,x)
-    
-    self.function=scipy.interpolate.interp1d(y,x)
-    
-    
-    
+    if not(if hasattr(self,'sfunction')):
+      defineFunction()
+    if abs(levelAt(self.sfunction(level),nLoops=nLoops)-level)>accuracy:
+      defineFunction()
+    print "level at %f,%f"%(self.sfunction(level),levelAt(self.sfunction(level),nLoops=nLoops))
+      
     
     
     
