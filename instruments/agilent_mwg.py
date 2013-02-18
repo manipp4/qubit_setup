@@ -1,5 +1,6 @@
 import sys
 import getopt
+import math
 
 from pyview.lib.classes import *
 
@@ -52,7 +53,29 @@ class Instr(VisaInstrument):
     """
     self.write("POW %f" % power)
     return self.power()
+
+  def phase(self):
+    """
+    Returns the current microwave phase.
+    """
+    phase = float(self.ask("PHAS?"))/math.pi*180
+    self.notify("phase",phase)
+    return phase
   
+  def setPhase(self,phase):
+    """
+    Sets the output phase in degre
+    """
+    self.write("PHAS %f" % (phase/180*math.pi))
+    return self.phase()
+    
+  def setPhaseRef(self):
+    """
+    Turn on the microwave.
+    """
+    self.write("PHAS:REF")
+    return self.output()
+      
   def parameters(self):
     """
     Returns all relevant parameters of the instrument.

@@ -2,7 +2,6 @@ from numpy import *
 from scipy import *
 from pyview.lib.datacube import *
 from matplotlib.pyplot import *
-from pyview.ide.mpl.backend_agg import figure
 from numpy.linalg import *
 
 def adjoint(m):

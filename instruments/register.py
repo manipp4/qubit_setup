@@ -78,7 +78,7 @@ class Instr(Instrument):
     if key in self._register:
       del self._register[key]
   
-  def initialize(self,name = "Parameter register",filename = "register.par"):
+  def initialize(self,name = "Parameter register",filename = "register2.par"):
     """
     Initialize the register.
     """

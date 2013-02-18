@@ -52,14 +52,15 @@ class Instr(VisaInstrument):
     """
     Saves the state of the instrument.
     """
-    self.saveSetup(name)
-    return name
+    #self.saveSetup(name)
+    #return name
+    return None
     
   def restoreState(self,name):
     """
     Restores the state of the instrument.
     """
-    self.loadSetup(name)
+    return None#self.loadSetup(name)
   
   def loadSetup(self,name):
     """
@@ -128,15 +129,11 @@ class Instr(VisaInstrument):
     Loads an IQ waveform and 2 marker waveforms into the AWG memory.
     """
     
-    
     iChannel = numpy.zeros(len(iqWaveform))
     qChannel = numpy.zeros(len(iqWaveform))
     iChannel[:] = numpy.real(iqWaveform)
     qChannel[:] = numpy.imag(iqWaveform)
-    
-    
-    
-        
+           
     if markers == None:
       iMarkers=(numpy.zeros(len(iqWaveform),dtype=numpy.int8),numpy.zeros(len(iqWaveform),dtype=numpy.int8))
       qMarkers=(numpy.zeros(len(iqWaveform),dtype=numpy.int8),numpy.zeros(len(iqWaveform),dtype=numpy.int8))
@@ -151,7 +148,26 @@ class Instr(VisaInstrument):
     self.setWaveform(channels[1],waveformNames[1])
     
     return len(qData)  
-      
+    
+    
+  def loadRealWaveform(self,realWaveform, channel=1, markers = None,waveformName='ch1'):
+    """
+    Loads a waveform and 2 marker waveforms into the AWG file.
+    """
+        
+    waveform = numpy.zeros(len(realWaveform))
+    waveform[:] = numpy.real(realWaveform)
+           
+    if markers == None:
+      markers=numpy.zeros(len(waveform),dtype=numpy.int8)
+      markers[:10000]=3
+    data = self.writeIntData((waveform+1.0)/2.0*((1<<14)-1),markers)
+    self.createWaveform(waveformName,data,"INT")
+    self.setWaveform(channel,waveformName)
+    
+
+    return len(data)  
+        
   def writeRealData(self,values,markers):
     """
     Writes real-valued data to a string.
@@ -216,7 +232,7 @@ class Instr(VisaInstrument):
     Start all the channels
     """
     for i in [1,2,3,4]:
-      self.setState(1,True) 
+      self.setState(i,True) 
   
   def channels(self):
     """

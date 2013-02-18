@@ -20,12 +20,12 @@ class Instr(Instrument):
 
       def calibrate(self, f_sb=0.1,offsetOnly=False):
         """
-        Calibrate a mixer IQ using fsp, from -f_sb a +f_sb par pas de 0.1GHz
+        Calibrate a mixer IQ using fsp
         """
         print 'calibration in progress'
         register["%s OffsetCal" % self._name] =self._calibration.calibrateIQOffset()
         if not(offsetOnly):
-          register["%s IQCal" % self._name] =self._calibration.calibrateSidebandMixing(sidebandRange=arange(-f_sb,f_sb+0.01,0.1))
+          register["%s IQCal" % self._name] =self._calibration.calibrateSidebandMixing(sidebandRange=[f_sb])
         print 'calibration ended'
 
 

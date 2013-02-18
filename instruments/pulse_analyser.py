@@ -17,40 +17,38 @@ from pyview.lib.datacube import Datacube
 
 class Instr(Instrument):
 
-  def addFrequency(self, f,useCorrection=False):
+  def saveState(self,name):
+    return None
+
+  def addFrequency(self, f,name, useCorrection=False,bit=0):
     """
     Add a new frequency to the analyser
     """
-    f_c=self._MWSource.frequency()
-    df=f-f_c
-    toReturn=True
-    if useCorrection:
-      if self._calibration.search(f_sb=df,f_c=f_c)==['']:
-        print 'Point not calibrated, calibration in progress.... (NOOOOO !! need to find a switch to calibrate ...)'
-#         self.calibrateAmplitudeAndOffset(f=f)
-        print 'calibration over'
-        toReturn=False
-      index=self._calibration.search(f_sb=df,f_c=f_c)
-      I=self._calibration['I'][index]
-      Q=self._calibration['Q'][index]
-      phi=self._calibration['phi'][index]
-    else:
-      I=1
-      Q=1
-      phi=0.
-    self._frequencies=append(self._frequencies,abs(df))
-    self._Ilist=append(self._Ilist,I)
-    self._Qlist=append(self._Qlist,Q)
-    self._philist=append(self._philist,phi)
-    
-    return toReturn
-    
-  def analyse(self):
+    self._frequencies[name]=[abs(f),True,bit]
+    return True
+        
+  def startAnalyseFrequency(self,name):
+    self._frequencies[name][1]=True
+        
+  def stopAnalyseFrequency(self,name):
+    self._frequencies[name][1]=False
+
+  def measureAll(self):
+    return self._acqiris.frequenciesAnalyse(frequencies=self._frequencies.values)
+
+
+
+  def analyse(self,nLoops=1,fast=False):
     """
-    Acquire and analyse the frequencies previously sent and returns (waveforms, components, and frequencies analysed)
+    Acquire and analyse the frequencies previously sent and returns (components and probabilities)
     """
-    (wa,av,co,fr)=self._acqiris.frequenciesAnalysis(frequencies=self._frequencies, Ilist=self._Ilist, Qlist=self._Qlist, philist=self._philist)
-    return (av, co, fr)
+    
+    maxBit=0
+    for v in self._frequencies.values():
+    	if v[2]>maxBit and v[1]:
+    		maxBit=v[2]
+    return self._acqiris.frequenciesAnalyse(frequencies=self._frequencies.values(),nLoops=nLoops,maxBit=maxBit,fast=fast)
+    
 
   def measureBifurcationProbabilities(self):
     """
@@ -67,7 +65,7 @@ class Instr(Instrument):
     self._Ilist=[]  
     self._Qlist=[]
     self._philist=[]
-    self._frequencies=[]  
+    self._frequencies=dict()
 
   def calibrateAmplitudeAndOffset(self,f):
     """
@@ -128,7 +126,7 @@ class Instr(Instrument):
     self._params=dict()
     self._params["acqiris"]=acqiris
     self._params["MWSource"]=MWSource
-    self._frequencies=zeros(0)
+    self._frequencies=dict()
     try:
       self._calibration=Datacube()
       self._calibration.setName('analyser IQ mixer Calibration')

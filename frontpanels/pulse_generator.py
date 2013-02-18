@@ -4,8 +4,8 @@ sys.path.append('.')
 sys.path.append('../')
 
 from pyview.lib.classes import *
-from pyview.ide.frontpanel import FrontPanel
-from pyview.ide.elements.numericedit import * 
+from pyview.gui.frontpanel import FrontPanel
+from pyview.gui.elements.numericedit import * 
 
 import datetime
 
@@ -23,7 +23,7 @@ class Panel(FrontPanel):
 
     def generatePulse(self):
       kwargs={'duration':self.DurationEdit.getValue(),'DelayFromZero':self.DelayFromZeroEdit.getValue(),'phase':self.PhaseEdit.getValue(),'frequency':self.FrequencyEdit.getValue(),
-        'gaussian':self.GaussianEdit.isChecked(),'useCalibration':self.UseCalibrationEdit.isChecked(), 'amplitude':self.AmplitudeEdit.getValue(), 'allowModifyMWFrequency':self.ModifyMWFrequencyEdit.isChecked()}
+        'gaussian':self.GaussianEdit.isChecked(),'useCalibration':self.UseCalibrationEdit.isChecked(), 'amplitude':self.AmplitudeEdit.getValue()}#, 'allowModifyMWFrequency':self.ModifyMWFrequencyEdit.isChecked()}
       self.instrument.dispatch("generatePulse",**kwargs)      
       
       self.array.setRowCount(self.array.rowCount()+1)

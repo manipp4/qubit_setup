@@ -54,10 +54,12 @@ class Instr(VisaInstrument):
   
   def parameters(self):
     params = dict()
-    params['frequency'] = self.frequency()
-    params['power'] = self.power()
-    params['output'] = self.output()
-    return params
+    try:
+      params['frequency'] = self.frequency()
+      params['power'] = self.power()
+      params['output'] = self.output()
+    finally:
+      return params
   
   def turnOff(self):
     self.write("RF0")

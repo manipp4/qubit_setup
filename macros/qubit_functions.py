@@ -17,7 +17,7 @@ def fitRabiFrequency(cube,yVariable = "p1x",xVariable = "duration",withOffset = 
 	(params,fitfunc,rsquare) = result
 	cube.createColumn("%s_fit" % yVariable,fitfunc(params,cube.column(xVariable)))	
 	cube.parameters()["rabiParameters"] = params
-	cube.parameters()["defaultPlot"].append(["duration","%s_fit" % yVariable])
+	if 1==2:cube.parameters()["defaultPlot"].append(["duration","%s_fit" % yVariable])
 	return (params,rsquare)
 
 def fitRamseyFrequency(cube,variable = "p1x",f_offset=0.003):
@@ -49,7 +49,7 @@ def fitT1Parameters(cube,variable = "p1x"):
   (params,fitfunc)=result
   cube.createColumn("%s_fit" % variable,fitfunc(params,cube.column("delay")))
   cube.parameters()["T1Parameters"] = params
-  cube.parameters()["defaultPlot"].append(["delay","%s_fit" % variable])
+  if 1==2:cube.parameters()["defaultPlot"].append(["delay","%s_fit" % variable])
   return params
 	
 def fitT1Parametersprecis(cube,variable = "p1x",highTvalue=0.2): 
@@ -65,8 +65,8 @@ def fitT1Parametersprecis(cube,variable = "p1x",highTvalue=0.2):
 class FitException(Exception):
   pass
 
-def fitQubitFrequency(cube,variable = "p1x"):
-  result = fitLorentzian(cube.column("f"),cube.column(variable))		
+def fitQubitFrequency(cube,variable = "p1x",f0=None):
+  result = fitLorentzian(cube.column("f"),cube.column(variable),f0=f0)		
   if result == None:
     return None
   (params,fitfunc,rsquare) = result
@@ -116,13 +116,15 @@ def fitGaussian(fs,p1,ps = None):
   return (p1s.tolist(),fitfunc,rsquare)
 
 #This function fits a lorentzian to a given Qubit spectroscopic curve...
-def fitLorentzian(fs,p1):
+def fitLorentzian(fs,p1,f0=None):
 
   fitfunc = lambda p, x: p[3]+p[0]/(1.0+pow((x-p[1])/p[2],2.0))
-  errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y),2.0)
+  errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y,4),2.0)
   
-  ps = [(max(p1)-min(p1)),fs[argmax(p1)],0.001,min(p1)]
-
+  ps = [(max(p1)-min(p1)),fs[argmax(p1)],0.005,min(p1)]
+  if f0!=None:
+    if max(fs)>f0 and min(fs)<f0:ps[1]=f0
+  
   print "Initial guess:",ps
 
   import numpy.linalg

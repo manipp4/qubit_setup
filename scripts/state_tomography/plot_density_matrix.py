@@ -67,7 +67,7 @@ def plotPauliSet(measuredSpins = None,densityMatrix = None,row = None,fill = Fal
 
 def plotDensityMatrix(densityMatrix,figureName = None,export=None,figureTitle = None,annotate = True):
 	from numpy import angle
-	from pyview.ide.mpl.backend_agg import figure
+	from pyview.gui.mpl.backend import figure
 	if figureName != None:
 		fig = figure(figureName)
 	from matplotlib.patches import Ellipse
@@ -143,7 +143,7 @@ def plotDensityMatrix(densityMatrix,figureName = None,export=None,figureTitle = 
 		
 def plotDensityMatricesContour(densityMatrices,figureName = None,export=None,figureTitle = None,annotate = True,labels = [],show = "all"):
 	from numpy import angle
-	from pyview.ide.mpl.backend_agg import figure
+	from pyview.gui.mpl.backend import figure
 	if figureName != None:
 		fig = figure(figureName)
 	from matplotlib.patches import Ellipse

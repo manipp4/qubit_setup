@@ -5,9 +5,9 @@ sys.path.append('.')
 sys.path.append('../')
 
 from pyview.lib.classes import *
-from pyview.ide.mpl.canvas import MyMplCanvas as Canvas
-from pyview.ide.frontpanel import FrontPanel
-from pyview.ide.elements.numericedit import * 
+from pyview.gui.mpl.canvas import MyMplCanvas as Canvas
+from pyview.gui.frontpanel import FrontPanel
+from pyview.gui.elements.numericedit import * 
 import pylab
 import matplotlib.ticker as ticker
 import datetime

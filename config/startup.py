@@ -1,7 +1,7 @@
 #Matplotlib settings: Enable interactive plotting with custom backend.
 import sys
 from matplotlib.pyplot import *
-from pyview.ide.mpl.backend_agg import figure
+#from pyview.gui.mpl.backend import figure
 
 def importModule(name,implicit = False):
 	import sys

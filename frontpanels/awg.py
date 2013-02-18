@@ -5,10 +5,10 @@ sys.path.append('.')
 sys.path.append('../')
 
 from pyview.lib.classes import *
-from pyview.ide.frontpanel import FrontPanel
-from pyview.ide.mpl.canvas import *
-from pyview.ide.patterns import *
-from pyview.ide.editor.codeeditor import *
+from pyview.gui.frontpanel import FrontPanel
+from pyview.gui.mpl.canvas import *
+from pyview.gui.patterns import *
+from pyview.gui.editor.codeeditor import *
 import string
 import numpy
 

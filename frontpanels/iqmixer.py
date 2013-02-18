@@ -4,8 +4,8 @@ sys.path.append('.')
 sys.path.append('../')
 
 from pyview.lib.classes import *
-from pyview.ide.frontpanel import FrontPanel
-from pyview.ide.elements.numericedit import * 
+from pyview.gui.frontpanel import FrontPanel
+from pyview.gui.elements.numericedit import * 
 
 import datetime
 
@@ -34,7 +34,7 @@ class Panel(FrontPanel):
         self.fsbEdit = NumericEdit("")
 
         self.CalibrateButton = QPushButton("Calibrate")
-        self.StopButton = QPushButton("Stop (not working)")
+        self.StopButton = QPushButton("Stop")
         self.reInitButton = QPushButton("Re-init calibration")
  
         self.grid = QGridLayout(self)
@@ -48,7 +48,7 @@ class Panel(FrontPanel):
         self.grid.addWidget(self.reInitButton,0,2)
 
         self.connect(self.CalibrateButton,SIGNAL("clicked()"),self.calibrate)
-        self.connect(self.StopButton,SIGNAL("clicked()"),self.stop)
+        self.connect(self.StopButton,SIGNAL("clicked()"),self.instrument.terminate)
         self.connect(self.reInitButton,SIGNAL("clicked()"),self.reInit)
 
         self.setLayout(self.grid)

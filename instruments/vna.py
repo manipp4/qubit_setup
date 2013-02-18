@@ -21,7 +21,7 @@ class VNATrace:
 class Instr(VisaInstrument):
 
     #Initializes the instrument.
-    def initialize(self,visaAddress = "GPIB::15",name = "VNA"):
+    def initialize(self,visaAddress = "GPIB::6",name = "VNA"):
         self._name = "Anritsu VNA"
         print "Initializing with resource %s" % visaAddress
         if DEBUG:
@@ -96,10 +96,10 @@ class Instr(VisaInstrument):
     def setNumberOfPoints(self,n):
       self.write("NP%i" % n)
     
-    def averarging(self):
+    def averaging(self):
       return self.ask("AOF?")
     
-    def setAverarging(self,Q):
+    def setAveraging(self,Q):
       if Q:
         self.write("AON")
       else :
@@ -142,9 +142,16 @@ class Instr(VisaInstrument):
     def electricalLength(self):
   	  self.write("RDA")
   	  return float(self.ask("RDD?"))
-
+  	  
+    
+    def getValuesAtMarker(self,i,waitNewSweep=False):
+      if waitNewSweep: self.write("TRS;WFS;")
+      return self.ask("OM"+str(i))
+                 
+                 
+      
     #Get a trace from the instrument and store it to a local array.
-    def getTrace(self,correctPhase = False,waitFullSweep = False,timeOut = 200):
+    def getTrace(self,correctPhase = False,waitFullSweep = False,timeOut = 200, addedAttenuators=0.):
       print "Getting trace..."
       trace = Datacube()
       if DEBUG:
@@ -173,7 +180,7 @@ class Instr(VisaInstrument):
       trace.createColumn("mag",mag)
       attenuation = float(self.ask("SA1?"))
       power = float(self.ask("PWR?"))
-      trace.column("mag")[:]+= attenuation
+      trace.column("mag")[:]+= attenuation+addedAttenuators
       params = dict()
       params["attenuation"] = attenuation
       params["power"] = power
@@ -197,3 +204,31 @@ class Instr(VisaInstrument):
         trace.createColumn("phase",correctedPhase)
       print "returning trace."
       return trace
+
+    def setCWFrequency(self,f):
+      self.write("CWF %f GHZ" % f)
+      return self.CWFrequency()
+
+    def CWFrequency(self):
+      return float(self.ask("CWF?"))
+      
+    def turnOffCW(self):
+      self.write("SWP")
+    
+    def turnOnaver(self):
+      self.write("AON")
+      
+    def turnOffaver(self):
+      self.write("AOF")
+      
+    def turnOnHold(self):
+      self.write("HLD")
+      
+    def turnOnSweep(self):
+      self.write("CTN")
+      
+    def turnOffRFOnHold(self):
+      self.write("RH0")
+      
+    def keepOnRFOnHold(self):
+      self.write("RH1")

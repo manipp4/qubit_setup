@@ -128,177 +128,57 @@ class BifurcationMap(_object):
 BifurcationMap_swigregister = _acqiris.BifurcationMap_swigregister
 BifurcationMap_swigregister(BifurcationMap)
 
-class Averager(_object):
+class Demodulator(_object):
     __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, Averager, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Demodulator, name, value)
     __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, Averager, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, Demodulator, name)
     __repr__ = _swig_repr
     def __init__(self): 
-        this = _acqiris.new_Averager()
+        this = _acqiris.new_Demodulator()
         try: self.this.append(this)
         except: self.this = this
-    __swig_destroy__ = _acqiris.delete_Averager
+    __swig_destroy__ = _acqiris.delete_Demodulator
     __del__ = lambda self : None;
-    __swig_setmethods__["n"] = _acqiris.Averager_n_set
-    __swig_getmethods__["n"] = _acqiris.Averager_n_get
-    if _newclass:n = _swig_property(_acqiris.Averager_n_get, _acqiris.Averager_n_set)
-    __swig_setmethods__["nf"] = _acqiris.Averager_nf_set
-    __swig_getmethods__["nf"] = _acqiris.Averager_nf_get
-    if _newclass:nf = _swig_property(_acqiris.Averager_nf_get, _acqiris.Averager_nf_set)
-    __swig_setmethods__["channel"] = _acqiris.Averager_channel_set
-    __swig_getmethods__["channel"] = _acqiris.Averager_channel_get
-    if _newclass:channel = _swig_property(_acqiris.Averager_channel_get, _acqiris.Averager_channel_set)
-    __swig_setmethods__["point"] = _acqiris.Averager_point_set
-    __swig_getmethods__["point"] = _acqiris.Averager_point_get
-    if _newclass:point = _swig_property(_acqiris.Averager_point_get, _acqiris.Averager_point_set)
-    __swig_setmethods__["indexComponents"] = _acqiris.Averager_indexComponents_set
-    __swig_getmethods__["indexComponents"] = _acqiris.Averager_indexComponents_get
-    if _newclass:indexComponents = _swig_property(_acqiris.Averager_indexComponents_get, _acqiris.Averager_indexComponents_set)
-    __swig_setmethods__["indexAverages"] = _acqiris.Averager_indexAverages_set
-    __swig_getmethods__["indexAverages"] = _acqiris.Averager_indexAverages_get
-    if _newclass:indexAverages = _swig_property(_acqiris.Averager_indexAverages_get, _acqiris.Averager_indexAverages_set)
-    __swig_setmethods__["indexMatrix"] = _acqiris.Averager_indexMatrix_set
-    __swig_getmethods__["indexMatrix"] = _acqiris.Averager_indexMatrix_get
-    if _newclass:indexMatrix = _swig_property(_acqiris.Averager_indexMatrix_get, _acqiris.Averager_indexMatrix_set)
-    __swig_setmethods__["averages"] = _acqiris.Averager_averages_set
-    __swig_getmethods__["averages"] = _acqiris.Averager_averages_get
-    if _newclass:averages = _swig_property(_acqiris.Averager_averages_get, _acqiris.Averager_averages_set)
-    __swig_setmethods__["components"] = _acqiris.Averager_components_set
-    __swig_getmethods__["components"] = _acqiris.Averager_components_get
-    if _newclass:components = _swig_property(_acqiris.Averager_components_get, _acqiris.Averager_components_set)
-    __swig_setmethods__["frequencies"] = _acqiris.Averager_frequencies_set
-    __swig_getmethods__["frequencies"] = _acqiris.Averager_frequencies_get
-    if _newclass:frequencies = _swig_property(_acqiris.Averager_frequencies_get, _acqiris.Averager_frequencies_set)
-    __swig_setmethods__["Icorrection"] = _acqiris.Averager_Icorrection_set
-    __swig_getmethods__["Icorrection"] = _acqiris.Averager_Icorrection_get
-    if _newclass:Icorrection = _swig_property(_acqiris.Averager_Icorrection_get, _acqiris.Averager_Icorrection_set)
-    __swig_setmethods__["Qcorrection"] = _acqiris.Averager_Qcorrection_set
-    __swig_getmethods__["Qcorrection"] = _acqiris.Averager_Qcorrection_get
-    if _newclass:Qcorrection = _swig_property(_acqiris.Averager_Qcorrection_get, _acqiris.Averager_Qcorrection_set)
-    __swig_setmethods__["phicorrection"] = _acqiris.Averager_phicorrection_set
-    __swig_getmethods__["phicorrection"] = _acqiris.Averager_phicorrection_get
-    if _newclass:phicorrection = _swig_property(_acqiris.Averager_phicorrection_get, _acqiris.Averager_phicorrection_set)
-    __swig_setmethods__["nPoints"] = _acqiris.Averager_nPoints_set
-    __swig_getmethods__["nPoints"] = _acqiris.Averager_nPoints_get
-    if _newclass:nPoints = _swig_property(_acqiris.Averager_nPoints_get, _acqiris.Averager_nPoints_set)
-    __swig_setmethods__["nSegments"] = _acqiris.Averager_nSegments_set
-    __swig_getmethods__["nSegments"] = _acqiris.Averager_nSegments_get
-    if _newclass:nSegments = _swig_property(_acqiris.Averager_nSegments_get, _acqiris.Averager_nSegments_set)
-    __swig_setmethods__["activeChannels"] = _acqiris.Averager_activeChannels_set
-    __swig_getmethods__["activeChannels"] = _acqiris.Averager_activeChannels_get
-    if _newclass:activeChannels = _swig_property(_acqiris.Averager_activeChannels_get, _acqiris.Averager_activeChannels_set)
-    __swig_setmethods__["index"] = _acqiris.Averager_index_set
-    __swig_getmethods__["index"] = _acqiris.Averager_index_get
-    if _newclass:index = _swig_property(_acqiris.Averager_index_get, _acqiris.Averager_index_set)
-    __swig_setmethods__["nFrequencies"] = _acqiris.Averager_nFrequencies_set
-    __swig_getmethods__["nFrequencies"] = _acqiris.Averager_nFrequencies_get
-    if _newclass:nFrequencies = _swig_property(_acqiris.Averager_nFrequencies_get, _acqiris.Averager_nFrequencies_set)
-    __swig_setmethods__["sampleInterval"] = _acqiris.Averager_sampleInterval_set
-    __swig_getmethods__["sampleInterval"] = _acqiris.Averager_sampleInterval_get
-    if _newclass:sampleInterval = _swig_property(_acqiris.Averager_sampleInterval_get, _acqiris.Averager_sampleInterval_set)
-    __swig_setmethods__["c"] = _acqiris.Averager_c_set
-    __swig_getmethods__["c"] = _acqiris.Averager_c_get
-    if _newclass:c = _swig_property(_acqiris.Averager_c_get, _acqiris.Averager_c_set)
-    __swig_setmethods__["s"] = _acqiris.Averager_s_set
-    __swig_getmethods__["s"] = _acqiris.Averager_s_get
-    if _newclass:s = _swig_property(_acqiris.Averager_s_get, _acqiris.Averager_s_set)
-    __swig_setmethods__["cp"] = _acqiris.Averager_cp_set
-    __swig_getmethods__["cp"] = _acqiris.Averager_cp_get
-    if _newclass:cp = _swig_property(_acqiris.Averager_cp_get, _acqiris.Averager_cp_set)
-    __swig_setmethods__["sp"] = _acqiris.Averager_sp_set
-    __swig_getmethods__["sp"] = _acqiris.Averager_sp_get
-    if _newclass:sp = _swig_property(_acqiris.Averager_sp_get, _acqiris.Averager_sp_set)
-    __swig_setmethods__["ic"] = _acqiris.Averager_ic_set
-    __swig_getmethods__["ic"] = _acqiris.Averager_ic_get
-    if _newclass:ic = _swig_property(_acqiris.Averager_ic_get, _acqiris.Averager_ic_set)
-    __swig_setmethods__["qc"] = _acqiris.Averager_qc_set
-    __swig_getmethods__["qc"] = _acqiris.Averager_qc_get
-    if _newclass:qc = _swig_property(_acqiris.Averager_qc_get, _acqiris.Averager_qc_set)
-    def finish(self): return _acqiris.Averager_finish(self)
-    def add(self, *args): return _acqiris.Averager_add(self, *args)
-    def init(self): return _acqiris.Averager_init(self)
-Averager_swigregister = _acqiris.Averager_swigregister
-Averager_swigregister(Averager)
-
-class MultiplexedBifurcationMap(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, MultiplexedBifurcationMap, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, MultiplexedBifurcationMap, name)
-    __repr__ = _swig_repr
-    __swig_destroy__ = _acqiris.delete_MultiplexedBifurcationMap
-    __del__ = lambda self : None;
-    def __init__(self): 
-        this = _acqiris.new_MultiplexedBifurcationMap()
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_setmethods__["rotations"] = _acqiris.MultiplexedBifurcationMap_rotations_set
-    __swig_getmethods__["rotations"] = _acqiris.MultiplexedBifurcationMap_rotations_get
-    if _newclass:rotations = _swig_property(_acqiris.MultiplexedBifurcationMap_rotations_get, _acqiris.MultiplexedBifurcationMap_rotations_set)
-    __swig_setmethods__["costable"] = _acqiris.MultiplexedBifurcationMap_costable_set
-    __swig_getmethods__["costable"] = _acqiris.MultiplexedBifurcationMap_costable_get
-    if _newclass:costable = _swig_property(_acqiris.MultiplexedBifurcationMap_costable_get, _acqiris.MultiplexedBifurcationMap_costable_set)
-    __swig_setmethods__["sintable"] = _acqiris.MultiplexedBifurcationMap_sintable_set
-    __swig_getmethods__["sintable"] = _acqiris.MultiplexedBifurcationMap_sintable_get
-    if _newclass:sintable = _swig_property(_acqiris.MultiplexedBifurcationMap_sintable_get, _acqiris.MultiplexedBifurcationMap_sintable_set)
-    __swig_setmethods__["rotatedWaveform"] = _acqiris.MultiplexedBifurcationMap_rotatedWaveform_set
-    __swig_getmethods__["rotatedWaveform"] = _acqiris.MultiplexedBifurcationMap_rotatedWaveform_get
-    if _newclass:rotatedWaveform = _swig_property(_acqiris.MultiplexedBifurcationMap_rotatedWaveform_get, _acqiris.MultiplexedBifurcationMap_rotatedWaveform_set)
-    __swig_setmethods__["means"] = _acqiris.MultiplexedBifurcationMap_means_set
-    __swig_getmethods__["means"] = _acqiris.MultiplexedBifurcationMap_means_get
-    if _newclass:means = _swig_property(_acqiris.MultiplexedBifurcationMap_means_get, _acqiris.MultiplexedBifurcationMap_means_set)
-    __swig_setmethods__["trends"] = _acqiris.MultiplexedBifurcationMap_trends_set
-    __swig_getmethods__["trends"] = _acqiris.MultiplexedBifurcationMap_trends_get
-    if _newclass:trends = _swig_property(_acqiris.MultiplexedBifurcationMap_trends_get, _acqiris.MultiplexedBifurcationMap_trends_set)
-    __swig_setmethods__["averages"] = _acqiris.MultiplexedBifurcationMap_averages_set
-    __swig_getmethods__["averages"] = _acqiris.MultiplexedBifurcationMap_averages_get
-    if _newclass:averages = _swig_property(_acqiris.MultiplexedBifurcationMap_averages_get, _acqiris.MultiplexedBifurcationMap_averages_set)
-    __swig_setmethods__["probabilities"] = _acqiris.MultiplexedBifurcationMap_probabilities_set
-    __swig_getmethods__["probabilities"] = _acqiris.MultiplexedBifurcationMap_probabilities_get
-    if _newclass:probabilities = _swig_property(_acqiris.MultiplexedBifurcationMap_probabilities_get, _acqiris.MultiplexedBifurcationMap_probabilities_set)
-    __swig_setmethods__["crossProbabilities"] = _acqiris.MultiplexedBifurcationMap_crossProbabilities_set
-    __swig_getmethods__["crossProbabilities"] = _acqiris.MultiplexedBifurcationMap_crossProbabilities_get
-    if _newclass:crossProbabilities = _swig_property(_acqiris.MultiplexedBifurcationMap_crossProbabilities_get, _acqiris.MultiplexedBifurcationMap_crossProbabilities_set)
-    __swig_setmethods__["nPoints"] = _acqiris.MultiplexedBifurcationMap_nPoints_set
-    __swig_getmethods__["nPoints"] = _acqiris.MultiplexedBifurcationMap_nPoints_get
-    if _newclass:nPoints = _swig_property(_acqiris.MultiplexedBifurcationMap_nPoints_get, _acqiris.MultiplexedBifurcationMap_nPoints_set)
-    __swig_setmethods__["nSegments"] = _acqiris.MultiplexedBifurcationMap_nSegments_set
-    __swig_getmethods__["nSegments"] = _acqiris.MultiplexedBifurcationMap_nSegments_get
-    if _newclass:nSegments = _swig_property(_acqiris.MultiplexedBifurcationMap_nSegments_get, _acqiris.MultiplexedBifurcationMap_nSegments_set)
-    __swig_setmethods__["activeChannels"] = _acqiris.MultiplexedBifurcationMap_activeChannels_set
-    __swig_getmethods__["activeChannels"] = _acqiris.MultiplexedBifurcationMap_activeChannels_get
-    if _newclass:activeChannels = _swig_property(_acqiris.MultiplexedBifurcationMap_activeChannels_get, _acqiris.MultiplexedBifurcationMap_activeChannels_set)
-    __swig_setmethods__["index"] = _acqiris.MultiplexedBifurcationMap_index_set
-    __swig_getmethods__["index"] = _acqiris.MultiplexedBifurcationMap_index_get
-    if _newclass:index = _swig_property(_acqiris.MultiplexedBifurcationMap_index_get, _acqiris.MultiplexedBifurcationMap_index_set)
-    __swig_setmethods__["nLoops"] = _acqiris.MultiplexedBifurcationMap_nLoops_set
-    __swig_getmethods__["nLoops"] = _acqiris.MultiplexedBifurcationMap_nLoops_get
-    if _newclass:nLoops = _swig_property(_acqiris.MultiplexedBifurcationMap_nLoops_get, _acqiris.MultiplexedBifurcationMap_nLoops_set)
-    __swig_setmethods__["dimensionF"] = _acqiris.MultiplexedBifurcationMap_dimensionF_set
-    __swig_getmethods__["dimensionF"] = _acqiris.MultiplexedBifurcationMap_dimensionF_get
-    if _newclass:dimensionF = _swig_property(_acqiris.MultiplexedBifurcationMap_dimensionF_get, _acqiris.MultiplexedBifurcationMap_dimensionF_set)
-    __swig_setmethods__["fTable"] = _acqiris.MultiplexedBifurcationMap_fTable_set
-    __swig_getmethods__["fTable"] = _acqiris.MultiplexedBifurcationMap_fTable_get
-    if _newclass:fTable = _swig_property(_acqiris.MultiplexedBifurcationMap_fTable_get, _acqiris.MultiplexedBifurcationMap_fTable_set)
-    __swig_setmethods__["Ioffset"] = _acqiris.MultiplexedBifurcationMap_Ioffset_set
-    __swig_getmethods__["Ioffset"] = _acqiris.MultiplexedBifurcationMap_Ioffset_get
-    if _newclass:Ioffset = _swig_property(_acqiris.MultiplexedBifurcationMap_Ioffset_get, _acqiris.MultiplexedBifurcationMap_Ioffset_set)
-    __swig_setmethods__["Qoffset"] = _acqiris.MultiplexedBifurcationMap_Qoffset_set
-    __swig_getmethods__["Qoffset"] = _acqiris.MultiplexedBifurcationMap_Qoffset_get
-    if _newclass:Qoffset = _swig_property(_acqiris.MultiplexedBifurcationMap_Qoffset_get, _acqiris.MultiplexedBifurcationMap_Qoffset_set)
-    __swig_setmethods__["CosTable"] = _acqiris.MultiplexedBifurcationMap_CosTable_set
-    __swig_getmethods__["CosTable"] = _acqiris.MultiplexedBifurcationMap_CosTable_get
-    if _newclass:CosTable = _swig_property(_acqiris.MultiplexedBifurcationMap_CosTable_get, _acqiris.MultiplexedBifurcationMap_CosTable_set)
-    __swig_setmethods__["SinTable"] = _acqiris.MultiplexedBifurcationMap_SinTable_set
-    __swig_getmethods__["SinTable"] = _acqiris.MultiplexedBifurcationMap_SinTable_get
-    if _newclass:SinTable = _swig_property(_acqiris.MultiplexedBifurcationMap_SinTable_get, _acqiris.MultiplexedBifurcationMap_SinTable_set)
-    def setRotation(self, *args): return _acqiris.MultiplexedBifurcationMap_setRotation(self, *args)
-    def initF(self, *args): return _acqiris.MultiplexedBifurcationMap_initF(self, *args)
-    def add(self, *args): return _acqiris.MultiplexedBifurcationMap_add(self, *args)
-    def finish(self): return _acqiris.MultiplexedBifurcationMap_finish(self)
-MultiplexedBifurcationMap_swigregister = _acqiris.MultiplexedBifurcationMap_swigregister
-MultiplexedBifurcationMap_swigregister(MultiplexedBifurcationMap)
+    __swig_setmethods__["dimensionF"] = _acqiris.Demodulator_dimensionF_set
+    __swig_getmethods__["dimensionF"] = _acqiris.Demodulator_dimensionF_get
+    if _newclass:dimensionF = _swig_property(_acqiris.Demodulator_dimensionF_get, _acqiris.Demodulator_dimensionF_set)
+    __swig_setmethods__["tableF"] = _acqiris.Demodulator_tableF_set
+    __swig_getmethods__["tableF"] = _acqiris.Demodulator_tableF_get
+    if _newclass:tableF = _swig_property(_acqiris.Demodulator_tableF_get, _acqiris.Demodulator_tableF_set)
+    __swig_setmethods__["tableOffsetI"] = _acqiris.Demodulator_tableOffsetI_set
+    __swig_getmethods__["tableOffsetI"] = _acqiris.Demodulator_tableOffsetI_get
+    if _newclass:tableOffsetI = _swig_property(_acqiris.Demodulator_tableOffsetI_get, _acqiris.Demodulator_tableOffsetI_set)
+    __swig_setmethods__["tableOffsetQ"] = _acqiris.Demodulator_tableOffsetQ_set
+    __swig_getmethods__["tableOffsetQ"] = _acqiris.Demodulator_tableOffsetQ_get
+    if _newclass:tableOffsetQ = _swig_property(_acqiris.Demodulator_tableOffsetQ_get, _acqiris.Demodulator_tableOffsetQ_set)
+    __swig_setmethods__["tableGainI"] = _acqiris.Demodulator_tableGainI_set
+    __swig_getmethods__["tableGainI"] = _acqiris.Demodulator_tableGainI_get
+    if _newclass:tableGainI = _swig_property(_acqiris.Demodulator_tableGainI_get, _acqiris.Demodulator_tableGainI_set)
+    __swig_setmethods__["tableGainQ"] = _acqiris.Demodulator_tableGainQ_set
+    __swig_getmethods__["tableGainQ"] = _acqiris.Demodulator_tableGainQ_get
+    if _newclass:tableGainQ = _swig_property(_acqiris.Demodulator_tableGainQ_get, _acqiris.Demodulator_tableGainQ_set)
+    __swig_setmethods__["tableAngleI"] = _acqiris.Demodulator_tableAngleI_set
+    __swig_getmethods__["tableAngleI"] = _acqiris.Demodulator_tableAngleI_get
+    if _newclass:tableAngleI = _swig_property(_acqiris.Demodulator_tableAngleI_get, _acqiris.Demodulator_tableAngleI_set)
+    __swig_setmethods__["tableAngleQ"] = _acqiris.Demodulator_tableAngleQ_set
+    __swig_getmethods__["tableAngleQ"] = _acqiris.Demodulator_tableAngleQ_get
+    if _newclass:tableAngleQ = _swig_property(_acqiris.Demodulator_tableAngleQ_get, _acqiris.Demodulator_tableAngleQ_set)
+    __swig_setmethods__["frequencies"] = _acqiris.Demodulator_frequencies_set
+    __swig_getmethods__["frequencies"] = _acqiris.Demodulator_frequencies_get
+    if _newclass:frequencies = _swig_property(_acqiris.Demodulator_frequencies_get, _acqiris.Demodulator_frequencies_set)
+    __swig_setmethods__["quadratures"] = _acqiris.Demodulator_quadratures_set
+    __swig_getmethods__["quadratures"] = _acqiris.Demodulator_quadratures_get
+    if _newclass:quadratures = _swig_property(_acqiris.Demodulator_quadratures_get, _acqiris.Demodulator_quadratures_set)
+    __swig_setmethods__["quadraturesAverages"] = _acqiris.Demodulator_quadraturesAverages_set
+    __swig_getmethods__["quadraturesAverages"] = _acqiris.Demodulator_quadraturesAverages_get
+    if _newclass:quadraturesAverages = _swig_property(_acqiris.Demodulator_quadraturesAverages_get, _acqiris.Demodulator_quadraturesAverages_set)
+    def indexCorrection(self, *args): return _acqiris.Demodulator_indexCorrection(self, *args)
+    def setCorrections(self, *args): return _acqiris.Demodulator_setCorrections(self, *args)
+    def demodulate1(self, *args): return _acqiris.Demodulator_demodulate1(self, *args)
+    def demodulate2(self, *args): return _acqiris.Demodulator_demodulate2(self, *args)
+Demodulator_swigregister = _acqiris.Demodulator_swigregister
+Demodulator_swigregister(Demodulator)
 
 
 

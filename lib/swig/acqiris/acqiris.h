@@ -6,9 +6,9 @@
 #include <vector>
 /*
 The BifurcationMap class.
-All the parameters have to be initialized from Python, usually with a ctypes pointer:
+All the parameters have to be initialized by the client, usually with a ctypes pointer:
 
-Example:
+Example of a python client:
 
         bm = acqirislib.BifurcationMap()
         bm.activeChannels = 15
@@ -44,28 +44,38 @@ public:
 };
 
 
-class Averager
+class Demodulator // Performs a digital demodulation on a single signal or on two signals in quadrature, taking into account several corrections on the measured signals
 {
 public:
-	Averager();
-	~Averager();
+	Demodulator();
+	~Demodulator();
 
-	int n, nf, channel, point, indexComponents, indexAverages, indexMatrix;
+//	6 corrections coefficients (offsets, gains, and rotation angles for two channels in quadratures) for a set of discrete frequencies, are stored in 7 tables that are properties of the class
 
+	int dimensionF; //size of all tables = number of frequencies for which the corrections are known
 
-	double *averages;
-	double *components;
+	vector <double> tableF;
+	vector <double> tableOffsetI;
+	vector <double> tableOffsetQ;
+	vector <double> tableGainI;
+	vector <double> tableGainQ;
+	vector <double> tableAngleI;
+	vector <double> tableAngleQ;
+
 	double *frequencies;
-	double *Icorrection, *Qcorrection, *phicorrection;
-	//	unsigned int params[10];
-	unsigned int nPoints, nSegments, activeChannels, index, nFrequencies;
-	double sampleInterval,c,s,cp,sp,ic,qc;
-	void finish();
-	void add(double *matrix);
-	void init();
+	double *quadratures;
+	double *quadraturesAverages;//
+
+	// returns the table index of a given frequency in the correction table if it exists or -1 otherwise
+	int indexCorrection(double f);
+	//replace or add the offset, gain, and rotation angle corrections for I and Q, for a given frequency 
+	void setCorrections(double f,double Io, double Qo, double Ig, double Qg,  double Ir, double Qr);
+	//Demodulation using one signal or two signal in quadratures
+	void demodulate1(double *ChA, double nbrSegments, double nbrSamplesPerSegment, double samplingTime, double frequency, double phase, double *arrayI, double *arrayQ, double *Imean, double *Qmean);
+	void demodulate2(double *ChA, double *ChB, double nbrSegments, double nbrSamplesPerSegment, double samplingTime, double frequency, double phase, double *arrayI, double *arrayQ, double *Imean, double *Qmean);
 
 };
-
+/*
 
 class MultiplexedBifurcationMap
 {
@@ -80,18 +90,10 @@ public:
 	unsigned int nPoints,nSegments,activeChannels;
 	int index,nLoops;
 
-	int dimensionF;
 
-	vector <double> fTable;
-	vector <double> Ioffset;
-	vector <double> Qoffset;
-	vector <double> CosTable;
-	vector <double> SinTable;
-
-
-	void setRotation(double r,double Io, double Qo, double f);
-	void initF(double f);
+	
 	void add(double *frequencies, double *trends, int numberOfFrequencies, int numberOfsegments,double *results);
-	void finish();
 	void convertToProbabilities(int nbQB, int nbSegments, double *r, double *proba);
+	void finish();
 };
+	*/

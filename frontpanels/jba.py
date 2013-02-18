@@ -12,8 +12,8 @@ import os.path
 from numpy import *
 from numpy.random import *
 
-from pyview.ide.mpl.canvas import MatplotlibCanvas as Canvas
-from pyview.ide.frontpanel import *
+from pyview.gui.mpl.canvas import MatplotlibCanvas as Canvas
+from pyview.gui.frontpanel import *
 
 class Panel(FrontPanel):
   

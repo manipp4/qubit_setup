@@ -13,6 +13,10 @@ class Trace:
 
 class Instr(VisaInstrument):
 
+  def saveState(self):
+    return None
+
+
   """
   The Rhode & Schwarz FSP instrument class.
   """
@@ -76,6 +80,34 @@ class Instr(VisaInstrument):
     data = data[2+length:]
     return data
   
+  def setSweepTimeInSec(self,st='AUTO'):
+    if not(isinstance(st,str)):
+      st2=' '+str(st)+'s'
+    else:
+      st2=':'+st
+    if st=='AUTO' or st=='auto':
+      st2=str(st2)+' ON'
+    msg="SENSE1:SWEEP:TIME"+st2
+    self.write(msg)
+    return msg
+  
+  def getFrequency(self):
+    return float(self.ask("SENSE1:FREQUENCY:CENTER?"))/1e9
+  
+  def setFrequency(self,f):
+    self.write("SENSE1:FREQUENCY:CENTER %f GHZ"%f)
+    return self.getFrequency()
+    
+  def setSpanInGHz(self,f):
+    self.write("SENSE1:FREQUENCY:SPAN %f GHZ"%f)
+  
+  def setBandWidthInHz(self,resBandwidth='auto',videoBandwidth='auto'):
+    if type(resBandwidth)!= type(str):
+      resBandwidth=str(resBandwidth)+'HZ'
+    if type(videoBandwidth)!= type(str):
+      videoBandwidth=str(videoBandwidth)+'HZ'
+    self.write("BAND:RES "+resBandwidth+";VID "+videoBandwidth)
+  
   def getTrace(self,trace = 1):
     """
     Transfers a trace from the FSP.
@@ -103,6 +135,7 @@ class Instr(VisaInstrument):
             print "Frequency domain measurement from %f to %f" % (freqStart,freqStop)
     self.write("FORM ASC;TRAC? TRACE%d" % trace)
     trace = self.read()
+    # self.write("INIT:CONT ON")# 20/03/2012 VS recoved Denis 30/01/2013
     values = trace.split(',')
     values = map(lambda x:float(x),values)
     if timedomain:
@@ -110,6 +143,9 @@ class Instr(VisaInstrument):
     else:
           result = [[ freqStart+ i * (freqStop-freqStart) / len(values) for i in range(0,len(values))],values]
     return result
+
+  def getValueAtMarker(self):
+     return float(self.ask("CALC:MARK:Y?"))
   
   def initialize(self):
     try:

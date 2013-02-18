@@ -4,8 +4,8 @@ sys.path.append('.')
 sys.path.append('../')
 
 from pyview.lib.classes import *
-from pyview.ide.mpl.canvas import *
-from pyview.ide.frontpanel import FrontPanel
+from pyview.gui.mpl.canvas import *
+from pyview.gui.frontpanel import FrontPanel
 import string
 
 from datetime import *
@@ -103,7 +103,8 @@ class Panel(FrontPanel):
                     
     #Request a trace from the instrument.
     def requestAcquire(self):
-      self.instrument.dispatch("getTrace")
+      waitFullSweep=bool(self.waitFullSweepButton.isChecked())
+      self.instrument.dispatch("getTrace",waitFullSweep=waitFullSweep)
         
     def makeReference(self,i):
       if i == None:
@@ -248,17 +249,21 @@ class Panel(FrontPanel):
         hideAllButton = QPushButton("Hide all")
         self.connect(hideAllButton,SIGNAL("clicked()"),self.hideAll)
         
+        self.waitFullSweepButton = QCheckBox("WaitFullSweep",checked=False)
+        
+        
         self.tabs = QTabWidget()
         self.tabs.addTab(self.sc,"Amplitude")
         self.tabs.addTab(self.phase,"Phase")
         
         self.grid.addWidget(self.tabs,0,0)
         subGrid.addWidget(updateButton,0,0)
-        subGrid.addWidget(clearButton,0,1)
-        subGrid.addWidget(saveButton,0,2)
-        subGrid.addWidget(saveFigButton,0,3)
-        subGrid.addWidget(clearRefButton,0,4)
-        subGrid.addWidget(hideAllButton,0,5)
+        subGrid.addWidget(self.waitFullSweepButton,0,1)
+        subGrid.addWidget(clearButton,0,2)
+        subGrid.addWidget(saveButton,0,3)
+        subGrid.addWidget(saveFigButton,0,4)
+        subGrid.addWidget(clearRefButton,0,5)
+        subGrid.addWidget(hideAllButton,0,6)
 
         self.grid.addItem(subGrid,1,0)
 

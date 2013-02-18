@@ -8,7 +8,7 @@ import scipy
 import scipy.interpolate
 
 from pyview.lib.classes import *
-import pyview.helpers.instrumentsmanager
+from pyview.helpers.instrumentsmanager import Manager
 if 'macros.iq_level_optimization' in sys.modules:
   reload(sys.modules["macros.iq_level_optimization"])
 
@@ -563,7 +563,7 @@ class Instr(Instrument):
         self._fluxlineResponse = response
         self._fluxlineResponseInterpolations = dict()
 
-      def initialize(self, jba, pulseGenerator):
+      def initialize(self,name, jba, pulseGenerator):
         manager=Manager()
         if not hasattr(self,'_params'):
           self._params = dict()
