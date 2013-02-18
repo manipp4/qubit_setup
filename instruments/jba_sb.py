@@ -451,6 +451,9 @@ class Instr(Instrument):
     f = lambda x: fitfunc(params,x)
     y = map(f,x)
     
+    self.function=scipy.interpolate.interp1d(y,x)
+    
+    
     
     
     
