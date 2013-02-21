@@ -61,6 +61,12 @@ instruments = [
       'kwargs' : {'name' : 'MWSource_pump','visaAddress' : "TCPIP::192.168.0.13"}
     },
     {
+      'name' : 'MWSource_lo',
+      'class' : 'agilent_mwg',
+      'serverAddress' : serverAddress,
+      'kwargs' : {'name' : 'MWSource_lo','visaAddress' : "TCPIP::192.168.0.117"}
+    },
+    {
       'name' : 'Lecroy_104xi',
       'class' : 'LeCroy_waveRunner_scope',
       'serverAddress' : serverAddress,

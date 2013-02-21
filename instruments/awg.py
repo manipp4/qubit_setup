@@ -17,7 +17,7 @@ import time
 
 
 from pyview.lib.classes import VisaInstrument
-from lib.swig.tools import numerical
+#from lib.swig.tools import numerical
 import numpy
 
 class Waveform:
@@ -102,7 +102,7 @@ class Instr(VisaInstrument):
         setups.append(filestr[0])
     return setups
 
-  def writeIntData(self,values,markers,useC = True):
+  def writeIntData(self,values,markers,useC = False):
     """
     Writes integer data to a string.
     """    

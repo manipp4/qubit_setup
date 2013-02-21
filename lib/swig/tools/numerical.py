@@ -17,6 +17,7 @@ if version_info >= (2,6,0):
             import _numerical
             return _numerical
         if fp is not None:
+            print fp,pathname,description
             try:
                 _mod = imp.load_module('_numerical', fp, pathname, description)
             finally:
