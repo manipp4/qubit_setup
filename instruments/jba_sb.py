@@ -59,7 +59,7 @@ class Instr(Instrument):
     self.shape[10010:10210]=1
     self.shape[10210:10220]=linspace(1,plateau,10)
     self.shape[10220:10220+plateauLength]=plateau
-    self.shape[10220+plateauLength:10230+plateauLength]=linspace(plateau,0,10)
+    #self.shape[10220+plateauLength:10222+plateauLength]=[plateau,plateau/2,0]#linspace(plateau,0,2)
     self.bit=int(self.name()[-1])-1
     self._phase=0
   def parameters(self):

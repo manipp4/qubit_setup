@@ -559,9 +559,9 @@ class Panel(FrontPanel):
         self.connect(self.configMode,SIGNAL("currentIndexChanged(int)"),configModeChanged)
         
         #Several data graphs in a QTabWidget.
-        myWidth=400
-        myHeight=300
-        mydpi=100
+        myWidth=4
+        myHeight=3
+        mydpi=80
         
         self.segmentTab = QWidget()
         self.segTabLayout = QGridLayout(self.segmentTab)
@@ -587,11 +587,12 @@ class Panel(FrontPanel):
         st.addWidget(self.currentHorPos,0,st.columnCount ())
         self.segmentPlot = MatplotlibCanvas(width=myWidth, height=150, dpi=mydpi)
         st.addWidget(self.segmentPlot,1,0,1,-1)
-        
+        print myWidth, myHeight    ,mydpi
         self.averagePlot = MatplotlibCanvas(width=myWidth, height=myHeight, dpi=mydpi)
-        
+        print self.averagePlot.figure.bbox.bounds
+      
         self.fullWavePlot = MatplotlibCanvas(width=myWidth, height=myHeight, dpi=mydpi)
-        
+      
         self.timestampTab = QWidget()
         self.timestampTabLayout = QGridLayout(self.timestampTab)
         self.deltaTimestamps=QCheckBox("Delta Timestamps")
@@ -617,7 +618,7 @@ class Panel(FrontPanel):
         self.waitingNewData=QLabel("\tHello :-)")
         self.waitingNewData.setStyleSheet("QLabel {color : red;}");
         self.waitingNewData.setVisible(True)
-          # button grid
+        # button grid
         buttonGrid = QBoxLayout(QBoxLayout.LeftToRight)
         buttonGrid.addWidget(calibrateButton)
         buttonGrid.addWidget(configureButton)
@@ -660,10 +661,9 @@ class Panel(FrontPanel):
         self._updatePlots = False
         #We request the current parameters from the card.
         self.instrument.dispatch("parameters")
-        
+       
         # auto refresh of front panel based on a timer
         timer = QTimer(self)
         timer.setInterval(2000)
         timer.start()
         self.connect(timer,SIGNAL("timeout()"),self.onTimer)
-           
