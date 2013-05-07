@@ -1,3 +1,12 @@
+# This Acqiris instrument is based on the C++ library "Acqiris_QuantroDLL1.dll",
+# which contains basic oscilloscope functions.
+# In addition, it can optionally use other DLLs like a mathematical one based on the GSL library. 
+# These DLL are loaded when initializing the acqiris intrument. 
+
+___TEST___ = False
+___includeDLLMath1Module___=True    # load the GSL based mathematical module as an attribute of the acqiris instrument
+___includeModuleDLL2___=True      # load the heterodyne demodulation module
+
 import sys
 import getopt
 
@@ -11,19 +20,10 @@ import os.path
 from pyview.helpers.instrumentsmanager import *
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
+
 import acqiris_ModuleDLL2
 
-
-# Import the high level library
-import lib.swig.acqiris_QuantroDLL2.acqiris_QuantroDLL2.acqiris_QuantroDLL2 as acqiris_QuantroDLL2_lib
-
-#C++ library "Acqiris_QuantroDLL1.dll" contains the basic oscilloscope functions
-# It is loaded below when initializing the acqiris intrument 
-
-___TEST___ = False
-___includeModuleDLL2___=True
-
-# utility class for helping in c to python interface
+# utility class for helping in C to python interface
 class myType:                        
   def __init__(self,i,dtype=float64): 
     self._value=zeros(1,dtype=dtype)
@@ -47,19 +47,40 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     self.__temperature = c_int32()
     self.__time_us = c_double()
     
-    # C++ library "Acqiris_QuantroDLL1.dll"  that contains the basic oscilloscope functions is loaded.
+    # We load the different DLLs or DLL based modules 
     if ___TEST___:
       None
     else:
        if hasattr(self,"__acqiris") is False:
          try:
+           print "\nLoading basic oscilloscope DLL 'Acqiris_QuantroDLL1.dll'"
            self.__acqiris_QuantroDLL1= windll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'/Acqiris_QuantroDLL1.dll')
+           print "Finding board"
            self.__acqiris_QuantroDLL1.FindDevicesV1(byref(self.__instrumentID),byref(self.__temperature))
            self.__acqiris_QuantroDLL1.TemperatureV1(self.__instrumentID,byref(self.__temperature))
          except ImportError:
            print "Cannot load DLL Acqiris_QuantroDLL1.dll!"
            print sys.exc_info()
            return False
+    if ___includeDLLMath1Module___ :
+      try:
+        if "acqiris_DLLMath1Module" in sys.modules.values():
+          reload("acqiris_DLLMath1Module")
+        else:
+          import acqiris_DLLMath1Module
+        self.DLLMath1Module=acqiris_DLLMath1Module.DLLMath1Module(self)
+      except:
+        print "Cannot load acqiris_DLLMath1Module!"
+        print sys.exc_info()
+        return False    
+    if ___includeModuleDLL2___ :
+      try:
+        print "\nLoading SWIG DLL 'acqiris_QuantroDLL2.dll'"
+        acqiris_ModuleDLL2.ModuleDLL2.__init__(self)
+      except:
+        print "Cannot load module or DLL acqiris_ModuleDLL2!"
+        print sys.exc_info()
+        return False    
      
     #Acqiris parameters defined in a in a dictionary.
     self._params = dict()
@@ -86,12 +107,13 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     self._params['nLoops']=1                # actually number of acquisition or of banks in SAR mode
     self._params["transferAverage"]=False   # transfer average only
     
-    # Parameters of the last acquired sequence defiend below as global variables 
+    # Parameters of the last acquired sequence are defined below as global variables 
     self.lastWaveIdentifier=0
     self.lastTransferredChannel=0					  # code of transferred channels
     self.lastTransferAverage=False
     self.lastWaveformArraySizes=zeros(4,dtype=int32)	# number of samples in each waveform channels
     self.lastWaveformArray = zeros((4,1))		# waveform (full sequence) array
+    
     self.lastSamplingTime=0						      # last sampling period
     self.lastNbrSamplesPerSeg=0					    # number of samples per segment in the  last waveforms returned
     self.lastNbrSegmentsArray=zeros(4,dtype=int32)# number of segments actually returned for each channel in the last transfer
@@ -100,7 +122,7 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     self.lastTimeStampsArraySize=0;         # total size time stamp array in the last transfer
     self.lastTimeStampsArray=zeros(1,dtype=float64)		# total size time stamp array in the last transfer
                    
-    # and also saved in a dictionary lastWave
+    # and also saved in a dictionary called lastWave
     self.lastWave=dict()
     self.lastWave['identifier']=self.lastWaveIdentifier
     self.lastWave['samplingTime']=self.lastSamplingTime
@@ -115,12 +137,13 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     self.lastWave['horPosSize']=self.lastHorPositionsArraySize
     self.lastWave['horPos']=self.lastHorPositionsArray
     
-    self.ConfigureAllInOne()  #preconfigure the acquisition board
-
-
-    if ___includeModuleDLL2___ : acqiris_ModuleDLL2.ModuleDLL2.__init__(self)
+    print "\nPreconfiguring the digitizer..."
+    self.ConfigureAllInOne()  #preconfigure the acquisition board at initialization
 
   def transformErr2Str(self,*args):
+    """
+    Transform acqiris error codes into string describing the error.
+    """
     error_code = c_int32(args[0])
     error_str = create_string_buffer("\000"*1024)
     status = self.__acqiris_QuantroDLL1.transformErr2Str(self.__instrumentID,error_code,error_str)        
@@ -254,27 +277,28 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     self._params["numberOfPoints"]=number_of_points.value
     self._params["numberOfSegments"]=number_of_segments.value
     self._params["numberOfBanks"]=numberOfBanks.value
-    self._params["fullScales"][0]=fs[0] #fs1.value
-    self._params["fullScales"][1]=fs[1]
-    self._params["fullScales"][2]=fs[2]
-    self._params["fullScales"][3]=fs[3]
-    self._params["offsets"][0]=of[0] #o1.value
-    self._params["offsets"][1]=of[1]
-    self._params["offsets"][2]=of[2]
-    self._params["offsets"][3]=of[3]
-    self._params["couplings"][0]=cs[0]#c1.value
-    self._params["couplings"][1]=cs[1]
-    self._params["couplings"][2]=cs[2]
-    self._params["couplings"][3]=cs[3]
-    self._params["bandwidths"][0]=bs[0]#b1.value
-    self._params["bandwidths"][1]=bs[1]
-    self._params["bandwidths"][2]=bs[2]
-    self._params["bandwidths"][3]=bs[3]
+    self._params["fullScales"][0]=float(fs[0]) #fs1.value
+    self._params["fullScales"][1]=float(fs[1])
+    self._params["fullScales"][2]=float(fs[2])
+    self._params["fullScales"][3]=float(fs[3])
+    self._params["offsets"][0]=float(of[0]) #o1.value
+    self._params["offsets"][1]=float(of[1])
+    self._params["offsets"][2]=float(of[2])
+    self._params["offsets"][3]=float(of[3])
+    self._params["couplings"][0]=int(cs[0])#c1.value
+    self._params["couplings"][1]=int(cs[1])
+    self._params["couplings"][2]=int(cs[2])
+    self._params["couplings"][3]=int(cs[3])
+    self._params["bandwidths"][0]=int(bs[0])#b1.value
+    self._params["bandwidths"][1]=int(bs[1])
+    self._params["bandwidths"][2]=int(bs[2])
+    self._params["bandwidths"][3]=int(bs[3])
     self.nbPtNomMax=nbPtNomMax.value
-    self.dataArraySize=dataArraySize.value    # this is the data array size required for a raw data transfer
-    self.timeArraySize=timeArraySize.value    # this is the time array size required for timestamps and horPositions
-    # memory is now reserved in the aquire and transfer function since nloops can be changed in the interface
-    #    without going through the present configure function     
+    self.dataArraySize=dataArraySize.value    # This is the data array size required for a raw data transfer
+    self.timeArraySize=timeArraySize.value    # This is the time array size required for timestamps and horPositions
+    # Memory is now reserved in the aquire and transfer function since nloops can be changed in the interface
+    # without going through the present configure function     
+    self.notify("parameters",self._params)
     return status
  
   def ConfigureChannel(self,channel,fullscale = None,offset = None,coupling = None,bandwidth = None):
@@ -295,17 +319,16 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     couplingC=c_int32(self._params["couplings"][channel])
     bandwidthC=c_int32(self._params["bandwidths"][channel])
     status = self.__acqiris_QuantroDLL1. ConfigureChannel(self.__instrumentID, c_int32(channel+1), byref(fullScalesC), byref(offsetC), byref(couplingC), byref(bandwidthC));
-    self._params["fullScales"][channel]=fullScalesC.value
-    self._params["offsets"][channel]=offsetC.value
-    self._params["couplings"][channel]=couplingC.value
-    self._params["bandwidths"][channel]=bandwidthC.value
+    self._params["fullScales"][channel]=float(fullScalesC.value)
+    self._params["offsets"][channel]=float(offsetC.value)
+    self._params["couplings"][channel]=int(couplingC.value)
+    self._params["bandwidths"][channel]=int(bandwidthC.value)
     self.transformErr2Str(status)
  
   # acquisition and transfer function
-  def AcquireTransferV4(self, voltages=True, wantedChannels=15, transferAverage=False, getHorPos=True, getTimeStamps=True,nLoops=1.):
+  def AcquireTransferV4(self, voltages=True, wantedChannels=15, transferAverage=False, getHorPos=True, getTimeStamps=True,nLoops=1.,timeOut=10):
     self.nLoops=nLoops
     # prepare all the parameters for calling DLL function AcquireTransferV4
-    timeOut=10
     requestedLoopsOrBanks=myType(nLoops,dtype=int32)
     wantedChannels=myType(wantedChannels,dtype=int32)
     totalArraySizes=zeros(4,dtype=int32)
@@ -316,9 +339,7 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
       size=int(self._params["numberOfPoints"] * self._params["numberOfSegments"]*self.nLoops)
     else:                         # that will contain the transferred vertical data if averaging
       size=int(self._params["numberOfPoints"])
-    print size
-    self.lastWaveformArray=zeros((4,size),dtype=float64)
-      
+    self.lastWaveformArray=zeros((4,size),dtype=float64)      
     self.lastWaveformArraySizes=zeros(4,dtype=int32)
     self.lastWaveformArraySizes[:]=[size]*4                
      
@@ -351,7 +372,6 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
       requestedLoopsOrBanks.adress(),
       c_bool(voltages),
       wantedChannels.adress(),
-      #c_bool(transferAverage),
       transferAverages.ctypes.data,    
       self.lastWaveformArraySizes.ctypes.data,
       self.lastWaveformArray[0].ctypes.data, 
@@ -371,7 +391,7 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
       maxDelayBetweenTrigs_s.adress(),	
       time_s.adress()
       )
-    # update of class parameters from returned c values when needed
+    # update of class parameters from returned C values when needed
     self.lastTransferredChannel=wantedChannels.value()
     self.lastTransferAverage=transferAverage
     self.lastSamplingTime=samplingTime.value()
@@ -457,20 +477,21 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     if status != 0:
       raise Exception(self.transformErr2Str(status))
     else:
-      #print number_segments_returned
       self.notify("data",(list(self.waveform_1),list(self.waveform_2),list(self.waveform_3),list(self.waveform_4)))
 
   def getLastWaveIdentifier(self): 
     return self.lastWaveIdentifier
 
   def FinishApplicationV1(self,*args):
+    """
+    Terminates the control session of the acqiris digitizer.
+    """
     self.__acqiris_QuantroDLL1.FinishApplicationV1(self.__instrumentID)
   
   def TemperatureV1(self,*args):
     """
     Returns the temperature of the Acqiris card.
     """
-    print args[0]['foo']
     if ___TEST___:
       self.__temperature.value=random.randint(0,100)
     else:

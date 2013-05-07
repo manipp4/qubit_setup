@@ -10,11 +10,22 @@ register=Manager().getInstrument('register')
 class Instr(Instrument):
 
       def saveState(self,name):
-        return None
+        print self._params
+        return self._params
 
+      def restoreState(self,state):
+        self.clearPulse() 
+        print state
+        for pulse in state["pulses"].values():
+          if pulse["shape"]==None:
+            self.generatePulse(duration=pulse["duration"],frequency=pulse["frequency"],gaussian=pulse["gaussian"],amplitude=pulse["amplitude"],phase=pulse["phase"],DelayFromZero=pulse["DelayFromZero"],useCalibration=pulse["useCalibration"],name=pulse["name"])
+          else:
+            print "cannot generate pulse %s, shape was required" %pulse["name"]
+        return None
       
       def removeAllPulses(self):
         self.pulses=dict()
+        self._params["pulses"]=dict()
         self.sendPulse()
       
       def setCarrierFrequency(self, frequency):
@@ -31,15 +42,29 @@ class Instr(Instrument):
         Generate in the buffer a pulse using parameters sents 
         Or use the "shape" instead of (duration, amplitude, delayFromZero)
         """
-#        print "generating pulse"
+        #        print "generating pulse"
         if name==None:
           name='self%i'%self.index
           self.index+=1
+        self._params["pulses"][name]=dict()
+        self._params["pulses"][name]["frequency"]=frequency
+        self._params["pulses"][name]["name"]=name
+        if shape==None:
+          self._params["pulses"][name]["shape"]=None
+          self._params["pulses"][name]["duration"]=duration
+          self._params["pulses"][name]["gaussian"]=gaussian
+          self._params["pulses"][name]["amplitude"]=amplitude
+          self._params["pulses"][name]["phase"]=phase
+          self._params["pulses"][name]["DelayFromZero"]=DelayFromZero
+          self._params["pulses"][name]["useCalibration"]=useCalibration
+        else:
+            self._params["pulses"][name]["shape"]="userDefined"
+
         pulse = numpy.zeros(register['repetitionPeriod'],dtype = numpy.complex128)
         if self._params['modulationMode']=="IQMixer":
           MWFrequency=float(self._MWSource.frequency())
           self._MWSource.turnOn()
-          f_sb=(MWFrequency-frequency)
+          f_sb=-(MWFrequency-frequency)
           try:
             if shape==None:
               if gaussian:
@@ -131,6 +156,7 @@ class Instr(Instrument):
           Clear the pulse in the buffer and send an empty pulse in the AWG
           """
           self.pulses=dict()
+          self._params["pulses"]=dict()
           self.totalPulse[:]=0
           self.sendPulse()
           
@@ -189,6 +215,7 @@ class Instr(Instrument):
         self._params["AWGChannels"]=AWGChannels
         self._params["modulationMode"]=modulationMode
         self.pulses=dict()
+        self._params["pulses"]=dict()
         register['repetitionPeriod']=20000
         self.totalPulse=numpy.zeros(20000,dtype = numpy.complex128)
         self.index=0

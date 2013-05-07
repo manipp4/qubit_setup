@@ -24,7 +24,7 @@ instrumentManager = Manager()
 
 instruments = [
     {
-      'name' : 'register',
+      'name' : 'register3',
       'serverAddress': serverAddress
     },
     {

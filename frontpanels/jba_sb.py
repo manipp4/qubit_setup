@@ -49,7 +49,10 @@ class Panel(FrontPanel):
 
     self.histograms = Canvas(width = 8,height = 5)
     self.sCurve = Canvas(width = 8,height = 5)
-
+    self.goto = Canvas(width = 8,height = 5)
+    self.gotoValuesx=[]
+    self.gotoValuesy=[]
+    
     self.tabs = QTabWidget()
     self.tabs.addTab(self.iq,"IQ data")
     self.tabs.addTab(self.iqR,"IQR data")
@@ -57,6 +60,7 @@ class Panel(FrontPanel):
     self.tabs.addTab(self.histograms,"Histograms")
     self.tabs.addTab(self.variance,"Variance")
     self.tabs.addTab(self.sCurve,"S Curve")
+    self.tabs.addTab(self.goto,"Goto")
   
     self.layout = QGridLayout()
     self.layout.addWidget(self.tabs,1,1)
@@ -196,9 +200,10 @@ class Panel(FrontPanel):
   def adjustSwitchingLevel(self):
     self.disableButtons()
     lastTab = self.tabs.currentIndex()
-    self.tabs.setCurrentWidget(self.iq)
+    self.tabs.setCurrentWidget(self.goto)
     self.updateStatus("Adjusting switching level to %g %% with %g %% accuracy" % (float(self.levelEdit.text())*100,float(self.accuracyEdit.text())*100))
-    self.instrument.dispatch("adjustSwitchingLevel",float(self.levelEdit.text()),float(self.accuracyEdit.text()))
+    args={'level' : float(self.levelEdit.text()),'accuracy' : float(self.accuracyEdit.text())}
+    self.instrument.dispatch("adjustSwitchingLevel",**args)
     #self.tabs.setCurrentIndex(lastTab)
     self.enableButtons()
     
@@ -247,7 +252,7 @@ class Panel(FrontPanel):
     
   def updateGraphs(self):
     self.disableButtons()
-    (p,o1,trends) = self.instrument.getThisMeasure()
+    (p,o1,trends) = self.instrument.getThisMeasure(10)
     self.histograms.axes.cla()
     range=max(abs(min(trends[0])),abs(max(trends[0])))
     self.histograms.axes.hist(trends[0],normed = True,bins = 40,range=(-range,range))
@@ -322,6 +327,26 @@ class Panel(FrontPanel):
         self.histograms.axes.hist(value,normed = True,bins = 50,range=(-range,range))
         self.histograms.axes.axvline(0,ls = ":")
         self.histograms.draw()
+      elif property=="goto":
+        (command,value)=value
+        self.goto.axes.cla()
+        if command=="clear":
+          self.gotoValuesx=[]
+          self.gotoValuesy=[]
+        if command=="singlePoint":
+          self.gotoValuesx.append(value[0])
+          self.gotoValuesy.append(value[1])
+          self.goto.axes.scatter(self.gotoValuesx,self.gotoValuesy)
+        if command=="fit":
+          f=value
+          p=linspace(0.01,0.99,99)
+          v=map(f,p)
+          self.goto.axes.plot(v,p)
+          self.goto.axes.scatter(self.gotoValuesx,self.gotoValuesy)
+        self.goto.axes.set_ybound(0,1)
+        self.goto.draw()
+      elif property=="status":
+        self.updateStatus(value)
         
         
       

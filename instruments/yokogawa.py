@@ -21,7 +21,7 @@ class Instr(VisaInstrument):
         Returns the voltage
         """
         string = self.ask("od;")
-        string = re.sub(r'^(NDCV|EDCV)',r'',string)
+        string = re.sub(r'^(NDCV|NDCA|EDCV)',r'',string)
         self.notify("voltage",float(string))
         return float(string)
       
@@ -105,9 +105,12 @@ class Instr(VisaInstrument):
         Returns the parameters of the device.
         """
         params = dict()
-        params['voltage'] = self.voltage()
-        params['output'] = self.output()
-        return params
+        try:
+          params['voltage'] = self.voltage()
+          params['output'] = self.output()
+          return params
+        except:
+          return "Disconnected"
 
       def initialize(self, name = "Yoko", visaAddress = "GPIB0::9",slewRate = None):
         """

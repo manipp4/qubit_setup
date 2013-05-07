@@ -82,19 +82,28 @@ instruments = [
       'serverAddress' : serverAddress,
       'kwargs' : {'name' : 'Coil','visaAddress' : 'GPIB0::10'}
     },
-        {
+    {
       'name' : 'dcpump',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
       'kwargs' : {'name' : 'Dcpump','visaAddress' : 'GPIB0::11'}
     },
-     {
+    {
       'name' : 'vca_attenuator',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
       'kwargs' : {'name' : 'Vca_attenuator','visaAddress' : 'GPIB0::3'}
     }
 ]
+"""
+,
+    {
+      'name' : 'acqiris',
+      'serverAddress' : 'rip://192.168.0.22:8000',
+      'kwargs' : {'name': 'Acqiris Card'}
+    }
+"""
+
 instrumentManager.initInstruments(instruments,globalParameters = {'forceReload' : True} )
 
 for name in instrumentManager.instrumentNames():

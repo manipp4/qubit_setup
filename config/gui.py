@@ -26,9 +26,3 @@ def startInstrumentsPanel():
 	panel.show()
 	
 execInGui(startInstrumentsPanel)
-##
-
-from pyview.helpers.datamanager import DataManager
-dataManager = DataManager()
-dataManager._observers = []
-print dataManager._observers

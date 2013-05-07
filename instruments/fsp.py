@@ -108,6 +108,9 @@ class Instr(VisaInstrument):
       videoBandwidth=str(videoBandwidth)+'HZ'
     self.write("BAND:RES "+resBandwidth+";VID "+videoBandwidth)
   
+  def setSweepCounts(self,sweepCounts=1):
+    self.write("SWE:COUN %i" %sweepCounts)
+  
   def getTrace(self,trace = 1):
     """
     Transfers a trace from the FSP.

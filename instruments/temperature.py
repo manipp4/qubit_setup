@@ -28,3 +28,6 @@ class Instr(Instrument):
           self.port = port
         except:
           self.statusStr("An error has occured. Cannot initialize FSP.")        
+
+      def saveState(self,name):
+        return self.parameters()

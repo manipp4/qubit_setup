@@ -90,14 +90,14 @@ class Instr(VisaInstrument):
       query+=","+data_type
     return self.ask(query)
   
-  def getTimeInfor(self):
-    wavedescriptor=self.inspect(trace="C1",string1="WaveDESC",data_type="").split()
+  def getHorizInfor(self,trace="C1"):
+    wavedescriptor=self.inspect(trace=trace,string1="WaveDESC",data_type="").split()
     horizOffset=float(wavedescriptor[wavedescriptor.index('HORIZ_OFFSET')+2])
     horizInterval=float(wavedescriptor[wavedescriptor.index('HORIZ_INTERVAL')+2])
     return [horizOffset,horizInterval]
     
   def getWFFromInspect(self,trace="C1"):
-    data=self.inspect(trace=trace,string1="DATA_ARRAY_1",data_type="").split()[2:-2]
+    data=self.inspect(trace=trace,string1="DATA_ARRAY_1",data_type="").split()[2:-1]
     return data
     
   def getWaveforms(self,trace="C1",block="ALL"):

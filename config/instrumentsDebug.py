@@ -1,5 +1,5 @@
 """
-Initializes all the instruments and stores references to them in local variables.
+Initializes all the instruments and stores references to them in global variables.
 """
 
 import sys
@@ -26,14 +26,9 @@ instrumentManager = Manager()
 
 instruments = [
     {
-      'name' : 'register',
+      'name' : 'register3D',
+      'class' : 'register',
       'serverAddress': serverAddress
-    },
-    {
-      'name' : 'oscilloscope',
-      'class' : 'LeCroy_waveRunner_scope',
-      'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'LeCroy_waveRunner_scope','visaAddress' : "TCPIP0::132.166.24.215"}
     }
 ]
 instrumentManager.initInstruments(instruments,globalParameters = {'forceReload' : True} )

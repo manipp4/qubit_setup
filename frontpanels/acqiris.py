@@ -181,6 +181,9 @@ class Panel(FrontPanel):
           #  self._updatePlots = True
         elif property == "parameters":
           self.updateParameters(**value)
+        elif not "ask":
+          print "bad message %s"%property
+
 
     def onTimer(self):
       if self._updatePlots:
@@ -587,10 +590,8 @@ class Panel(FrontPanel):
         st.addWidget(self.currentHorPos,0,st.columnCount ())
         self.segmentPlot = MatplotlibCanvas(width=myWidth, height=150, dpi=mydpi)
         st.addWidget(self.segmentPlot,1,0,1,-1)
-        print myWidth, myHeight    ,mydpi
         self.averagePlot = MatplotlibCanvas(width=myWidth, height=myHeight, dpi=mydpi)
-        print self.averagePlot.figure.bbox.bounds
-      
+        
         self.fullWavePlot = MatplotlibCanvas(width=myWidth, height=myHeight, dpi=mydpi)
       
         self.timestampTab = QWidget()

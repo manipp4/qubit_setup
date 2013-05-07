@@ -25,4 +25,7 @@ class Instr(Instrument):
           self.host = address
           self.port = port
         except:
-          self.statusStr("An error has occured. Cannot initialize Helium level meter.")        
+          self.statusStr("An error has occured. Cannot initialize Helium level meter.")  
+                
+      def saveState(self,name):
+        return self.parameters()

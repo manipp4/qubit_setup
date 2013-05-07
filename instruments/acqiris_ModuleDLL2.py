@@ -3,7 +3,6 @@ from numpy import *
 import time
 import scipy
 import sys
-from numpy import *
 import traceback
 import scipy.optimize
 
@@ -18,14 +17,12 @@ import lib.swig.acqiris_QuantroDLL2.acqiris_QuantroDLL2.acqiris_QuantroDLL2 as a
 #*  that contains more sophisticated treatment (demodulation, average,...)             *
 #***************************************************************************************
 
-
-# Then we define a new instrument "acqiris_Module_DLL2" for this post processing module
 def mybin(x,l = 8):         # utility function for clicks
   s = bin(x)[2:]
   return (l-len(s))*"0"+s    
     
 class ModuleDLL2():
-
+  # the acqiris instrument will inherite both from the instrument class and this present class : moduleDLL2
   # creator
   def __init__(self):
     
@@ -97,7 +94,6 @@ class ModuleDLL2():
         nJBA=maxBit+1
         proba=zeros(2**nJBA)
         nbSegments=self.lastWave['nbrSegmentArray'][0]
-    print "demodulation time : %f ms" %(time.time()-t0)*1000
     for i in range(0,nbSegments):
       value=0
       for b in range(0,maxBit+1):
@@ -106,7 +102,6 @@ class ModuleDLL2():
     probasInDict=dict()
     for v in range(0,2**nJBA):
       probasInDict['p%s'%mybin(v,nJBA)]=proba[v]
-    print "proba time : %f ms" %(time.time()-t0)*1000
     if fast:
       return (results,probasInDict)
     else:

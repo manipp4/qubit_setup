@@ -9,7 +9,9 @@ register=Manager().getInstrument('register')
 import time
 import numpy.linalg
 import scipy
+import scipy.interpolate
 import scipy.optimize
+import copy
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
 from pyview.helpers.datamanager import DataManager
@@ -26,6 +28,38 @@ class Instr(Instrument):
   Virtual Instrument able to generate and analyse JBA signals.
   """
   
+  def saveState(self,name):
+    d=self._params
+    d["frequency"]=self._frequency
+    d["amplitude"]=self._amplitude
+    d["shape"]=self._shapeParams
+    d["bit"]=self.bit
+    try:
+      d["maxVoltage"]=self.maxVoltage
+    except:
+      pass
+    return d
+
+  def restoreState(self,state):
+
+    self.bit=state["bit"]
+    try:
+      self.maxVoltage=state["maxVoltage"]
+    except:
+      pass
+    self._shapeParams=state["shape"]
+    self.shape[10000:10000+self._shapeParams["risingTime"]]=linspace(0,1,self._shapeParams["risingTime"])
+    self.shape[10000+self._shapeParams["risingTime"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]]=1
+    self.shape[10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]]=linspace(1,self._shapeParams["plateau"],self._shapeParams["risingTime"])
+    self.shape[10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]+self._shapeParams["latchLength"]]=self._shapeParams["plateau"]
+
+    self.setFrequency(state["frequency"])
+    self.setAmplitude(state["amplitude"])
+
+    self.sendWaveform()
+
+    return None
+
   def startJBA(self):
     self._pulseGenerator.startPulse(name=self.name())
     self._pulseAnalyser.startAnalyseFrequency(name=self.name())
@@ -52,14 +86,20 @@ class Instr(Instrument):
       self._variableAttenuator=instrumentManager.getInstrument('jba_att')
     except:
       pass
-    plateau=0.8   
-    plateauLength=1000  
+    self._shapeParams=dict()
+    self._shapeParams["risingTime"]    = 10
+    self._shapeParams["plateauLength"] = 200
+    self._shapeParams["latchLength"]   = 1000
+    self._shapeParams["plateau"]       = 0.85
+
     self.shape=zeros((20000),dtype = numpy.complex128)
-    self.shape[10000:10010]=linspace(0,1,10)
-    self.shape[10010:10210]=1
-    self.shape[10210:10220]=linspace(1,plateau,10)
-    self.shape[10220:10220+plateauLength]=plateau
-    #self.shape[10220+plateauLength:10222+plateauLength]=[plateau,plateau/2,0]#linspace(plateau,0,2)
+
+    self.shape[10000:10000+self._shapeParams["risingTime"]]=linspace(0,1,self._shapeParams["risingTime"])
+    self.shape[10000+self._shapeParams["risingTime"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]]=1
+    self.shape[10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]]=linspace(1,self._shapeParams["plateau"],self._shapeParams["risingTime"])
+    self.shape[10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]+self._shapeParams["latchLength"]]=self._shapeParams["plateau"]
+
+
     self.bit=int(self.name()[-1])-1
     self._phase=0
   def parameters(self):
@@ -413,57 +453,102 @@ class Instr(Instrument):
 
     
     
-  def adjustSwitchingLevel(self,level = 0.2,accuracy = 0.05,nLoops=10):#,verbose = False,minSensitivity = 15.0,microwaveOff = True,nmax = 100):
-    fitfuncS = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
-    def fitS(x,y,x0,dx):
-      errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y),2.0)
-      ps=[x0,dx]
-      p1s = scipy.optimize.fmin(errfunc, ps,args=(x,y,fitfuncS),retall=False,disp=False)
-      rsquare = 1.0-numpy.cov(y-fitfuncS(p1s,x))/numpy.cov(y)
-      return p1s.tolist()
+  def adjustSwitchingLevel(self,level = 0.2,accuracy = 0.05,nLoops=40,function='dichotmie'):#,verbose = False,minSensitivity = 15.0,microwaveOff = True,nmax = 100):
+    print 'adjusting %f, with %f precision' %(level,accuracy)
       
-    def levelAt(amplitude,nLoops=1,**args):
-      v=self.setAmplitude(amplitude,**args)
-      return (v,self.takePoint(nLoops=nLoops))
+    def levelAt(amplitude,nLoops=10,**args):
+      v=self.setAmplitude(amplitude,**args)      
+      p=self.takePoint(nLoops=nLoops)      
+      self.notify("goto",["singlePoint",[v,p]])
+      return (v,p)
       
-    def addToArray(x):
-      (nx,ny)=levelAt(x)
-      print nx,ny
-      self.x.append(nx)    
-      self.y.append(ny)    
-    
-    
-    def defineFunction():  
-      self.x=[]
-      self.y=[]
-      
-      [vmin,vmax]=[0.8*self._vMaxAmplitude,1.2*self._vMaxAmplitude]#[self._vMaxAmplitude-2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0])),self._vMaxAmplitude+2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0]))]
-      
-      addToArray(vmin)
-      addToArray(vmax)
-      print self.x, self.y
-      for i in [1,2,3,4,5,6]:
-        params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
-        print params
-        addToArray(params[0])
-        print self.x,self.y
-      addToArray(params[0]-params[1]/2)
-      addToArray(params[0]+params[1]/2)
-      params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
+    if function=='fit':
+      fitfuncS = lambda p, x: exp(1-exp((x-p[0])/p[1]))/exp(1)
+      def fitS(x,y,x0,dx):
+        errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y),2.0)
+        ps=[x0,dx]
+        p1s = scipy.optimize.fmin(errfunc, ps,args=(x,y,fitfuncS),retall=False,disp=False)
+        rsquare = 1.0-numpy.cov(y-fitfuncS(p1s,x))/numpy.cov(y)
+        print "fit parameters"
+        print p1s
+        return p1s.tolist()
+
+      def addToArray(x):
+        (nx,ny)=levelAt(x)
+        print nx,ny
+        self.x.append(nx)    
+        self.y.append(ny)    
+
+             
+      def defineFunction():  
+        self.notify('goto',['clear',''])
+        self.x=[]
+        self.y=[]
         
+        [vmin,vmax]=[0.8*self._vMaxAmplitude,1.2*self._vMaxAmplitude]#[self._vMaxAmplitude-2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0])),self._vMaxAmplitude+2*max(self._vMaxAmplitude/5,abs(self._sCurveParams[0]))]
         
+        addToArray(vmin)
+        addToArray(vmax)
+        print self.x, self.y
+        for i in [1,2,3,4,5]:
+          self.params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
+          print self.params
+          addToArray(self.params[0])
+        addToArray(self.params[0]-self.params[1]*3)
+        addToArray(self.params[0]-self.params[1]*2)
+        self.params=fitS(self.x,self.y,self._vMaxAmplitude,0.2)
+          
+          
+        
+        # Define the invert function from center-2linewidth to center+2linewidth
+        #x = linspace(params[0]-5*params[1],params[0]+5*params[1],100)
+        #f = lambda x: fitfuncS(params,x)
+        #y = map(f,x)
+        self.sfunction=lambda x:self.params[1]*log(1-log((x)*exp(1)))+self.params[0]
+        self.notify('goto',['fit',self.sfunction])
       
-      # Define the invert function from center-2linewidth to center+2linewidth
-      x = linspace(params[0]-2*params[1],params[0]-2*params[1],1000)
-      f = lambda x: fitfuncS(params,x)
-      y = map(f,x)
-      self.sfunction=scipy.interpolate.interp1d(y,x)
-    
-    if not(hasattr(self,'sfunction')):
-      defineFunction()
-    if abs(levelAt(self.sfunction(level),nLoops=nLoops)-level)>accuracy:
-      defineFunction()
-    print "level at %f,%f"%(self.sfunction(level),levelAt(self.sfunction(level),nLoops=nLoops))
+      if not(hasattr(self,'sfunction')):
+        defineFunction()
+      (v,l)=levelAt(self.sfunction(level),nLoops=nLoops)
+      if abs(l-level)>accuracy:
+        defineFunction()
+      (v,l)=levelAt(self.sfunction(level),nLoops=nLoops)
+      print "level at %f : %f"%(v,l)
+    if function=="dichotmie":
+      self.notify('goto',['clear',''])
+      bounds=[0.8*self._vMaxAmplitude,1.2*self._vMaxAmplitude]
+      p1=levelAt(bounds[0])[1]
+      p2=levelAt(bounds[1])[1]
+      if p1>p2:
+        slope=-1
+      elif p1<p2:
+        slope=1
+      else:
+        raise "BAD RANGE"
+      values=[p1,p2]  
+      l=-1
+      n=0
+      error=False
+      while abs(l-level)>accuracy and not error:    
+        newPoint=(level-values[0])*(bounds[1]-bounds[0])/(values[1]-values[0])+bounds[0]
+
+        #newPoint=mean(bounds)
+        o,l=levelAt(newPoint)
+        if l<level:
+          bounds[(1-slope)/2]=newPoint
+          values[(1-slope)/2]=l
+        else:
+          bounds[(1+slope)/2]=newPoint
+          values[(1+slope)/2]=l
+        n+=1
+        if n>10:error=True
+      self.notify('status',"level at %f : %f (found in %i tries)"%(newPoint,l,n) )
+      if error:
+        return False
+      else:
+        return True
+      
+          
       
     
     
@@ -520,11 +605,11 @@ class Instr(Instrument):
     return toReturn
 
   
-  def getThisMeasure(self):
+  def getThisMeasure(self,nLoops=10):
     """
     Return proba, non-corrected IQ, corrected IQ
     """
-    r=self.measure()
+    r=self.measure(nLoops=nLoops)
     return (r[1]['b%i'%self.bit],r[0][self.bit],r[2][self.bit])
     
     

@@ -18,7 +18,12 @@ from pyview.lib.datacube import Datacube
 class Instr(Instrument):
 
   def saveState(self,name):
-    return None
+    d=dict()
+    d['frequencies']=self._frequencies
+    return d
+
+  def restoreState(self,state):
+    self._frequencies=state['frequencies']
 
   def addFrequency(self, f,name, useCorrection=False,bit=0):
     """
