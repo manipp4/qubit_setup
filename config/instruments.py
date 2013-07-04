@@ -24,11 +24,13 @@ instrumentManager = Manager()
 
 instruments = [
     {
-      'name' : 'register3',
+      'name' : 'register',
+      'class' : 'register',
       'serverAddress': serverAddress
     },
     {
-      'name' : 'vna',
+      'name' : 'vna',     
+      'serverAddress' : "rip://192.168.0.1:8000",
       'visaAddress': "GPIB0::6"
     },
     {
@@ -46,28 +48,46 @@ instruments = [
       'kwargs' : {'name': 'Acqiris Card'}
     },
     {
-      'name' : 'awgMW',
+      'name' : 'awg3D',
       'class' : 'awg',
       'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.14::inst0"}
     },
     {
-      'name' : 'awgFlux',
+      'name' : 'awgMW',
       'class' : 'awg',
       'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.3::inst0"}
     },    
     {
       'name' : 'MWSource_JBA',
-      'class' : 'anritsu_mwg',
+      'class' : 'agilent_mwg',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'MWsource JBA','visaAddress' : "GPIB0::4"}
+      'kwargs' : {'name' : 'MWsource JBA','visaAddress' : "TCPIP0::192.168.0.12::inst0"}
+    },
+    {
+	  'name' : 'coil',
+      'class' : 'yokogawa',
+      'serverAddress' : "rip://192.168.0.1:8000",
+      'kwargs' : {'name' : 'Coil','visaAddress' : 'GPIB0::10'}
     },    
     {
-      'name' : 'MWSource_JBA_perturb',
+      'name' : 'MWSource_QB',
+      'class' : 'agilent_mwg',
+      'serverAddress' : serverAddress,
+      'kwargs' : {'name' : 'MWsource QB','visaAddress' : "TCPIP0::192.168.0.13::inst0"}
+    },    
+    {
+      'name' : 'MWSource_JBA_anritsu',
       'class' : 'anritsu_mwg',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'MWsource JBA','visaAddress' : "GPIB0::14"}
+      'kwargs' : {'name' : 'MWsource JBA_old','visaAddress' : "GPIB0::4"}
+    },    
+    {
+      'name' : 'MWSource_JBA_perturb_anritsu',
+      'class' : 'anritsu_mwg',
+      'serverAddress' : serverAddress,
+      'kwargs' : {'name' : 'MWsource JBA_old','visaAddress' : "GPIB0::14"}
     },
     {
       'name' : 'fsp',
@@ -79,25 +99,35 @@ instruments = [
       'kwargs' : {'name' : 'MixerJBA', 'MWSource':'MWSource_JBA', 'AWG':'awgMW', 'AWGChannels':(1,2), 'fsp':'fsp'}
     },
     {
+      'name' : 'mixerQBSimple',
+      'class' : 'simplemixer',
+      'kwargs' : {'name' : 'mixerQBSimple', 'MWSource':'MWSource_QB', 'AWG':'awgMW', 'AWGChannel':(3), 'fsp':'fsp'}
+    },
+    {
       'name':'PG_JBA_sb',
       'class':'pulse_generator',
       'kwargs':{'name':'Pulse Generator JBA sb', 'MWSource':'MWSource_JBA', 'mixer':'IQMixer_JBA', 'modulationMode':'IQMixer', 'formGenerator':'awgMW', 'AWGChannels':(1,2)}
     },
     {
+      'name':'PG_QB',
+      'class':'pulse_generator',
+      'kwargs':{'name':'Pulse Generator QB', 'MWSource':'MWSource_QB', 'mixer':'mixerQBSimple', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(3)}
+    },
+    {
       'name':'PG_JBA',
       'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator JBA', 'MWSource':'MWSource_JBA_perturb', 'mixer':'mixerJBASimple', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(3)}
+      'kwargs':{'name':'Pulse Generator JBA', 'MWSource':'MWSource_JBA', 'mixer':'mixerJBASimple', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(3,4)}
     },
     {
       'name' : 'PA_JBA',
       'class' : 'pulse_analyser',
-      'kwargs' : {'name' : 'Pulse analyser JBA', 'MWSource':'MWSource_JBA', 'acqiris':'acqiris', 'pulse_generator':'PG_JBA_sb'}
+      'kwargs' : {'name' : 'Pulse analyser JBA', 'MWSource':'MWSource_JBA', 'acqiris':'acqiris', 'acqirisChannels':(2,3), 'pulse_generator':'PG_JBA_sb'}
     },
     {
       'name' : 'JBA_Att',
       'class' : 'yokogawa',
-      'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Attenuator JBA','visaAddress' : 'GPIB0::9'}
+      'serverAddress' : "rip://192.168.0.1:8000",
+      'kwargs' : {'name' : 'Attenuator JBA','visaAddress' : 'GPIB0::11'}
     },
     {
       'name':'jba_QB1',

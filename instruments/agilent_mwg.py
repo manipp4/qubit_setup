@@ -100,6 +100,15 @@ class Instr(VisaInstrument):
     self.write("OUTP OFF")
     return self.output()
     
+  def setOutput(self,output):
+    """
+    set output to On(True) or Off(False)
+    """
+    if output:
+      return self.turnOn()
+    else:
+      return self.turnOff()
+
   def output(self):
     """
     Return the current state of the microwave output.

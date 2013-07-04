@@ -119,13 +119,14 @@ class Instr(Instrument):
     register['%s Cal'% self._name]=self._name.filename()
     
     
-  def initialize(self, name, acqiris, MWSource,pulse_generator):
+  def initialize(self, name, acqiris, acqirisChannels, MWSource,pulse_generator):
     """
     Initialize the instrument
     """
     instrumentManager=Manager()
     self._name=name
     self._acqiris=instrumentManager.getInstrument(acqiris)
+    self._acqiris.setChannels(acqirisChannels[0],acqirisChannels[1])
     self._MWSource=instrumentManager.getInstrument(MWSource)
     self._pulse_generator=instrumentManager.getInstrument(pulse_generator)
     self._params=dict()

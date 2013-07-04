@@ -36,6 +36,7 @@ class Instr(VisaInstrument):
         if slewRate == None:
           self.write("S%f;E" % value)
         else:
+          slewRate=abs(slewRate)
           v = self.voltage()
           while math.fabs(v - value)>0.001:
             time.sleep(0.1)

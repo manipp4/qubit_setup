@@ -107,19 +107,21 @@ class IqOptimization(Reloadable):
  #   period = int(1.0/self._awg.repetitionRate()*1e9)
     self.period=20000
     waveformOffset = zeros((self.period))
-    waveformActive = zeros((self.period))+1.0
+    waveformActive = zeros((self.period))
     waveformPassive = zeros((self.period))-1.0
     self._markers = zeros((self.period),dtype = uint8)
     self._markers[1:len(self._markers)/2] = 255
-    self._awg.createRawWaveform("IQ_Offset_Calibration",waveformOffset,self._markers,"REAL")
+    self._awg.createRawWaveform("IQ_Offset_Calibration",(waveformOffset+1.0)/2.0*((1<<14)-1),self._markers,"INT")
 #    self._awg.createRawWaveform("IQ_Power_Calibration_active",waveformActive,self._markers,"REAL")
 #    self._awg.createRawWaveform("IQ_Power_Calibration_passive",waveformPassive,self._markers,"REAL")
+
+
 
     length = self.period#int(1.0/self._awg.repetitionRate()*1e9)
     waveform = self.generateSidebandWaveform(f_sb = 0, c = 0,phi = 0,length = length)
 
-    self._awg.createRawWaveform("IQ_Sideband_Calibration_I",waveform,self._markers,"REAL")
-    self._awg.createRawWaveform("IQ_Sideband_Calibration_Q",waveform,self._markers,"REAL")
+    # self._awg.createRawWaveform("IQ_Sideband_Calibration_I",waveform,self._markers,"REAL")
+    # self._awg.createRawWaveform("IQ_Sideband_Calibration_Q",waveform,self._markers,"REAL")
         
   def loadSidebandWaveforms(self):
     self._awg.setWaveform(1,"IQ_Sideband_Calibration_I")

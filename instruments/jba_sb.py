@@ -92,6 +92,19 @@ class Instr(Instrument):
     self._shapeParams["latchLength"]   = 1000
     self._shapeParams["plateau"]       = 0.85
 
+    self.generateShape()
+
+    self.bit=int(self.name()[-1])-1
+    self._phase=0
+  
+  def generateShape(self):
+    """
+    Use the folowing dictionnary to generate the shape:
+      self._shapeParams["risingTime"]
+      self._shapeParams["plateauLength"]
+      self._shapeParams["latchLength"]
+      self._shapeParams["plateau"]
+    """
     self.shape=zeros((20000),dtype = numpy.complex128)
 
     self.shape[10000:10000+self._shapeParams["risingTime"]]=linspace(0,1,self._shapeParams["risingTime"])
@@ -100,8 +113,6 @@ class Instr(Instrument):
     self.shape[10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]:10000+self._shapeParams["risingTime"]+self._shapeParams["plateauLength"]+self._shapeParams["risingTime"]+self._shapeParams["latchLength"]]=self._shapeParams["plateau"]
 
 
-    self.bit=int(self.name()[-1])-1
-    self._phase=0
   def parameters(self):
     """
     Return parameters
@@ -128,7 +139,7 @@ class Instr(Instrument):
     self._frequency=frequency
     self._amplitude=amplitude
     #self._pulseGenerator.clearPulse()
-    self._pulseGenerator.generatePulse(duration=duration, frequency=self._frequency, amplitude=self._amplitude, DelayFromZero=delayFromZero,useCalibration=True, phase=phase,shape=amplitude*shape, name=self.name())
+    self._pulseGenerator.generatePulse(duration=duration, frequency=self._frequency, amplitude=self._amplitude, DelayFromZero=delayFromZero,useCalibration=False, phase=phase,shape=amplitude*shape, name=self.name())
     self._fsb=-(self._pulseGenerator._MWSource.frequency()-frequency)
     self._pulseAnalyser.addFrequency(f=self._fsb, name=self.name(),bit=self.bit)
     self._change=True

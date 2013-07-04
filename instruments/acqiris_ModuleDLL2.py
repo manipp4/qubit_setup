@@ -78,7 +78,8 @@ class ModuleDLL2():
       if frequencies[i][1]:
         index=frequencies[i][2]
         frequency=frequencies[i][0]
-  
+
+
         (o1,o2,components[frequencies[i][2],0,:],components[frequencies[i][2],1,:],o3,o4)=self.demodulate2ChIQ(self.lastWave['wave'][self.iChannel],self.lastWave['wave'][self.qChannel],self.lastWave['horPos'],self.lastWave['nbrSegmentArray'][0],int(self.lastWave['nbrSamplesPerSeg']),self.lastWave['samplingTime'], frequency * 1E9,intervalMode=intervalMode)
         
         co=zeros((2,self.lastWave['nbrSegmentArray'][0]))
@@ -94,14 +95,22 @@ class ModuleDLL2():
         nJBA=maxBit+1
         proba=zeros(2**nJBA)
         nbSegments=self.lastWave['nbrSegmentArray'][0]
-    for i in range(0,nbSegments):
-      value=0
-      for b in range(0,maxBit+1):
-        value+=2**b*clicks[b,i]
-      proba[value]+=1./nbSegments
+
+    print 'demodulation duration: %f sec' %(time.time()-t0)
     probasInDict=dict()
-    for v in range(0,2**nJBA):
-      probasInDict['p%s'%mybin(v,nJBA)]=proba[v]
+    if not(fast):
+      t0=time.time()
+      for i in range(0,nbSegments):
+        value=0
+        for b in range(0,maxBit+1):
+          value+=2**b*clicks[b,i]
+        proba[value]+=1./nbSegments
+      for v in range(0,2**nJBA):
+        probasInDict['p%s'%mybin(v,nJBA)]=proba[v]
+
+      print 'counting duration: %f sec' %(time.time()-t0)
+
+
     if fast:
       return (results,probasInDict)
     else:

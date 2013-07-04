@@ -15,7 +15,10 @@ class Panel(FrontPanel):
     
     def calibrate(self):
       kwargs={'f_sb':self.fsbEdit.getValue()}
-      self.instrument.dispatch("calibrate",**kwargs)      
+      self.instrument.dispatch("calibrate",**kwargs)
+
+    def calibrateOffset(self):
+      self.instrument.dispatch("calibrateOffset")      
 
     def stop(self):
       self.instrument.stop()
@@ -34,6 +37,7 @@ class Panel(FrontPanel):
         self.fsbEdit = NumericEdit("")
 
         self.CalibrateButton = QPushButton("Calibrate")
+        self.CalibrateButtonOffset = QPushButton("Calibrate Offset")
         self.StopButton = QPushButton("Stop")
         self.reInitButton = QPushButton("Re-init calibration")
  
@@ -44,10 +48,12 @@ class Panel(FrontPanel):
         self.grid.addWidget(self.fsbEdit,1,1)
         
         self.grid.addWidget(self.CalibrateButton,0,0)     
-        self.grid.addWidget(self.StopButton,0,1)     
-        self.grid.addWidget(self.reInitButton,0,2)
+        self.grid.addWidget(self.CalibrateButtonOffset,0,1)     
+        self.grid.addWidget(self.StopButton,0,2)     
+        self.grid.addWidget(self.reInitButton,0,3)
 
         self.connect(self.CalibrateButton,SIGNAL("clicked()"),self.calibrate)
+        self.connect(self.CalibrateButtonOffset,SIGNAL("clicked()"),self.calibrateOffset)
         self.connect(self.StopButton,SIGNAL("clicked()"),self.instrument.terminate)
         self.connect(self.reInitButton,SIGNAL("clicked()"),self.reInit)
 

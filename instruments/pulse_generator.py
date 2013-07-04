@@ -37,12 +37,12 @@ class Instr(Instrument):
         else:
           self._MWSource.setFrequency(frequency)
   
-      def generatePulse(self, duration=100, gaussian=False,frequency=12., amplitude=1.,phase=0.,DelayFromZero=0, useCalibration=True,shape=None, name=None):
+      def generatePulse(self, duration=100, gaussian=False,frequency=12., amplitude=1.,phase=0.,DelayFromZero=0, useCalibration=False,shape=None, name=None):
         """
         Generate in the buffer a pulse using parameters sents 
+        Is gaussian is true, generate a gaussian pulse using duration as sigma and DelayFromZero as central time for the gaussian (also using amplitude for maximum)
         Or use the "shape" instead of (duration, amplitude, delayFromZero)
         """
-        #        print "generating pulse"
         if name==None:
           name='self%i'%self.index
           self.index+=1
@@ -69,7 +69,7 @@ class Instr(Instrument):
             if shape==None:
               if gaussian:
                 print 'gaussian pulse is not working !!!'
-                pulse = gaussianPulse2(length=duration,delay = DelayFromZero,flank = flank)
+                pulse = self.gaussianPulse(length=duration,delay = DelayFromZero,amplitude=amplitude)
               else:
                 pulse[DelayFromZero:DelayFromZero+duration] = amplitude
             else:
@@ -77,11 +77,10 @@ class Instr(Instrument):
             pulse*=numpy.exp(1.0j*phase)/2
             if useCalibration:
               calibrationParameters=self._mixer.calibrationParameters(f_sb=f_sb, f_c=MWFrequency)
-              #print calibrationParameters
               cr = float(calibrationParameters['c'])*exp(1j*float(calibrationParameters['phi']))
               sidebandPulse = exp(-1.j*f_sb*2.0*math.pi*(arange(DelayFromZero,DelayFromZero+len(pulse))))+cr*exp(1.j*f_sb*2.0*math.pi*(arange(DelayFromZero,DelayFromZero+len(pulse))))
               self._AWG.setOffset(self._params["AWGChannels"][0],calibrationParameters['i0'])
-              self._AWG.setOffset(self._params["AWGChannels"][1],calibrationParameters['q0'])
+              self._AWG.setOffset(self._params["AWGChannels"][1],calibrtionParameters['q0'])
             else:
               sidebandPulse = exp(-1.j*2.0*math.pi*f_sb*(arange(DelayFromZero,DelayFromZero+len(pulse))))
               self._AWG.setOffset(self._params["AWGChannels"][0],0)
@@ -95,7 +94,8 @@ class Instr(Instrument):
           if shape==None:
               if gaussian:
                 print 'gaussian pulse is not working !!!'
-                pulse = gaussianPulse2(length=duration,delay = DelayFromZero,flank = flank)
+                print duration, DelayFromZero,amplitude
+                pulse = self.gaussianPulse(duration,DelayFromZero,amplitude)
               else:
                 pulse[DelayFromZero:DelayFromZero+duration] = amplitude
           else:
@@ -110,7 +110,7 @@ class Instr(Instrument):
           """
           Send the pulse with the name set as parameter, if no name is set, send all pulses
           """
-          ## self._waveformsModified not working !!!!!!!!!!!!!!
+
           pulse = numpy.zeros(register['repetitionPeriod'],dtype = numpy.complex128)
           if name!=None:
             for k in self.pulses.keys():
@@ -160,36 +160,22 @@ class Instr(Instrument):
           self.totalPulse[:]=0
           self.sendPulse()
           
-          
-      def gaussianPulse(length = 500,delay = 0,flank = 4,normalize = True,resolution = 1,filterFrequency = 0.2):
+      def gaussianPulse(self,sigma,delay,amplitude=1.):
         """
-        Generate a gaussian Pulse !!!! NOT CONFIGURED !!!!
+        Return a gaussian Shape, using length as sigman and delay as time at maximum
         """
-        print "U DONT HAVE TO USE GAUSSIAN PULSE ! NOT CONFIGURED !!!!!!!!!!!!!"
-        print "U DONT HAVE TO USE GAUSSIAN PULSE ! NOT CONFIGURED !!!!!!!!!!!!!"
-        print "U DONT HAVE TO USE GAUSSIAN PULSE ! NOT CONFIGURED !!!!!!!!!!!!!"
-        print "U DONT HAVE TO USE GAUSSIAN PULSE ! NOT CONFIGURED !!!!!!!!!!!!!"
-        print "U DONT HAVE TO USE GAUSSIAN PULSE ! NOT CONFIGURED !!!!!!!!!!!!!"
-        waveform = numpy.zeros((math.ceil(flank*2)+1+int(math.ceil(length))+math.ceil(delay))*int(1.0/resolution),dtype = numpy.complex128)
-        if length == 0:
-          return waveform
-        for i in range(0,len(waveform)):
-          t = float(i)*resolution
-          if t <= flank+delay:
-            waveform[i] = numpy.exp(-0.5*math.pow(float(t-delay-flank)/float(flank)*3.0,2.0))
-          elif t >= flank+delay+length:
-            waveform[i] = numpy.exp(-0.5*math.pow(float(t-delay-flank-length)/float(flank)*3.0,2.0))
-          else:
-            waveform[i] = 1.0
-        pulseFFT = numpy.fft.rfft(waveform)
-        freqs = numpy.linspace(0,1.0,len(pulseFFT))
-        filteredPulseFFT = pulseFFT
-        filteredPulse = numpy.array(numpy.fft.irfft(filteredPulseFFT,len(waveform)),dtype = numpy.complex128)
-        filteredPulse = waveform
-        integral = numpy.sum(filteredPulse)
-        if normalize:
-          filteredPulse/=integral/float(length)*resolution
-        return filteredPulse
+        def gaussianFunction(t,t0,sigma,amp=1):
+          v= amp*numpy.exp(-(t-float(t0))**2/(2*sigma**2))
+          print v
+          return v
+
+        shape=zeros(20000)
+        for t in range(int(delay-2*sigma),int(delay+2*sigma)):
+            shape[t]=gaussianFunction(t,delay,sigma,amp=amplitude)
+        print mean(shape)
+        return shape
+
+
 
 
 

@@ -168,12 +168,11 @@ class Instr(VisaInstrument):
 
     return len(data)  
         
-  def writeRealData(self,values,markers):
+  def writeRealData(self,values,markers,useC=False):
     """
     Writes real-valued data to a string.
     """
     output = ""
-
     #Fast code that calls a C++ function to encode the data...
 
     valuesFloat = numpy.zeros(len(values),dtype = numpy.float32)
@@ -183,10 +182,16 @@ class Instr(VisaInstrument):
     markersInt[:] = markers[:] << 6
 
     buf = ctypes.create_string_buffer(len(valuesFloat)*5)
-
-    numerical.awg_pack_real_data(len(valuesFloat),valuesFloat.ctypes.data,markersInt.ctypes.data,ctypes.addressof(buf))
+    if useC:
+      numerical.awg_pack_real_data(len(valuesFloat),valuesFloat.ctypes.data,markersInt.ctypes.data,ctypes.addressof(buf))
+      return buf.raw
+    else:
+      for i in range(0,len(values)):
+        marker = float(markers[i])
+        value = float(values[i])
+        output+=struct.pack("<f",((marker & 3) << 14) + (value & (0xFFFF >> 2)))
+      return output  
   
-    return buf.raw
     
   def parameters(self):
     """

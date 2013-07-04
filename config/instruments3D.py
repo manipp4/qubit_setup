@@ -32,6 +32,10 @@ instruments = [
       'visaAddress': "GPIB0::6"
     },
     {
+      'name' : 'fsp',
+      'serverAddress': serverAddress
+    },
+    {
       'name' : 'temperature',
       'serverAddress': serverAddress,
       'kwargs' : {}
@@ -42,8 +46,9 @@ instruments = [
     },
     {
       'name' : 'acqiris',
-      'serverAddress' : 'rip://192.168.0.22:8000',
-      'kwargs' : {'name': 'Acqiris Card'}
+      'class' : 'acqiris2',
+      'serverAddress' : 'rip://192.168.0.19:8000',
+      'kwargs' : {'name': 'Acqiris Card','__includeModuleDLL2__':False}
     },
     {
       'name' : 'awgMW',
@@ -66,23 +71,23 @@ instruments = [
     {
       'name' : 'IQMixer_Cav',
       'class' : 'iqmixer',
-      'kwargs' : {'name' : 'MixerJBA', 'MWSource':'MWSource_cavity', 'AWG':'awgMW', 'AWGChannels':(3), 'fsp':'fsp'}
+      'kwargs' : {'name' : 'MixerJBA', 'MWSource':'MWSource_cavity', 'AWG':'awgMW', 'AWGChannels':(1,2), 'fsp':'fsp'}
     },
     {
       'name':'PG_Cavity',
       'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator JBA sb', 'MWSource':'MWSource_cavity', 'mixer':'IQMixer_Cav', 'modulationMode':'IQMixer', 'formGenerator':'awgMW', 'AWGChannels':(3)}
+      'kwargs':{'name':'Pulse Generator JBA sb', 'MWSource':'MWSource_cavity', 'mixer':'IQMixer_Cav', 'modulationMode':'IQMixer', 'formGenerator':'awgMW', 'AWGChannels':(1,2)}
     },
     {
       'name' : 'mixerQB',
       'class' : 'simplemixer',
-      'kwargs' : {'name' : 'mixerQB', 'MWSource':'MWSource_Qubit', 'AWG':'awgMW', 'AWGChannel':(1,2), 'fsp':'fsp'}
+      'kwargs' : {'name' : 'mixerQB', 'MWSource':'MWSource_Qubit', 'AWG':'awgMW', 'AWGChannel':(3), 'fsp':'fsp'}
     }
     ,
     {
       'name':'PG_QB',
       'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator QB', 'MWSource':'MWSource_Qubit', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(1,2)}
+      'kwargs':{'name':'Pulse Generator QB', 'MWSource':'MWSource_Qubit', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(3)}
     },
     {
       'name' : 'Yoko3',

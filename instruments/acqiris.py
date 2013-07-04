@@ -21,7 +21,7 @@ from pyview.helpers.instrumentsmanager import *
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
 
-import acqiris_ModuleDLL2
+#import acqiris_ModuleDLL2
 
 # utility class for helping in C to python interface
 class myType:                        
@@ -34,7 +34,7 @@ class myType:
     return self._value[0]
 
 # intrument class for the acquisition board	
-class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
+class Instr(Instrument):
   """
   The instrument class for the Acqiris fast acquisition card.
   """
@@ -54,6 +54,7 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
        if hasattr(self,"__acqiris") is False:
          try:
            print "\nLoading basic oscilloscope DLL 'Acqiris_QuantroDLL1.dll'"
+           print os.path.dirname(os.path.abspath(__file__))+'/Acqiris_QuantroDLL1.dll'
            self.__acqiris_QuantroDLL1= windll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'/Acqiris_QuantroDLL1.dll')
            print "Finding board"
            self.__acqiris_QuantroDLL1.FindDevicesV1(byref(self.__instrumentID),byref(self.__temperature))

@@ -28,7 +28,8 @@ class Instr(Instrument):
           register["%s IQCal" % self._name] =self._calibration.calibrateSidebandMixing(sidebandRange=[f_sb])
         print 'calibration ended'
 
-
+      def calibrateOffset(self):
+          self.calibrate(offsetOnly=True)
 
       def reInitCalibration(self):
         """

@@ -12,6 +12,7 @@ class Instr(Instrument):
         	sock.connect((self.host, self.port))
         	return float(sock.recv(1024))
         except:
+          raise
           return None
           
       def parameters(self):
@@ -22,12 +23,13 @@ class Instr(Instrument):
       def initialize(self,address = "132.166.19.2", port = 444):
         try:
           self._name = "Temperature sensor"
-          if DEBUG:
+          if DEBUG or True:
             print "Initializing temperature sensor"
           self.host = address
           self.port = port
         except:
-          self.statusStr("An error has occured. Cannot initialize FSP.")        
+          self.statusStr("An error has occured. Cannot initialize sensor.")    
+          print "An error has occured. Cannot initialize sensor."
 
       def saveState(self,name):
         return self.parameters()

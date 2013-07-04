@@ -566,6 +566,7 @@ class Panel(FrontPanel):
         myHeight=3
         mydpi=80
         
+        # single segment tab
         self.segmentTab = QWidget()
         self.segTabLayout = QGridLayout(self.segmentTab)
         st=self.segTabLayout
@@ -590,10 +591,20 @@ class Panel(FrontPanel):
         st.addWidget(self.currentHorPos,0,st.columnCount ())
         self.segmentPlot = MatplotlibCanvas(width=myWidth, height=150, dpi=mydpi)
         st.addWidget(self.segmentPlot,1,0,1,-1)
+        
+        # Averaged of segments tab
         self.averagePlot = MatplotlibCanvas(width=myWidth, height=myHeight, dpi=mydpi)
         
+        # Full sequence tab
+        self.sequenceTab = QWidget()
+        self.sequenceTabLayout = QGridLayout(self.sequenceTab)
+        self.overlay=QCheckBox("Overlay segments")
+        self.sequenceTabLayout.addWidget(self.overlay)
         self.fullWavePlot = MatplotlibCanvas(width=myWidth, height=myHeight, dpi=mydpi)
+        self.sequenceTabLayout.addWidget(self.fullWavePlot)
+        self.connect(self.overlay,SIGNAL("stateChanged(int)"),self.plotData)
       
+        # Timestamps tab
         self.timestampTab = QWidget()
         self.timestampTabLayout = QGridLayout(self.timestampTab)
         self.deltaTimestamps=QCheckBox("Delta Timestamps")
@@ -602,11 +613,12 @@ class Panel(FrontPanel):
         self.timestampTabLayout.addWidget(self.timeStampsPlot)
         self.connect(self.deltaTimestamps,SIGNAL("stateChanged(int)"),self.plotData)
         
+        # add all the tabs
         self.plotTabs = QTabWidget()
         self.plotTabs.setMinimumHeight(300)
         self.plotTabs.addTab(self.segmentTab,"Segments")
         self.plotTabs.addTab(self.averagePlot,"Average")
-        self.plotTabs.addTab(self.fullWavePlot,"Sequences")
+        self.plotTabs.addTab(self.sequenceTab,"Sequences")
         self.plotTabs.addTab(self.timestampTab,"TimeStamps")
         
         #Some buttons and checkboxes, their grid, and corresponding functions
