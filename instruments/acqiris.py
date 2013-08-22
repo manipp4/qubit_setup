@@ -21,7 +21,7 @@ from pyview.helpers.instrumentsmanager import *
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
 
-#import acqiris_ModuleDLL2
+import acqiris_ModuleDLL2
 
 # utility class for helping in C to python interface
 class myType:                        
@@ -34,7 +34,7 @@ class myType:
     return self._value[0]
 
 # intrument class for the acquisition board	
-class Instr(Instrument):
+class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
   """
   The instrument class for the Acqiris fast acquisition card.
   """
@@ -74,15 +74,15 @@ class Instr(Instrument):
         print "Cannot load acqiris_DLLMath1Module!"
         print sys.exc_info()
         return False    
-    if ___includeModuleDLL2___ :
-      try:
+    if ___includeModuleDLL2___ :                                                 
+      try:                                                                       ######## DO NOT MODIFY
         print "\nLoading SWIG DLL 'acqiris_QuantroDLL2.dll'"
         acqiris_ModuleDLL2.ModuleDLL2.__init__(self)
       except:
         print "Cannot load module or DLL acqiris_ModuleDLL2!"
         print sys.exc_info()
         return False    
-     
+    
     #Acqiris parameters defined in a in a dictionary.
     self._params = dict()
     self._params["synchro"] = True

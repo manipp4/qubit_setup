@@ -69,7 +69,7 @@ class Instr(Instrument):
             if shape==None:
               if gaussian:
                 print 'gaussian pulse is not working !!!'
-                pulse = self.gaussianPulse(length=duration,delay = DelayFromZero,amplitude=amplitude)
+                pulse = self.gaussianPulse(sigma=duration,delay = DelayFromZero,amplitude=amplitude)
               else:
                 pulse[DelayFromZero:DelayFromZero+duration] = amplitude
             else:
@@ -83,8 +83,8 @@ class Instr(Instrument):
               self._AWG.setOffset(self._params["AWGChannels"][1],calibrtionParameters['q0'])
             else:
               sidebandPulse = exp(-1.j*2.0*math.pi*f_sb*(arange(DelayFromZero,DelayFromZero+len(pulse))))
-              self._AWG.setOffset(self._params["AWGChannels"][0],0)
-              self._AWG.setOffset(self._params["AWGChannels"][1],0)
+              #self._AWG.setOffset(self._params["AWGChannels"][0],0)
+              #self._AWG.setOffset(self._params["AWGChannels"][1],0)
             pulse[:]*=sidebandPulse 
           except:
             raise
@@ -95,7 +95,7 @@ class Instr(Instrument):
               if gaussian:
                 print 'gaussian pulse is not working !!!'
                 print duration, DelayFromZero,amplitude
-                pulse = self.gaussianPulse(duration,DelayFromZero,amplitude)
+                pulse = self.gaussianPulse(sigma=duration,delay=DelayFromZero,amplitude=amplitude)
               else:
                 pulse[DelayFromZero:DelayFromZero+duration] = amplitude
           else:
@@ -166,7 +166,6 @@ class Instr(Instrument):
         """
         def gaussianFunction(t,t0,sigma,amp=1):
           v= amp*numpy.exp(-(t-float(t0))**2/(2*sigma**2))
-          print v
           return v
 
         shape=zeros(20000)
