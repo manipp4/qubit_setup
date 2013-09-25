@@ -190,6 +190,6 @@ class Panel(FrontPanel):
         self.connect(GpibSubmit,SIGNAL("clicked()"),self.evaluateGpibCommand)
         self.connect(self.waveformlist,SIGNAL("itemSelectionChanged()"),self.updateGraph)
 
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
         self.instrument.dispatch("updateWaveforms")
 #        self.updateWaveformList()

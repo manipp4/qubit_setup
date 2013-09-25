@@ -669,7 +669,7 @@ class Panel(FrontPanel):
         self.grid.addItem(buttonGrid,2,0,1,2)
         self.grid.addItem(self.messageGrid,3,0,1,2)
 
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
         
         self._updatePlots = False
         #We request the current parameters from the card.

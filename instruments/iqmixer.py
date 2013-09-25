@@ -23,8 +23,9 @@ class Instr(Instrument):
         Calibrate a mixer IQ using fsp
         """
         print 'calibration in progress'
-        register["%s OffsetCal" % self._name] =self._calibration.calibrateIQOffset()
-        if not(offsetOnly):
+        if offsetOnly:
+          register["%s OffsetCal" % self._name] =self._calibration.calibrateIQOffset()
+        else:
           register["%s IQCal" % self._name] =self._calibration.calibrateSidebandMixing(sidebandRange=[f_sb])
         print 'calibration ended'
 

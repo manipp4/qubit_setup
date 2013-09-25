@@ -88,7 +88,7 @@ class Panel(FrontPanel):
         
         self.grid.addWidget(self.array,12,0,1,-1)
 
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
 
         instrument.attach(self)
 #        self.updateValues()

@@ -5,6 +5,8 @@ sys.path.append('../')
 
 from pyview.lib.classes import *
 from pyview.gui.frontpanel import FrontPanel
+reload(sys.modules['pyview.gui.frontpanel'])
+from pyview.gui.frontpanel import FrontPanel
 from pyview.gui.elements.numericedit import * 
 
 import datetime
@@ -54,45 +56,44 @@ class Panel(FrontPanel):
       
     
     def __init__(self,instrument,parent=None):
-        super(Panel,self).__init__(instrument,parent)
-        
-        print "Initializing..."
+      super(Panel,self).__init__(instrument,parent)
+      print "Initializing..."
 
-        self.title = QLabel(instrument.name())
-        self.title.setAlignment(Qt.AlignCenter)
-        self.title.setStyleSheet("QLabel {font:18px;}")
-        self.outputStatus = False
+      self.title = QLabel(instrument.name())
+      self.title.setAlignment(Qt.AlignCenter)
+      self.title.setStyleSheet("QLabel {font:18px;}")
+      self.outputStatus = False
 
-        self.PowerEdit  = NumericEdit("")
-        self.FrequencyEdit = NumericEdit("")
-        self.SetButton = QPushButton("Set")
-        self.UpdateButton = QPushButton("Update")
-        self.OutputButton = QPushButton("Undefined")
+      self.PowerEdit  = NumericEdit("")
+      self.FrequencyEdit = NumericEdit("")
+      self.SetButton = QPushButton("Set")
+      self.UpdateButton = QPushButton("Update")
+      self.OutputButton = QPushButton("Undefined")
 
-        self.grid = QGridLayout(self)
+      self.grid = QGridLayout(self)
 
-        self.grid.addWidget(self.title,0,0,1,3)
-        self.grid.addWidget(QLabel("Power"),1,0)
-        self.grid.addWidget(self.PowerEdit,1,1)
-        self.grid.addWidget(QLabel("Frequency"),2,0)
-        
-        buttonsLayout = QBoxLayout(QBoxLayout.LeftToRight)
-        
-        buttonsLayout.addWidget(self.SetButton)
-        buttonsLayout.addWidget(self.UpdateButton)
-        buttonsLayout.addWidget(self.OutputButton)
-        buttonsLayout.addStretch()
-        
-        self.grid.addWidget(self.FrequencyEdit,2,1)
-        self.grid.addLayout(buttonsLayout,3,0,1,2)
-        
-                
-        self.connect(self.SetButton,SIGNAL("clicked()"),self.changeAll)
-        self.connect(self.UpdateButton,SIGNAL("clicked()"),self.updateValues)
-        self.connect(self.OutputButton,SIGNAL("clicked()"),self.toggleOutput)
-        
-        self.setLayout(self.grid)
+      self.grid.addWidget(self.title,0,0,1,3)
+      self.grid.addWidget(QLabel("Power"),1,0)
+      self.grid.addWidget(self.PowerEdit,1,1)
+      self.grid.addWidget(QLabel("Frequency"),2,0)
+      
+      buttonsLayout = QBoxLayout(QBoxLayout.LeftToRight)
+      
+      buttonsLayout.addWidget(self.SetButton)
+      buttonsLayout.addWidget(self.UpdateButton)
+      buttonsLayout.addWidget(self.OutputButton)
+      buttonsLayout.addStretch()
+      
+      self.grid.addWidget(self.FrequencyEdit,2,1)
+      self.grid.addLayout(buttonsLayout,3,0,1,2)
+      
+              
+      self.connect(self.SetButton,SIGNAL("clicked()"),self.changeAll)
+      self.connect(self.UpdateButton,SIGNAL("clicked()"),self.updateValues)
+      self.connect(self.OutputButton,SIGNAL("clicked()"),self.toggleOutput)
+      
+      self.qw.setLayout(self.grid)
 
-        instrument.attach(self)
-        self.updateValues()
-           
+      instrument.attach(self)
+      self.updateValues()
+         

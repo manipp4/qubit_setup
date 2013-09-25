@@ -52,7 +52,7 @@ class Panel(FrontPanel):
         self.connect(self.AnalyseButton,SIGNAL("clicked()"),self.analyse)
         self.connect(self.ClearButton,SIGNAL("clicked()"),self.clear)
 
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
 
         instrument.attach(self)
            

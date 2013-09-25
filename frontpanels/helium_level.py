@@ -75,7 +75,7 @@ class Panel(FrontPanel):
         
         self.connect(self.timer,SIGNAL("timeout()"),lambda :self.instrument.dispatch("heliumLevel"))
         
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
 
         instrument.attach(self)
           

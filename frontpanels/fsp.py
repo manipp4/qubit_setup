@@ -72,7 +72,7 @@ class Panel(FrontPanel):
         self.connect(GetButton,SIGNAL("clicked()"),self.getTrace)
         self.connect(SaveButton,SIGNAL("clicked()"),self.saveTrace)
         
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
            
         self.instrument.dispatch("getTrace")
 

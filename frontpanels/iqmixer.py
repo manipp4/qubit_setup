@@ -36,7 +36,7 @@ class Panel(FrontPanel):
         self.title.setStyleSheet("QLabel {font:18px;}")
         self.fsbEdit = NumericEdit("")
 
-        self.CalibrateButton = QPushButton("Calibrate")
+        self.CalibrateButton = QPushButton("Calibrate SB")
         self.CalibrateButtonOffset = QPushButton("Calibrate Offset")
         self.StopButton = QPushButton("Stop")
         self.reInitButton = QPushButton("Re-init calibration")
@@ -57,7 +57,7 @@ class Panel(FrontPanel):
         self.connect(self.StopButton,SIGNAL("clicked()"),self.instrument.terminate)
         self.connect(self.reInitButton,SIGNAL("clicked()"),self.reInit)
 
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
 
         instrument.attach(self)
 #        self.updateValues()

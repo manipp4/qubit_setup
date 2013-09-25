@@ -21,7 +21,7 @@ class VNATrace:
 class Instr(VisaInstrument):
 
     #Initializes the instrument.
-    def initialize(self,visaAddress = "GPIB::6",name = "VNA"):
+    def initialize(self,visaAddress = "GPIB::29",name = "VNA"):
         self._name = "Anritsu VNA"
         print "Initializing with resource %s" % visaAddress
         if DEBUG:
@@ -151,7 +151,7 @@ class Instr(VisaInstrument):
                  
       
     #Get a trace from the instrument and store it to a local array.
-    def getTrace(self,correctPhase = False,waitFullSweep = False,timeOut = 200, addedAttenuators=0.):
+    def getTrace(self,correctPhase = False,waitFullSweep = False,timeOut = 1600, addedAttenuators=0.):
       print "Getting trace..."
       trace = Datacube()
       if DEBUG:

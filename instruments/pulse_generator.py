@@ -64,7 +64,7 @@ class Instr(Instrument):
         if self._params['modulationMode']=="IQMixer":
           MWFrequency=float(self._MWSource.frequency())
           self._MWSource.turnOn()
-          f_sb=-(MWFrequency-frequency)
+          f_sb=frequency-MWFrequency
           try:
             if shape==None:
               if gaussian:
@@ -77,10 +77,12 @@ class Instr(Instrument):
             pulse*=numpy.exp(1.0j*phase)/2
             if useCalibration:
               calibrationParameters=self._mixer.calibrationParameters(f_sb=f_sb, f_c=MWFrequency)
-              cr = float(calibrationParameters['c'])*exp(1j*float(calibrationParameters['phi']))
-              sidebandPulse = exp(-1.j*f_sb*2.0*math.pi*(arange(DelayFromZero,DelayFromZero+len(pulse))))+cr*exp(1.j*f_sb*2.0*math.pi*(arange(DelayFromZero,DelayFromZero+len(pulse))))
+              print calibrationParameters
+              #cr = float(calibrationParameters['c'])*exp(1j*float(calibrationParameters['phi']))
+              #sidebandPulse = exp(-1.j*f_sb*2.0*math.pi*(arange(DelayFromZero,DelayFromZero+len(pulse))))+cr*exp(1.j*f_sb*2.0*math.pi*(arange(DelayFromZero,DelayFromZero+len(pulse))))
+              sidebandPulse=self._mixer._calibration.generateSidebandWaveform(f_sb = f_sb,c = calibrationParameters['c'],phi = calibrationParameters['phi'],length=20000)
               self._AWG.setOffset(self._params["AWGChannels"][0],calibrationParameters['i0'])
-              self._AWG.setOffset(self._params["AWGChannels"][1],calibrtionParameters['q0'])
+              self._AWG.setOffset(self._params["AWGChannels"][1],calibrationParameters['q0'])
             else:
               sidebandPulse = exp(-1.j*2.0*math.pi*f_sb*(arange(DelayFromZero,DelayFromZero+len(pulse))))
               #self._AWG.setOffset(self._params["AWGChannels"][0],0)
@@ -104,38 +106,67 @@ class Instr(Instrument):
               self._AWG.setOffset(self._params["AWGChannels"],self._mixer.calibrationParameters())
         if self._params['modulationMode']=="InternalModulation":
           print "NOT CONFIGURED YET ! DO NOT USE !"
-        self.pulses[name]=[pulse,True]
+        self.pulses[name]=[pulse,True] 
+      
+      def generateMarker(self,name=None,start=0,stop=10000,level=3):   # Made by Kiddi 17/09/13
+        'generates markers which rise to level at point start and return to zero at stop '
+        if name==None:
+          name='self%i'%self.indexMarker
+          self.indexMarker+=1
+        self._params["markersDict"][name]=dict()
+        self._params["markersDict"][name]["name"]=name
+        self._params["markersDict"][name]["start"]=start
+        self._params["markersDict"][name]["stop"]=stop
+        self._params["markersDict"][name]["level"]=level
         
-      def sendPulse(self,forceSend=False, name=None):
+        marker=numpy.zeros(register['repetitionPeriod'],dtype=numpy.int8)
+        marker[start:stop]=level
+        self.markersDict[name]=[marker,True]
+
+      
+      def sendPulse(self,forceSend=False, name=None, markersName=None, outputName=None): # markersName=None added by Kiddi 17/09/2013
           """
           Send the pulse with the name set as parameter, if no name is set, send all pulses
           """
-
           pulse = numpy.zeros(register['repetitionPeriod'],dtype = numpy.complex128)
           if name!=None:
             for k in self.pulses.keys():
-              pulses[k][1]=False
-            pulses[name][1]=True
+              self.pulses[k][1]=False
+            self.pulses[name][1]=True
           values=self.pulses.values()
           for value in values:
             if value[1]:
-              pulse+=value[0]                      
-          
+              pulse+=value[0]
+  
+          markers=None                            # section marker added by DV + KJ 09/2013
+          if markersName!= None:
+            markers = numpy.zeros(register['repetitionPeriod'],dtype=int8)
+            if markersName!='All':
+              for k in self.markersDict.keys():
+                self.markersDict[k][1]=False
+              self.markersDict[markersName][1]=True
+            values=self.markersDict.values()    # section marker added by DV + KJ 09/2013             
+            for value in values:
+              if value[1]:
+                markers+=value[0]
+          if outputName==None:
+            outputName=self.name()
+               
           if forceSend or True:
             if self._params['modulationMode']=="IQMixer":
               markers=(zeros(register['repetitionPeriod'],dtype=int8),zeros(register['repetitionPeriod'],dtype=int8))
               markers[0][:register['readoutDelay']]=3
               markers[1][:register['readoutDelay']]=3
-              self._AWG.loadiqWaveform(iqWaveform=pulse,channels=self._params["AWGChannels"],waveformNames=(self.name()+'i',self.name()+'q'),markers=markers)
+              self._AWG.loadiqWaveform(iqWaveform=pulse,channels=self._params["AWGChannels"],waveformNames=(outputName+'i',outputName+'q'),markers=markers)
             elif self._params['modulationMode']=="SimpleMixer":
-#              print "sending pulse"
+              #print "sending pulse"
               if self._formGeneratorType=='AWG':
-                self._AWG.loadRealWaveform(pulse, channel=self._params['AWGChannels'],waveformName=self.name())
+                self._AWG.loadRealWaveform(pulse, channel=self._params['AWGChannels'],markers=markers,waveformName=outputName)# Markers=None added by Kiddi 17/09/2013
                 self._AWG.startAllChannels()
                 self._AWG.run()
               if self._formGeneratorType=='AFG':
                 print "need to  be tried before use (pulse_generator.py)"
-                self._AWG.writeWaveform(name=self.name(),waveform=pulse)
+                self._AWG.writeWaveform(name=outputName,waveform=pulse)
                 self._AWG.turnOn()
               
             elif self._params['modulationMode']=="InternalModulation":
@@ -143,7 +174,51 @@ class Instr(Instrument):
             else:
               print "self._params['modulationMode'] not correctly set"
 
+      def loadWaveformToList(self, waveformName=None, markersName=None, outputName=None):
+          """
+          Loads a square pulse and markers from the corresponding dictionaries to the AWG Waveformlist
+          """
+          pulse = numpy.zeros(register['repetitionPeriod'],dtype = numpy.complex128)
+          if waveformName!=None:
+            for k in self.pulses.keys():
+              self.pulses[k][1]=False
+            self.pulses[waveformName][1]=True
+          values=self.pulses.values()
+          for value in values:
+            if value[1]:
+              pulse+=value[0]
   
+          markers=None                          
+          if markersName!= None:
+            markers = numpy.zeros(register['repetitionPeriod'],dtype=int8)
+            if markersName!='All':
+              for k in self.markersDict.keys():
+                self.markersDict[k][1]=False
+              self.markersDict[markersName][1]=True
+            values=self.markersDict.values()            
+            for value in values:
+              if value[1]:
+                markers+=value[0]
+          if outputName==None:
+            outputName=self.name()
+          
+          self._AWG.listRealWaveform(pulse,markers=markers,waveformName=outputName)
+
+      def sequenceWaveformList(self,channel=None,names=None):
+          """
+          Takes all the waveforms in the user defined waveform list or a given list and loads them into a sequence on channel
+          """
+          if channel==None:
+            channel=self._params['AWGChannels']
+          if names==None:
+            allNames=self._AWG.getWaveformNames()
+            names=allNames[25:] # The first 25 waveforms are the predfined ones
+          for i in range(0,len(names)):
+            self._AWG.appendWaveformToSequence(i+1,channel,names[i])
+            
+      def clearSequence(self):
+        self._AWG.createSequence(0)  
+        
       def startPulse(self, name):
         self.pulses[name][1]=True
 
@@ -201,7 +276,10 @@ class Instr(Instrument):
         self._params["modulationMode"]=modulationMode
         self.pulses=dict()
         self._params["pulses"]=dict()
+        self.markersDict=dict()
+        self._params["markersDict"]=dict()
         register['repetitionPeriod']=20000
         self.totalPulse=numpy.zeros(20000,dtype = numpy.complex128)
         self.index=0
+        self.indexMarker=0
         return

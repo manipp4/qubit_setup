@@ -73,7 +73,7 @@ class Panel(FrontPanel):
     self.layout.addLayout(buttonsLayout1,3,1)
     self.layout.addLayout(buttonsLayout2,4,1)
     
-    self.setLayout(self.layout)
+    self.qw.setLayout(self.layout)
     self.enableButtons()
     #self.calibrateButton.setEnabled(True)
     #self.StopButton.setEnabled(False)

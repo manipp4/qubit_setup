@@ -75,7 +75,7 @@ class Panel(FrontPanel):
         self.connect(self.OutputButton,SIGNAL("clicked()"),self.toggleOutput)
         self.connect(self.UpdateButton,SIGNAL("clicked()"),self.updateValues)
         
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
 
         self.instrument.attach(self)
         

@@ -40,7 +40,7 @@ class Panel(FrontPanel):
         
         self.connect(self.CalibrateButton,SIGNAL("clicked()"),self.calibrate)
 
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
 
         instrument.attach(self)
 #        self.updateValues()

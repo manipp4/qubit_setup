@@ -269,7 +269,7 @@ class Panel(FrontPanel):
 
         self.grid.addWidget(self.traces,2,0)
     
-        self.setLayout(self.grid)
+        self.qw.setLayout(self.grid)
         self.setMinimumWidth(640)
         self.setMinimumHeight(500)
         

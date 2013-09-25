@@ -101,7 +101,7 @@ class Panel(FrontPanel):
     self.stopLayout.addWidget(self.stopButton)
     self.layout.addLayout(self.stopLayout,4,1)
       
-    self.setLayout(self.layout)
+    self.qw.setLayout(self.layout)
     
     self.connect(self.spectro.start,SIGNAL("clicked()"),self.measureSpectro)
     self.connect(self.rabi.start,SIGNAL("clicked()"),self.measureRabi)

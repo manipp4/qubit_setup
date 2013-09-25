@@ -123,32 +123,6 @@ class Instr(VisaInstrument):
         value = int(values[i])
         output+=struct.pack("<H",((marker & 3) << 14) + (value & (0xFFFF >> 2)))
       return output
-        
-  def loadiqWaveform(self,iqWaveform, channels=(1,2), markers = None,waveformNames=('i','q')):
-    """
-    Loads an IQ waveform and 2 marker waveforms into the AWG memory.
-    """
-    
-    iChannel = numpy.zeros(len(iqWaveform))
-    qChannel = numpy.zeros(len(iqWaveform))
-    iChannel[:] = numpy.real(iqWaveform)
-    qChannel[:] = numpy.imag(iqWaveform)
-           
-    if markers == None:
-      iMarkers=(numpy.zeros(len(iqWaveform),dtype=numpy.int8),numpy.zeros(len(iqWaveform),dtype=numpy.int8))
-      qMarkers=(numpy.zeros(len(iqWaveform),dtype=numpy.int8),numpy.zeros(len(iqWaveform),dtype=numpy.int8))
-    else:
-      (iMarkers,qMarkers)=markers
-    iData = self.writeIntData((iChannel+1.0)/2.0*((1<<14)-1),iMarkers)
-    self.createWaveform(waveformNames[0],iData,"INT")
-    self.setWaveform(channels[0],waveformNames[0])
-    
-    qData = self.writeIntData((qChannel+1.0)/2.0*((1<<14)-1),qMarkers)
-    self.createWaveform(waveformNames[1],qData,"INT")
-    self.setWaveform(channels[1],waveformNames[1])
-    
-    return len(qData)  
-    
     
   def loadRealWaveform(self,realWaveform, channel=1, markers = None,waveformName='ch1'):
     """
@@ -588,3 +562,35 @@ class Instr(VisaInstrument):
       print "Initializing AWG with address %s" % visaAddress
     except:
       self.statusStr("An error has occured. Cannot initialize %s." % self._name)        
+
+
+##########################################################################
+#    Author ? Date ?  #### NEEDED : VS 18/09/2013
+  def loadiqWaveform(self,iqWaveform, channels=(1,2), markers = None,waveformNames=('i','q')):
+    """
+    Loads an IQ waveform and 2 marker waveforms into the AWG memory.
+    """
+    iChannel = numpy.zeros(len(iqWaveform))
+    qChannel = numpy.zeros(len(iqWaveform))
+    iChannel[:] = numpy.real(iqWaveform)
+    qChannel[:] = numpy.imag(iqWaveform)
+          
+
+
+    self.loadRealWaveform(iChannel,channels[0],waveformName=waveformNames[0])
+    self.loadRealWaveform(qChannel,channels[1],waveformName=waveformNames[1])
+    return
+    if markers == None:
+      iMarkers=(numpy.zeros(len(iqWaveform),dtype=numpy.int8),numpy.zeros(len(iqWaveform),dtype=numpy.int8))
+      qMarkers=(numpy.zeros(len(iqWaveform),dtype=numpy.int8),numpy.zeros(len(iqWaveform),dtype=numpy.int8))
+    else:
+      (iMarkers,qMarkers)=markers
+    iData = self.writeIntData((iChannel+1.0)/2.0*((1<<14)-1),iMarkers)
+    self.createWaveform(waveformNames[0],iData,"INT")
+    self.setWaveform(channels[0],waveformNames[0])
+  
+    qData = self.writeIntData((qChannel+1.0)/2.0*((1<<14)-1),qMarkers)
+    self.createWaveform(waveformNames[1],qData,"INT")
+    self.setWaveform(channels[1],waveformNames[1])
+  
+    return len(qData)  

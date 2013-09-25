@@ -16,6 +16,7 @@ class Instr(VisaInstrument):
     """
     Restores a previously saved state.
     """
+    print state
     self.setFrequency(state["frequency"])
     self.setPower(state["power"])
     if state["output"] == True:

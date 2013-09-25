@@ -7,7 +7,13 @@ import scipy.optimize
 
 if 'lib.datacube' in sys.modules:
   reload(sys.modules['lib.datacube'])
-  
+
+
+from macros.optimization import Minimizer
+reload(sys.modules['macros.optimization'])
+from macros.optimization import Minimizer
+
+#reload(sys.modules["macros.new_iq_level_optimization"])
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
 
@@ -72,13 +78,13 @@ class IqOptimization(Reloadable):
     self._powerCalibrationData = data
   
   def teardown(self):
-  	"""
-  	Restore the original configuration.
-  	"""
-  	self._fsp.loadConfig("IQCalibration")
-  	self._awg.loadSetup("iq_calibration.awg")
-  	self._mwg.restoreState(self._mwgState)
-  
+    """
+    Restore the original configuration.
+    """
+    self._fsp.loadConfig("IQCalibration")
+    self._awg.loadSetup("iq_calibration.awg")
+    self._mwg.restoreState(self._mwgState)
+
   def setup(self,averaging = 10,reference = -30):
     """
     Configure the AWG and the FSP for the IQ mixer calibration.
@@ -129,7 +135,7 @@ class IqOptimization(Reloadable):
     self._awg.setWaveform(3,"IQ_Sideband_Calibration_I")
     self._awg.setWaveform(4,"IQ_Sideband_Calibration_Q")
 
-  def calibrateIQOffset(self,frequencyRange = None,reference = 10):
+  def calibrateIQOffset(self,frequencyRange = None,reference = 10, method="vs.fmin"):
     """
     Calibrate the IQ mixer DC offset.
     """
@@ -153,7 +159,12 @@ class IqOptimization(Reloadable):
         self._mwg.setFrequency(frequency)
         self._mwg.turnOn()
         self._fsp.write("SENSE1:FREQUENCY:CENTER %f GHZ" % frequency)
-        (voltages,minimum) = self.optimizeIQMixerPowell()
+        if  method=="scipy.optimize.fmin":
+          (voltages,minimum) = self.optimizeIQMixerPowell()
+        elif method=="vs.fmin":
+          (voltages,minimum) = self.optimizeIQMixerVS()
+        else:
+          raise Error("bad method selected !!")
         minimum = self.measurePower(voltages) 
         print "Optimum value of %g dBm at offset %g V, %g V" % (minimum,voltages[0],voltages[1])
         rows = self._offsetCalibrationData.search(frequency = frequency)
@@ -164,21 +175,35 @@ class IqOptimization(Reloadable):
         self._offsetCalibrationData.sortBy("frequency")
         self._offsetCalibrationData.savetxt()
     except StopThread:
-      pass
+      raise
     except:
       raise
     finally:
-      self.teardown()
+      #self.teardown()
       self.updateOffsetCalibrationInterpolation()
       self._awg.setOffset(self._awgChannels[0],self.iOffset(frequency))
       self._awg.setOffset(self._awgChannels[1],self.qOffset(frequency))
     return self._offsetCalibrationData.filename()
 
+  def optimizeIQMixerVS(self):
+    self.d=Datacube()
+    self.d.toDataManager()
+    self.d.plotInDataManager("iOffset","minimum",clear=True)
+    self.d.plotInDataManager("qOffset","minimum")
+    minimizer=Minimizer(lambda x: self.measurePower(x),[0.,0.],[[-0.1,0.1],[-0.1,0.1]],xtol=0.001,maxfun=50,maxiter=2)
+    minimizer.minimize()
+    return minimizer.result()
+
   def optimizeIQMixerPowell(self):
     """
     Use Powell's biconjugate gradient method to minimize the power leak in the IQ mixer.
     """
-    result = scipy.optimize.fmin_powell(lambda x: self.measurePower(x),[0.,0.],full_output = 1,xtol = 0.001,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
+    self.d=Datacube()
+    self.d.toDataManager()
+    self.d.plotInDataManager("iOffset","minimum",clear=True)
+    self.d.plotInDataManager("qOffset","minimum")
+    result = scipy.optimize.fmin_powell(lambda x: self.measurePower(x),[0.1,0.1],full_output = 1,xtol = 0.05,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
+#    result = scipy.optimize.fmin(lambda x: self.measurePower(x),[0.,0.],full_output = 1,xtol = 0.001,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
     return (result[0],result)
 
   def measurePower(self,lows):
@@ -191,6 +216,8 @@ class IqOptimization(Reloadable):
         return 100.0
       self._awg.setOffset(self._awgChannels[i],lows[i])
     minimum = self.measureAveragePower()
+    self.d.set(minimum=minimum, iOffset=lows[0],qOffset=lows[1])
+    self.d.commit()
     print "Measuring power at %g,%g : %g" % (lows[0],lows[1],minimum)
     linpower = math.pow(10.0,minimum/10.0)/10.0
     return minimum 
@@ -205,7 +232,7 @@ class IqOptimization(Reloadable):
       self._qOffsetInterpolation=lambda x:self._offsetCalibrationData.column("lowQ")[0]
 
 
-  def calibrateSidebandMixing(self,frequencyRange = None,sidebandRange = arange(-0.5,0.51,0.1),reference = 10):
+  def calibrateSidebandMixing(self,frequencyRange = None,sidebandRange = arange(-0.5,0.51,0.1),reference = -10,method="vs.fmin"):
     """
     Calibrate the IQ mixer sideband generation.
     """
@@ -251,9 +278,24 @@ class IqOptimization(Reloadable):
           print "f_c = %g GHz, f_sb = %g GHz" % (f_c,f_sb)
           self._fsp.write("SENSE1:FREQUENCY:CENTER %f GHZ" % (f_c-f_sb))
           #result = findMin(lambda x,*args: self.measureSidebandPower(x,*args),[0.02,0],args = [f_sb],full_output = 1,xtol = 0.00001,ftol = 1e-4,maxiter = 5,disp=True)
-          
-          result = scipy.optimize.fmin_powell(lambda x,*args: self.measureSidebandPower(x,*args),[0,0],args = [f_sb],full_output = 1,xtol = 0.001,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
-          #result = scipy.optimize.fmin_powell(lambda x,*args: self.measureSidebandPower2(x,*args),[0.7,0.2],args = [f_sb],full_output = 1,xtol = 0.001,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
+          self.d=Datacube()
+          self.d.toDataManager()
+          self.d.plotInDataManager("c","minimum",clear=True)
+          self.d.plotInDataManager("phi","minimum")
+
+          if  method=="scipy.optimize.fmin":
+            #result = scipy.optimize.fmin_powell(lambda x,*args: self.measureSidebandPower2(x,*args),[0.7,0.2],args = [f_sb],full_output = 1,xtol = 0.001,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
+            result = scipy.optimize.fmin_powell(lambda x,*args: self.measureSidebandPower(x,*args),[0,0],args = [f_sb],full_output = 1,xtol = 0.001,ftol = 1e-2,maxiter =50,maxfun =50, disp=True, retall=True)
+          elif method=="vs.fmin":
+            minimizer=Minimizer(lambda x: self.measureSidebandPower(x,f_sb=f_sb),[0.,0.],[[-0.1,0.1],[-0.1,0.1]],xtol=0.001,maxfun=50,maxiter=2)
+            minimizer.minimize()
+            result = minimizer.result()
+          else:
+            raise Error("bad method selected !!")
+
+
+
+
           
           params = result[0]
           value = result[1]
@@ -277,14 +319,22 @@ class IqOptimization(Reloadable):
       self.teardown()
     return self._sidebandCalibrationData.filename()
 
+
+
+
   def measureSidebandPower(self,x,f_sb):
     c = x[0]
-    if abs(c)>0.4:
-      return 100
-    phi = fmod(x[1],math.pi*2)
+    phi = x[1]
+#    if abs(c)>0.2:
+#      return 100
+#    if abs(phi-math.pi/2)>0.2:
+#      return 100
     self.loadSidebandCalibrationWaveform(f_sb = f_sb,c = c,phi = phi)
     time.sleep(0.1)
     power = self.measureAveragePower()
+    self.d.set(phi=phi,c=c)
+    self.d.set(minimum=power)
+    self.d.commit()
     print "Sideband power at f_sb = %g GHz,c = %g, phi = %g : %g dBm" % (f_sb,c,phi,power) 
     return power
  
@@ -305,8 +355,11 @@ class IqOptimization(Reloadable):
     
     length = 20000#self.period#int(1.0/self._awg.repetitionRate()*1e9)
     waveform = self.generateSidebandWaveform(f_sb = f_sb, c = c,phi = phi,length = length)
-    self._awg.createRawWaveform("IQ_Sideband_Calibration_I",real(waveform),self._markers,"REAL")
-    self._awg.createRawWaveform("IQ_Sideband_Calibration_Q",imag(waveform),self._markers,"REAL")
+    self._awg.loadiqWaveform(waveform,channels=self._awgChannels,waveformNames=["IQ_Sideband_Calibration_I","IQ_Sideband_Calibration_Q"])
+
+
+#    self._awg.createRawWaveform("IQ_Sideband_Calibration_I",real(waveform),self._markers,"REAL")
+#    self._awg.createRawWaveform("IQ_Sideband_Calibration_Q",imag(waveform),self._markers,"REAL")
 
     return waveform
 
@@ -320,6 +373,8 @@ class IqOptimization(Reloadable):
     times = arange(0,length,1)
     cr = c*exp(1j*phi)
     waveformIQ = 0.5*exp(-1j*f_sb*2.0*math.pi*(times+float(delay)))+0.5*cr*exp(1j*f_sb*2.0*math.pi*(times+float(delay)))
+
+    waveformIQ = 0.5*(cos(f_sb*2.0*math.pi*(times+float(delay)))+1j*(1+c)*sin(f_sb*2.0*math.pi*(times+float(delay)))*exp(1j*phi))
     return waveformIQ
 
   def measureAveragePower(self):
@@ -341,6 +396,7 @@ class IqOptimization(Reloadable):
       (c,phi) = self.sidebandParameters(f_c,f_sb)
       return {'i0':iO, 'q0':qO, 'c':c, 'phi':phi}
     except:
+      raise
       print "unable to find correct parameters -> return (0,0,0,0)"
       return {'i0':0, 'q0':0, 'c':0, 'phi':0}
          
@@ -352,35 +408,29 @@ class IqOptimization(Reloadable):
     
   def sidebandParameters(self,f_c,f_sb):
     if self.sidebandCalibrationData().column("f_c") == None:
+      print "no value in sidebandCalibrationData (error1)"
       return (0,0)
     min_index = argmin(abs(self.sidebandCalibrationData().column("f_c")-f_c))
     f_c = self.sidebandCalibrationData()["f_c"][min_index]
     if min_index == None:
+      print "no value in sidebandCalibrationData (error2)"
       return (0,0)
-    calibrationData = self.sidebandCalibrationData().children(f_c = f_c)[0]
+    calibrationData = self.sidebandCalibrationData().children(f_c = f_c)[-1]
     rows = calibrationData.search(f_sb = f_sb)
+    print f_sb
+    print rows
     if rows != []:
       c = calibrationData.column("c")[rows[0]]
       phi = calibrationData.column("phi")[rows[0]]
-    else:      
       try:
         phiInterpolation = scipy.interpolate.interp1d(calibrationData.column("f_sb"),calibrationData.column("phi"))      
         cInterpolation = scipy.interpolate.interp1d(calibrationData.column("f_sb"),calibrationData.column("c"))      
         c = cInterpolation(f_sb)
         phi = phiInterpolation(f_sb)
       except:
-        return (0,0)
+        print "interpolationFailed (error3)"
+    else:
+      print "no value in sidebandCalibrationData (error4)"
+      return (0,0)
     return (c,phi)
-
-
-
-
-
-
-
-
-
-
-
-
 
