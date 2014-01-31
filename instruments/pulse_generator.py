@@ -33,9 +33,8 @@ class Instr(Instrument):
         Define carrier Frequency of the microwave source, only work in modulationMode = "IQMixer"
         """
         if self._params['modulationMode']!="IQMixer":
-          print "ERROR ! u dont have to set carrier frequency in mode %s" %self._params['modulationMode']
-        else:
-          self._MWSource.setFrequency(frequency)
+          print "WARNING ! Carrier Frequency change also Tone Frequency in %s mode" %self._params['modulationMode']
+        self._MWSource.setFrequency(frequency)
   
       def generatePulse(self, duration=100, gaussian=False,frequency=12., amplitude=1.,phase=0.,DelayFromZero=0, useCalibration=False,shape=None, name=None):
         """
@@ -108,7 +107,7 @@ class Instr(Instrument):
           print "NOT CONFIGURED YET ! DO NOT USE !"
         self.pulses[name]=[pulse,True] 
       
-      def generateMarker(self,name=None,start=0,stop=10000,level=3):   # Made by Kiddi 17/09/13
+      def generateMarker(self,name=None,start=0,stop=10000,level=3,start2='',stop2='',start3='',stop3=''):   # Made by Kiddi 17/09/13
         'generates markers which rise to level at point start and return to zero at stop '
         if name==None:
           name='self%i'%self.indexMarker
@@ -121,6 +120,10 @@ class Instr(Instrument):
         
         marker=numpy.zeros(register['repetitionPeriod'],dtype=numpy.int8)
         marker[start:stop]=level
+        if start2!='':
+          marker[start2:stop2]=level
+        if start3!='':
+          marker[start3:stop3]=level
         self.markersDict[name]=[marker,True]
 
       
@@ -203,8 +206,18 @@ class Instr(Instrument):
             outputName=self.name()
           
           self._AWG.listRealWaveform(pulse,markers=markers,waveformName=outputName)
-
-      def sequenceWaveformList(self,channel=None,names=None):
+          
+          
+      def sequenceWaveform(self,seqNumber,channel=None,name=None,repeat=1):
+          """
+          Takes the waveform name and loads it into a sequence slot seqNumber on channel
+          """
+          if channel==None:
+            channel=self._params['AWGChannels']
+          self._AWG.appendWaveformToSequence(seqNumber,channel,name,repeat=repeat)
+          
+          
+      def sequenceWaveformList(self,channel=None,names=None,start=0,stop=0):
           """
           Takes all the waveforms in the user defined waveform list or a given list and loads them into a sequence on channel
           """
@@ -212,7 +225,10 @@ class Instr(Instrument):
             channel=self._params['AWGChannels']
           if names==None:
             allNames=self._AWG.getWaveformNames()
-            names=allNames[25:] # The first 25 waveforms are the predfined ones
+            if start==0 and stop==0:
+              names=allNames[25:] # The first 25 waveforms are the predfined ones
+            else:
+              names=allNames[25+start:25+stop]
           for i in range(0,len(names)):
             self._AWG.appendWaveformToSequence(i+1,channel,names[i])
             

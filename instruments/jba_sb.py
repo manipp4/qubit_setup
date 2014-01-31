@@ -535,7 +535,7 @@ class Instr(Instrument):
       elif p1<p2:
         slope=1
       else:
-        raise "BAD RANGE"
+        raise Exception("BAD RANGE")
       values=[p1,p2]  
       l=-1
       n=0

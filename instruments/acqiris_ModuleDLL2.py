@@ -37,6 +37,9 @@ class ModuleDLL2():
     self.iChannel=0
     self.qChannel=1
     self._nbrIntervalsPerSegment=0
+    self.Io=0
+    self.Qo=0
+    self.r=0
     
     
 
@@ -49,6 +52,7 @@ class ModuleDLL2():
     self.qChannel=q
     
   def setDemodulatorCorrections(self, f, offsetI, offsetQ, gainI, gainQ, angleI, angleQ):
+    print "setting corrections"
     self.demodulator.setCorrections(f,offsetI,offsetQ,gainI,gainQ,angleI,angleQ)
      
     
@@ -85,10 +89,20 @@ class ModuleDLL2():
         co=zeros((2,self.lastWave['nbrSegmentArray'][0]))
         co[0,:]=components[frequencies[i][2],0,:]
         co[1,:]=components[frequencies[i][2],1,:]
-        (clicks[index,:],cop)=self.multiplexedBifurcationMapAdd(co,frequency) 
+
+        #Rotate and count in C
+        #(clicks[index,:],cop)=self.multiplexedBifurcationMapAdd(co,frequency) 
+        #Rotate and count in python
+        #(clicks[index,:],cop)=self.multiplexedBifurcationMapAdd(co,frequency)
+        t=time.time()
+        cop=zeros((2,len(co[1])))
+        for h in range(0,len(co[1])):
+          cop[0,h]=(co[0,h]-self.Io)*cos(self.r)+(co[1,h]-self.Qo)*sin(self.r)
+          cop[1,h]=(co[0,h]-self.Io)*sin(self.r)-(co[1,h]-self.Qo)*cos(self.r)
+          if cop[0,h]>0:clicks[index,h]=1
         rotatedComponents[frequencies[i][2],0,:]=cop[0,:]
         rotatedComponents[frequencies[i][2],1,:]=cop[1,:]
-    
+        print "rotation time"+str(time.time()-t)
         probabilities[frequencies[i][2]]=mean(clicks[index,:])        
         results['b%i'%frequencies[i][2]]=probabilities[frequencies[i][2]]      
       
@@ -226,6 +240,10 @@ class ModuleDLL2():
     return (self.r, co)
     
   def multiplexedBifurcationMapSetRotation(self,f,Io,Qo,r):
+      print "setting correction" +str(Io)+"   "+str(Qo)+"   "+str(r)
+      self.Io=Io
+      self.Qo=Qo
+      self.r=r
       self.m.setRotation(f,Io,Qo,r)
 
   def defineOutputDemodulationArrays(self,nbrSegments,nbrSamplesPerSegment,samplingTime, frequency,intervalMode=-1,averageOnly=False):

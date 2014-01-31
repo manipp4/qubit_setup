@@ -7,6 +7,10 @@ import scipy.optimize
 
 if 'lib.datacube' in sys.modules:
   reload(sys.modules['lib.datacube'])
+
+from macros.optimization import Minimizer
+reload(sys.modules['macros.optimization'])
+from macros.optimization import Minimizer
   
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
@@ -91,12 +95,12 @@ class OffsetOptimization(Reloadable):
 #    self._awg.createRawWaveform("IQ_Power_Calibration_passive",waveformPassive,self._markers,"REAL")
 
 
-  def calibrateIQOffset(self):
+  def calibrateOffset(self):
     """
     Calibrate the IQ mixer DC offset.
     """
     self.initCalibrationData()
-    frequency=round(self._mwg.frequency(),4)
+    frequency=round(self._mwg.frequency(),6)
     print frequency
     try:
       self.setup()
@@ -112,7 +116,8 @@ class OffsetOptimization(Reloadable):
       self._awg.startAllChannels()
       self._mwg.turnOn()
       self._fsp.write("SENSE1:FREQUENCY:CENTER %f GHZ" % frequency)
-      (voltage,minimum) = self.optimizeIQMixerPowell()
+#      (voltage,minimum) = self.optimizeIQMixerPowell()
+      (voltage,minimum) = self.optimizeMixerVS()
       minimum = self.measurePower(voltage)
       print "Optimum value of %g dBm at offset %g V" % (minimum,voltage[0])
       self._offsetCalibrationData.set(i = voltage[0], minimum = minimum)
@@ -120,6 +125,15 @@ class OffsetOptimization(Reloadable):
       self._offsetCalibrationData.savetxt()
     finally:
       self.teardown()
+
+  def optimizeMixerVS(self):
+    self.d=Datacube()
+    self.d.toDataManager()
+    self.d.plotInDataManager("iOffset","minimum",clear=True)
+    self.d.plotInDataManager("qOffset","minimum")
+    minimizer=Minimizer(lambda x: self.measurePower(x),[0.],[[-0.3,0.3]],xtol=0.001,maxfun=50,maxiter=1)
+    minimizer.minimize()
+    return minimizer.result()
 
   def optimizeIQMixerPowell(self):
     """
@@ -131,7 +145,7 @@ class OffsetOptimization(Reloadable):
   def measurePower(self,low):
     """
     Measure the leaking power of the mixer at a given point.
-    Used by optimizeIQMixerPowell.
+    Used by optimizeIQMixerPowell and optimizeMixerVS.
     """
     if math.fabs(low[0]) > 2.0:
       return 100.0

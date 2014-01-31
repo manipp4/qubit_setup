@@ -150,11 +150,11 @@ class Instr(VisaInstrument):
   def getValueAtMarker(self):
      return float(self.ask("CALC:MARK:Y?"))
   
-  def initialize(self):
+  def initialize(self,visaAddress="TCPIP0::192.168.0.17::inst0"):
     try:
       self._name = "Rhode & Schwarz FSP"
       if DEBUG:
         print "Initializing FSP"
-      self._visaAddress = "TCPIP0::192.168.0.17::inst0"
+      self._visaAddress = visaAddress
     except:
       self.statusStr("An error has occured. Cannot initialize FSP.")        

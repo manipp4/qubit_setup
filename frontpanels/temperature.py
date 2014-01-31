@@ -40,13 +40,13 @@ class Panel(FrontPanel):
         self.gliding.pop(0)
       self.canvas.axes.clear()
       self.canvas.axes.plot(self.times,self.temperatures)
-      self.canvas.axes.plot(self.times,self.gliding)
+      self.canvas.axes.plot(self.times,self.gliding) 
       self.canvas.axes.set_xticks((self.times[0],self.times[-1]))
       xAxis = self.canvas.axes.xaxis
       xAxis.set_major_formatter(ticker.FuncFormatter(self.formatDate))
       self.canvas.draw()
       if len(self.gliding)>1:
-        slope = (self.gliding[-1]-self.gliding[-2])/(self.times[-1]-self.times[-2])*60*60
+        slope = (self.gliding[-1]-self.gliding[1])/(self.times[-1]-self.times[1])*60*60
       else:
         slope = 0
       if (slope>500) and t < 0.5:
@@ -70,7 +70,7 @@ class Panel(FrontPanel):
         self.title.setAlignment(Qt.AlignCenter)
         self.title.setStyleSheet("QLabel {font:18px;}")
         self.temperatures = []
-        self.times = []
+        self.times = [] 
         self.gliding = []
 
         self.temperature = QLabel("Please wait, fetching temperature...")

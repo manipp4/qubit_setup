@@ -121,6 +121,7 @@ class Instr(VisaInstrument):
       state = False
     self.notify("output",state)
     return state
+
     
   def initialize(self,name = "Agilent MWG", visaAddress = "TCPIP0::192.168.0.13::inst0",alias = None):
     try:

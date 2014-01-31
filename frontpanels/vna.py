@@ -30,15 +30,18 @@ class Panel(FrontPanel):
         deleteButton = QPushButton("delete")
         saveButton = QPushButton("save")
         refButton = QPushButton("make ref")
+        dataMangerButton = QPushButton("DataManager")
         myLayout.addWidget(deleteButton,0,1)
         myLayout.addWidget(saveButton,0,2)
         myLayout.addWidget(refButton,0,3)
+        myLayout.addWidget(dataMangerButton,0,4)
         
         #Programming with "lambda" rocks :)
         self.connect(myCheckBox,SIGNAL("stateChanged(int)"),lambda state, x = i: self.setVisibility(x,state))
         self.connect(deleteButton,SIGNAL("clicked()"),lambda x = i: self.deleteTrace(x))
         self.connect(saveButton,SIGNAL("clicked()"),lambda x = i: self.saveTrace(x))
         self.connect(refButton,SIGNAL("clicked()"),lambda x = i: self.makeReference(x))
+        self.connect(dataMangerButton,SIGNAL("clicked()"),lambda x = i: self.sendToDataManager(x))
         
         self.traces.setCellWidget(i,2,myLabel)
         self.traces.setRowHeight(i,50)        
@@ -111,7 +114,10 @@ class Panel(FrontPanel):
         self._reference = None
       else:
         self._reference = self._traces[i]
-      self.plotTraces()
+      self.plotTraces()   
+
+    def sendToDataManager(self,i):
+      self._traces[i].toDataManager()
       
     #Deletes a given trace.
     def deleteTrace(self,i):

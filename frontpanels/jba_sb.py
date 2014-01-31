@@ -251,7 +251,7 @@ class Panel(FrontPanel):
     self.statusLabel.setText(message)
     
   def updateGraphs(self):
-    self.disableButtons()
+    #self.disableButtons()
     (p,o1,trends) = self.instrument.getThisMeasure(10)
     self.histograms.axes.cla()
     range=max(abs(min(trends[0])),abs(max(trends[0])))

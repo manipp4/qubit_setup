@@ -1,0 +1,18 @@
+children: []
+meta:
+  creationTime: Wed Jan 15 15:41:13 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {}
+  fieldNames: []
+  filename: C:\Labo\python\qubit_setup\scripts\.par
+  index: 0
+  length: 0
+  modificationTime: Wed Jan 15 15:41:13 2014
+  name: IQ mixer calibration - Sideband Mixing Calibration Data
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: .txt
+version: '0.3'

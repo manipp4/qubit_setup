@@ -260,7 +260,6 @@ class Instr(VisaInstrument):
     Returns the repetition rate of the AWG.
     """
     return float(self.ask("AWGControl:RRate?"))
-    
   def runMode(self):
     """
     Returns the run mode of the AWG.

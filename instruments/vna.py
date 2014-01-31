@@ -57,7 +57,19 @@ class Instr(VisaInstrument):
       
     def attenuation(self):
       return float(self.ask("SA1?"))
-      
+    
+    def setTotalPower(self, totalPower):
+      power=totalPower%10
+      attenuation=totalPower-power
+      self.setAttenuation(-attenuation)
+      time.sleep(0.3)
+      self.setPower(power)
+      print power,attenuation
+      return self.totalPower()
+
+    def totalPower(self):
+      return 5+self.power()-self.attenuation()
+
     def setPower(self,power):
       self.write("PWR %f DB" % power)
       return self.power()

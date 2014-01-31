@@ -79,11 +79,11 @@ class Instr(Instrument):
     rowData=Datacube()
     for phi in arange(0,2*math.pi,math.pi/30):
       print "calibration : phi = %f deg" % (phi/math.pi*180)    
-      self._pulse_generator.clearPulse()
+      self._pulseGenerator.clearPulse()
       self.clear()
-      self._pulse_generator.generatePulse(duration=20000, frequency=f, amplitude=0.6, DelayFromZero=0,useCalibration=True, phase=phi)
+      self._pulseGenerator.generatePulse(duration=20000, frequency=f, amplitude=0.6, DelayFromZero=0,useCalibration=True, phase=phi)
       self.addFrequency(f=f,useCorrection=False)    	
-      self._pulse_generator.sendPulse()
+      self._pulseGenerator.sendPulse()
       time.sleep(0.5)
       (av, co, fr)= self.analyse()
       rowData.set(I=av[0,0], Q=av[1,0],phi=phi)          	
@@ -128,7 +128,7 @@ class Instr(Instrument):
     self._acqiris=instrumentManager.getInstrument(acqiris)
     self._acqiris.setChannels(acqirisChannels[0],acqirisChannels[1])
     self._MWSource=instrumentManager.getInstrument(MWSource)
-    self._pulse_generator=instrumentManager.getInstrument(pulse_generator)
+    self._pulseGenerator=instrumentManager.getInstrument(pulse_generator)
     self._params=dict()
     self._params["acqiris"]=acqiris
     self._params["MWSource"]=MWSource

@@ -23,7 +23,7 @@ class Instr(Instrument):
 
 
       def calibrate(self):
-        self._calibration.calibrateIQOffset()
+        self._calibration.calibrateOffset()
 
        
       def calibrationParameters(self):

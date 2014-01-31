@@ -27,7 +27,7 @@ class Instr(Instrument):
       self._register = dict()
     if key in self._register:
       return self._register[key]
-    raise IndexError("No such key: %s" % key)
+    raise IndexError("No such key in register: %s" % key)
     
   def hasKey(self,key):
     if key in self._register:
