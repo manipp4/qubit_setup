@@ -1,15 +1,35 @@
-L:\python\qubit_setup\lib\swig\tools\numerical_wrap.cxx
-L:\python\qubit_setup\lib\swig\tools\Release\app.res
-L:\python\qubit_setup\lib\swig\tools\Release\cl.command.1.tlog
-L:\python\qubit_setup\lib\swig\tools\Release\CL.read.1.tlog
-L:\python\qubit_setup\lib\swig\tools\Release\CL.write.1.tlog
-L:\python\qubit_setup\lib\swig\tools\Release\link.command.1.tlog
-L:\python\qubit_setup\lib\swig\tools\Release\link.read.1.tlog
-L:\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL.OBJ
-L:\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL.PCH
-L:\python\qubit_setup\lib\swig\tools\Release\numerical.write.1.tlog
-L:\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL_WRAP.OBJ
-L:\python\qubit_setup\lib\swig\tools\Release\rc.command.1.tlog
-L:\python\qubit_setup\lib\swig\tools\Release\rc.read.1.tlog
-L:\python\qubit_setup\lib\swig\tools\Release\rc.write.1.tlog
-L:\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\STDAFX.OBJ
+C:\Documents and Settings\User\Bureau\tools\Release\_numerical.exp
+C:\Documents and Settings\User\Bureau\tools\Release\app.res
+C:\Documents and Settings\User\Bureau\tools\Release\cl.command.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\CL.read.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\CL.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.3992.read.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.3992.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.3992-cvtres.read.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.3992-cvtres.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.command.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.read.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\link.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\mt.command.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\mt.read.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\mt.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\numerical.dll.intermediate.manifest
+C:\Documents and Settings\User\Bureau\tools\Release\numerical.obj
+C:\Documents and Settings\User\Bureau\tools\Release\numerical.pch
+C:\Documents and Settings\User\Bureau\tools\Release\numerical.pdb
+C:\Documents and Settings\User\Bureau\tools\Release\numerical.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\numerical_wrap.obj
+C:\Documents and Settings\User\Bureau\tools\Release\rc.command.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\rc.read.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\rc.write.1.tlog
+C:\Documents and Settings\User\Bureau\tools\Release\Stdafx.obj
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\_NUMERICAL.PYD
+L:\lab_control\python\qubit_setup\lib\swig\tools\Release\_numerical.exp
+L:\lab_control\python\qubit_setup\lib\swig\tools\Release\_numerical.lib
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\APP.RES
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL.DLL.INTERMEDIATE.MANIFEST
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL.OBJ
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL.PCH
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL.PDB
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\NUMERICAL_WRAP.OBJ
+L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\LIB\SWIG\TOOLS\RELEASE\STDAFX.OBJ

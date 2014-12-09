@@ -1,0 +1,367 @@
+﻿La génération a démarré 20/11/2014 17:15:55.
+     1>Projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" sur le nœud 2 (rebuild cible(s)).
+     1>Génération à l'aide des outils version "12.0".
+     1>Cible "_CheckForInvalidConfigurationAndPlatform" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (point d'entrée) :
+       Tâche "Error" ignorée en raison d'une fausse condition ; ( '$(_InvalidConfigurationError)' == 'true' ) a été évaluée comme ( '' == 'true' ).
+       Tâche "Warning" ignorée en raison d'une fausse condition ; ( '$(_InvalidConfigurationWarning)' == 'true' ) a été évaluée comme ( '' == 'true' ).
+       Utilisation de la tâche "Message" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "Message"
+         Configuration=Release
+       Exécution de la tâche "Message" terminée.
+       Tâche "Message"
+         Platform=Win32
+       Exécution de la tâche "Message" terminée.
+       Tâche "Error" ignorée en raison d'une fausse condition ; ('$(OutDir)' != '' and !HasTrailingSlash('$(OutDir)')) a été évaluée comme ('L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\' != '' and !HasTrailingSlash('L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\')).
+       Tâche "Error" ignorée en raison d'une fausse condition ; ('$(BaseIntermediateOutputPath)' != '' and !HasTrailingSlash('$(BaseIntermediateOutputPath)')) a été évaluée comme ('obj\' != '' and !HasTrailingSlash('obj\')).
+       Tâche "Error" ignorée en raison d'une fausse condition ; ('$(IntermediateOutputPath)' != '' and !HasTrailingSlash('$(IntermediateOutputPath)')) a été évaluée comme ('Release\' != '' and !HasTrailingSlash('Release\')).
+     1>Génération de la cible "_CheckForInvalidConfigurationAndPlatform" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "_DetermineManagedStateFromCL" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Rebuild" en dépend) :
+     1>Génération de la cible "_DetermineManagedStateFromCL" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "_PrepareForRebuild" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.BuildSteps.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Rebuild" en dépend) :
+     1>Génération de la cible "_PrepareForRebuild" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "BeforeRebuild" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Rebuild" en dépend) :
+     1>Génération de la cible "BeforeRebuild" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "_PrepareForClean" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.BuildSteps.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+       Utilisation de la tâche "Delete" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "Delete"
+         Suppression du fichier "Release\demodulation.lastbuildstate".
+       Exécution de la tâche "Delete" terminée.
+     1>Génération de la cible "_PrepareForClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "BeforeClean" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+     1>Génération de la cible "BeforeClean" terminée dans le projet "demodulation.vcxproj".
+       Cible "UnmanagedUnregistration" ignorée en raison d'une fausse condition ; ((('$(_AssemblyTimestampBeforeCompile)' != '$(_AssemblyTimestampAfterCompile)' or '$(RegisterForComInterop)' != 'true' or '$(OutputType)' != 'library') or
+                           ('$(_AssemblyTimestampBeforeCompile)' == '')) and
+                          Exists('@(_UnmanagedRegistrationCache)')) a été évaluée comme ((('' != '' or '' != 'true' or 'library' != 'library') or
+                           ('' == '')) and
+                          Exists('obj\demodulation.vcxproj.UnmanagedRegistration.cache')).
+     1>Cible "CoreClean" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+       Tâche "Delete"
+       Exécution de la tâche "Delete" terminée.
+       Utilisation de la tâche "ReadLinesFromFile" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "ReadLinesFromFile"
+       Exécution de la tâche "ReadLinesFromFile" terminée.
+       Utilisation de la tâche "FindUnderPath" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "FindUnderPath"
+         Le chemin de comparaison est "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\".
+       Exécution de la tâche "FindUnderPath" terminée.
+       Tâche "FindUnderPath"
+         Le chemin de comparaison est "Release\".
+       Exécution de la tâche "FindUnderPath" terminée.
+       Tâche "Delete"
+       Exécution de la tâche "Delete" terminée.
+       Utilisation de la tâche "RemoveDuplicates" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "RemoveDuplicates"
+       Exécution de la tâche "RemoveDuplicates" terminée.
+       Utilisation de la tâche "MakeDir" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "MakeDir"
+       Exécution de la tâche "MakeDir" terminée.
+       Utilisation de la tâche "WriteLinesToFile" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "WriteLinesToFile"
+       Exécution de la tâche "WriteLinesToFile" terminée.
+     1>Génération de la cible "CoreClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "AssignProjectConfiguration" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "CleanReferencedProjects" en dépend) :
+       Utilisation de la tâche "AssignProjectConfiguration" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "AssignProjectConfiguration"
+       Exécution de la tâche "AssignProjectConfiguration" terminée.
+     1>Génération de la cible "AssignProjectConfiguration" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "_SplitProjectReferencesByFileExistence" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "CleanReferencedProjects" en dépend) :
+       Tâche "ResolveNonMSBuildProjectOutput" ignorée en raison d'une fausse condition ; ('$(BuildingInsideVisualStudio)'=='true' and '@(ProjectReferenceWithConfiguration)'!='') a été évaluée comme ('true'=='true' and ''!='').
+     1>Génération de la cible "_SplitProjectReferencesByFileExistence" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "CleanReferencedProjects" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('$(BuildingInsideVisualStudio)' != 'true' and '$(BuildProjectReferences)' == 'true' and '@(_MSBuildProjectReferenceExistent)' != '') a été évaluée comme ('true' != 'true' and 'true' == 'true' and '' != '').
+     1>Génération de la cible "CleanReferencedProjects" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "CleanPublishFolder" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+       Tâche "RemoveDir" ignorée en raison d'une fausse condition ; ('$(PublishDir)'=='$(OutputPath)app.publish\' and Exists('$(PublishDir)')) a été évaluée comme ('L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\app.publish\'=='L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\app.publish\' and Exists('L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\app.publish\')).
+     1>Génération de la cible "CleanPublishFolder" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "AfterClean" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+     1>Génération de la cible "AfterClean" terminée dans le projet "demodulation.vcxproj".
+       Cible "EntityClean" ignorée en raison d'une fausse condition ; ('@(EntityDeploy)' != '') a été évaluée comme ('' != '').
+     1>Cible "BeforeCppClean" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "CppClean" en dépend) :
+     1>Génération de la cible "BeforeCppClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "CoreCppClean" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "CppClean" en dépend) :
+       Tâche "MakeDir"
+       Exécution de la tâche "MakeDir" terminée.
+       Utilisation de la tâche "CppClean" à partir de l'assembly "Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "CppClean"
+       Exécution de la tâche "CppClean" terminée.
+       Tâche "WriteLinesToFile"
+       Exécution de la tâche "WriteLinesToFile" terminée.
+     1>Génération de la cible "CoreCppClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "AfterCppClean" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "CppClean" en dépend) :
+     1>Génération de la cible "AfterCppClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "PGInstrumentedClean" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "CppClean" en dépend) :
+       Tâche "Delete"
+       Exécution de la tâche "Delete" terminée.
+     1>Génération de la cible "PGInstrumentedClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "CppClean" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Clean" en dépend) :
+     1>Génération de la cible "CppClean" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "Clean" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Rebuild" en dépend) :
+     1>Génération de la cible "Clean" terminée dans le projet "demodulation.vcxproj".
+       Cible "_DetermineManagedStateFromCL" ignorée. Avait été générée correctement.
+     1>Cible "_PrepareForBuild" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.BuildSteps.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Build" en dépend) :
+     1>Génération de la cible "_PrepareForBuild" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "SetBuildDefaultEnvironmentVariables" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.Cpp.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Build" en dépend) :
+       Utilisation de la tâche "SetEnv" à partir de l'assembly "Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "SetEnv"
+         PATH=c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin; c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\bin; c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\tools; c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\ide; c:\Program Files (x86)\Microsoft Visual Studio 10.0\; c:\Program Files (x86)\Microsoft Visual Studio 10.0\\SDK\v2.0\bin
+       Exécution de la tâche "SetEnv" terminée.
+       Tâche "SetEnv" ignorée en raison d'une fausse condition ; ('$(_IsNativeEnvironment)' == 'true') a été évaluée comme ('' == 'true').
+       Tâche "SetEnv"
+         LIB=c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib; c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib; c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\i386; C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib; c:\Program Files (x86)\Microsoft Visual Studio 10.0\; c:\Program Files (x86)\Microsoft Visual Studio 10.0\lib
+       Exécution de la tâche "SetEnv" terminée.
+       Tâche "SetEnv"
+         LIBPATH=c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib;c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+       Exécution de la tâche "SetEnv" terminée.
+       Tâche "SetEnv"
+         INCLUDE=c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include; c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\include; C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\include
+       Exécution de la tâche "SetEnv" terminée.
+     1>Génération de la cible "SetBuildDefaultEnvironmentVariables" terminée dans le projet "demodulation.vcxproj".
+       Cible "SetUserMacroEnvironmentVariables" ignorée en raison d'une fausse condition ; ('@(BuildMacro)' != '') a été évaluée comme ('' != '').
+     1>Cible "BeforeResolveReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveReferences" en dépend) :
+     1>Génération de la cible "BeforeResolveReferences" terminée dans le projet "demodulation.vcxproj".
+       Cible "AssignProjectConfiguration" ignorée. Avait été générée correctement.
+       Cible "AssignProjectConfiguration" ignorée. Avait été générée correctement.
+       Cible "_SplitProjectReferencesByFileExistence" ignorée. Avait été générée correctement.
+       Cible "_RemoveNameMetadataFromProjectReferenceItems" ignorée en raison d'une fausse condition ; ('@(ProjectReference)'!='') a été évaluée comme (''!='').
+     1>Cible "ResolveProjectReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveReferences" en dépend) :
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and ('$(BuildingInsideVisualStudio)' == 'true' or '$(BuildProjectReferences)' != 'true') and '$(VisualStudioVersion)' != '10.0' and '@(_MSBuildProjectReferenceExistent)' != '') a été évaluée comme ('' == 'true' and '' != '' and ('true' == 'true' or 'true' != 'true') and '10.0' != '10.0' and '' != '').
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and ('$(BuildingInsideVisualStudio)' == 'true' or '$(BuildProjectReferences)' != 'true') and '$(VisualStudioVersion)' == '10.0' and '@(_MSBuildProjectReferenceExistent)' != '') a été évaluée comme ('' == 'true' and '' != '' and ('true' == 'true' or 'true' != 'true') and '10.0' == '10.0' and '' != '').
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and '$(BuildingInsideVisualStudio)' != 'true' and '$(BuildProjectReferences)' == 'true' and '@(_MSBuildProjectReferenceExistent)' != '') a été évaluée comme ('' == 'true' and '' != '' and 'true' != 'true' and 'true' == 'true' and '' != '').
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and '$(BuildingProject)' == 'true' and '@(_MSBuildProjectReferenceExistent)' != '') a été évaluée comme ('' == 'true' and '' != '' and 'true' == 'true' and '' != '').
+       Tâche "Warning" ignorée en raison d'une fausse condition ; ('@(ProjectReferenceWithConfiguration)' != '' and '@(_MSBuildProjectReferenceNonexistent)' != '') a été évaluée comme ('' != '' and '' != '').
+     1>Génération de la cible "ResolveProjectReferences" terminée dans le projet "demodulation.vcxproj".
+       Cible "ResolveNativeReferences" ignorée en raison d'une fausse condition ; ('@(NativeReference)'!='') a été évaluée comme (''!='').
+     1>Cible "GetFrameworkPaths" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.NetFramework.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveAssemblyReferences" en dépend) :
+     1>Génération de la cible "GetFrameworkPaths" terminée dans le projet "demodulation.vcxproj".
+       Cible "GetWinFXPath" ignorée en raison d'une fausse condition ; (('@(Page)' != '' or '@(ApplicationDefinition)' != '' or '@(Resource)' != '') and ('$(GetWinFXNativePath)' != '' or '$(GetWinFXWoWPath)' != '' )) a été évaluée comme (('' != '' or '' != '' or '' != '') and ('' != '' or '' != '' )).
+     1>Cible "GetReferenceAssemblyPaths" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveAssemblyReferences" en dépend) :
+       Tâche "GetReferenceAssemblyPaths" ignorée en raison d'une fausse condition ; ('$(TargetFrameworkMoniker)' != '' and ('$(_TargetFrameworkDirectories)' == '' or '$(_FullFrameworkReferenceAssemblyPaths)' == '')) a été évaluée comme ('.NETFramework,Version=v4.0' != '' and ('C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0' == '' or 'C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0' == '')).
+     1>Génération de la cible "GetReferenceAssemblyPaths" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "PlatformPrepareForBuild" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Platforms\Win32\Microsoft.Cpp.Win32.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "PrepareForBuild" en dépend) :
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; (!(exists('$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets'))) a été évaluée comme (!(exists('C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\\Platforms\Win32\PlatformToolsets\v100\Microsoft.Cpp.Win32.v100.targets'))).
+     1>Génération de la cible "PlatformPrepareForBuild" terminée dans le projet "demodulation.vcxproj".
+       Cible "GetFrameworkPaths" ignorée. Avait été générée correctement.
+       Cible "GetReferenceAssemblyPaths" ignorée. Avait été générée correctement.
+     1>Cible "PrepareForBuild" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveAssemblyReferences" en dépend) :
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(DesignTimeBuild)'!='true' and '$(ConfigurationPlatformExists)' != 'true') a été évaluée comme (''!='true' and 'true' != 'true').
+       Tâche "MakeDir"
+       Exécution de la tâche "MakeDir" terminée.
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(DesignTimeBuild)'!='true' and '$(VCInstallDir)'=='' and '$(UseEnv)' != 'true' and ($(TargetFrameworkVersion)=='v3.5' or $(TargetFrameworkVersion)=='v3.0' or $(TargetFrameworkVersion)=='v2.0' )) a été évaluée comme (''!='true' and 'c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\'=='' and '' != 'true' and (v4.0=='v3.5' or v4.0=='v3.0' or v4.0=='v2.0' )).
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(DesignTimeBuild)'!='true' and '$(VCInstallDir)'=='' and '$(UseEnv)' != 'true' and '$(PlatformToolset)'=='v90') a été évaluée comme (''!='true' and 'c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\'=='' and '' != 'true' and 'v100'=='v90').
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(VCInstallDir)'=='' and '$(UseEnv)' != 'true') a été évaluée comme ('c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\'=='' and '' != 'true').
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(WindowsSDKDir)'=='' and '$(UseEnv)' != 'true') a été évaluée comme ('C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\'=='' and '' != 'true').
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(IntDirTrailingSlashWarning)'=='true') a été évaluée comme (''=='true').
+       Tâche "VCMessage" ignorée en raison d'une fausse condition ; ('$(OutDirTrailingSlashWarning)'=='true') a été évaluée comme (''=='true').
+       Tâche "MakeDir"
+       Exécution de la tâche "MakeDir" terminée.
+     1>Génération de la cible "PrepareForBuild" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "GetInstalledSDKLocations" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveSDKReferences" en dépend) :
+       Tâche "GetInstalledSDKLocations" ignorée en raison d'une fausse condition ; ('@(SDKReference)' != '') a été évaluée comme ('' != '').
+     1>Génération de la cible "GetInstalledSDKLocations" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "ResolveSDKReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveAssemblyReferences" en dépend) :
+       Tâche "ResolveSDKReference" ignorée en raison d'une fausse condition ; ('@(SDKReference)'!='') a été évaluée comme (''!='').
+     1>Génération de la cible "ResolveSDKReferences" terminée dans le projet "demodulation.vcxproj".
+       Cible "ResolveSDKReferences" ignorée. Avait été générée correctement.
+     1>Cible "ExpandSDKReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveAssemblyReferences" en dépend) :
+       Tâche "GetSDKReferenceFiles" ignorée en raison d'une fausse condition ; ('@(ResolvedSDKReference)'!='') a été évaluée comme (''!='').
+     1>Génération de la cible "ExpandSDKReferences" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "ResolveAssemblyReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveReferences" en dépend) :
+       Utilisation de la tâche "ResolveAssemblyReference" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "ResolveAssemblyReference"
+         TargetFrameworkMoniker :
+             .NETFramework,Version=v4.0
+         TargetFrameworkMonikerDisplayName :
+             .NET Framework 4
+         TargetedRuntimeVersion :
+             v4.0.30319
+         Assemblies :
+             System.Core
+         AssemblyFiles :
+         CandidateAssemblyFiles :
+         TargetFrameworkDirectories :
+             C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0
+         InstalledAssemblyTables :
+         IgnoreInstalledAssemblyTable :
+             False
+         SearchPaths :
+             {CandidateAssemblyFiles}
+             c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib
+             c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+             {HintPathFromItem}
+             {TargetFrameworkDirectory}
+             {Registry:Software\Microsoft\.NETFramework,v4.0,AssemblyFoldersEx}
+             {AssemblyFolders}
+             {GAC}
+             {RawFileName}
+             L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\Release\
+         AllowedAssemblyExtensions :
+             .winmd
+             .dll
+             .exe
+         AllowedRelatedFileExtensions :
+             .pdb
+             .xml
+             .pri
+         AppConfigFile :
+             
+         AutoUnify :
+             True
+         CopyLocalDependenciesWhenParentReferenceInGac :
+             True
+         FindDependencies :
+             True
+         TargetProcessorArchitecture :
+             x86
+         StateFile :
+             Release\demodulation.vcxprojResolveAssemblyReference.cache
+         InstalledAssemblySubsetTables :
+         IgnoreInstalledAssemblySubsetTable :
+             False
+         TargetFrameworkSubsets :
+         FullTargetFrameworkSubsetNames :
+             Full
+         ProfileName :
+             
+         FullFrameworkFolders :
+             C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0
+         LatestTargetFrameworkDirectories :
+         ProfileTablesLocation :
+         Référence primaire "System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089".
+             Le chemin de fichier résolu est "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll".
+             Référence trouvée dans l'emplacement du chemin d'accès de recherche "{TargetFrameworkDirectory}".
+                 Pour SearchPath "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib".
+                 "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\System.Core.winmd" a été envisagé, mais il n'existe pas.
+                 "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\System.Core.dll" a été envisagé, mais il n'existe pas.
+                 "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\System.Core.exe" a été envisagé, mais il n'existe pas.
+                 Pour SearchPath "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib".
+                 "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\System.Core.winmd" a été envisagé, mais il n'existe pas.
+                 "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\System.Core.dll" a été envisagé, mais il n'existe pas.
+                 "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\System.Core.exe" a été envisagé, mais il n'existe pas.
+                 Pour SearchPath "{TargetFrameworkDirectory}".
+                 "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.winmd" a été envisagé, mais il n'existe pas.
+             Cette référence n'est pas "CopyLocal", car il s'agit d'un fichier requis.
+             L'ImageRuntimeVersion pour cette référence est "v4.0.30319".
+       Exécution de la tâche "ResolveAssemblyReference" terminée.
+     1>Génération de la cible "ResolveAssemblyReferences" terminée dans le projet "demodulation.vcxproj".
+       Cible "ResolveComReferences" ignorée en raison d'une fausse condition ; ('@(COMReference)'!='' or '@(COMFileReference)'!='') a été évaluée comme (''!='' or ''!='').
+     1>Cible "AfterResolveReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ResolveReferences" en dépend) :
+     1>Génération de la cible "AfterResolveReferences" terminée dans le projet "demodulation.vcxproj".
+       Cible "ImplicitlyExpandDesignTimeFacades" ignorée en raison d'une fausse condition ; ('$(ImplicitlyExpandDesignTimeFacades)' == 'true') a été évaluée comme ('' == 'true').
+     1>Cible "ResolveReferences" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Build" en dépend) :
+     1>Génération de la cible "ResolveReferences" terminée dans le projet "demodulation.vcxproj".
+       Cible "PrepareForBuild" ignorée. Avait été générée correctement.
+       Cible "PrepareForBuild" ignorée. Avait été générée correctement.
+     1>Cible "InitializeBuildStatus" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Build" en dépend) :
+       Tâche "ReadLinesFromFile"
+       Exécution de la tâche "ReadLinesFromFile" terminée.
+       Tâche "WriteLinesToFile"
+       Exécution de la tâche "WriteLinesToFile" terminée.
+       Utilisation de la tâche "Touch" à partir de l'assembly "Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "Touch"
+         Mise à jour de l'horodatage "Release\demodulation.unsuccessfulbuild".
+       Exécution de la tâche "Touch" terminée.
+     1>Génération de la cible "InitializeBuildStatus" terminée dans le projet "demodulation.vcxproj".
+       Cible "AssignProjectConfiguration" ignorée. Avait été générée correctement.
+       Cible "_SplitProjectReferencesByFileExistence" ignorée. Avait été générée correctement.
+     1>Cible "BuildGenerateSourcesTraverse" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('$(BuildPassReferences)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and '@(_MSBuildProjectReferenceExistent)' != '' and '%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true') a été évaluée comme ('' == 'true' and '' != '' and '' != '' and '' == 'true').
+     1>Génération de la cible "BuildGenerateSourcesTraverse" terminée dans le projet "demodulation.vcxproj".
+       Cible "SetBuildDefaultEnvironmentVariables" ignorée. Avait été générée correctement.
+       Cible "SetUserMacroEnvironmentVariables" ignorée en raison d'une fausse condition ; ('@(BuildMacro)' != '') a été évaluée comme ('' != '').
+       Cible "PrepareForBuild" ignorée. Avait été générée correctement.
+       Cible "ResolveReferences" ignorée. Avait été générée correctement.
+     1>Cible "BeforeBuildGenerateSources" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.BuildSteps.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "BeforeBuildGenerateSources" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "PreBuildEvent" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+       Tâche "Message" ignorée en raison d'une fausse condition ; ('%(PreBuildEvent.Message)' != '' and '%(PreBuildEvent.Command)' != '') a été évaluée comme ('' != '' and '' != '').
+       Tâche "Exec" ignorée en raison d'une fausse condition ; ('%(PreBuildEvent.Command)' != '') a été évaluée comme ('' != '').
+     1>Génération de la cible "PreBuildEvent" terminée dans le projet "demodulation.vcxproj".
+       Cible "CustomBuild" ignorée en raison d'une fausse condition ; ('@(CustomBuild)' != '') a été évaluée comme ('' != '').
+     1>Cible "_GenerateXMLData" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "_GenerateXMLData" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "_GenerateWebServiceProxy" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "_GenerateWebServiceProxy" terminée dans le projet "demodulation.vcxproj".
+       Cible "Xsd" ignorée en raison d'une fausse condition ; ('@(Xsd)' != '') a été évaluée comme ('' != '').
+     1>Cible "_Xsd" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "_Xsd" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "MakeDirsForMidl" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_Midl" en dépend) :
+       Tâche "Makedir"
+       Exécution de la tâche "Makedir" terminée.
+     1>Génération de la cible "MakeDirsForMidl" terminée dans le projet "demodulation.vcxproj".
+       Cible "Midl" ignorée en raison d'une fausse condition ; ('@(Midl)' != '') a été évaluée comme ('' != '').
+       Cible "CustomBuild" ignorée en raison d'une fausse condition ; ('@(CustomBuild)' != '') a été évaluée comme ('' != '').
+     1>Cible "ComputeMIDLGeneratedCompileInputs" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_Midl" en dépend) :
+     1>Génération de la cible "ComputeMIDLGeneratedCompileInputs" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "AfterMidl" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_Midl" en dépend) :
+     1>Génération de la cible "AfterMidl" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "_Midl" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "_Midl" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "AfterBuildGenerateSources" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.BuildSteps.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "AfterBuildGenerateSources" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "AfterBuildGenerateSourcesEvent" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildGenerateSources" en dépend) :
+     1>Génération de la cible "AfterBuildGenerateSourcesEvent" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "BuildGenerateSources" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "Build" en dépend) :
+     1>Génération de la cible "BuildGenerateSources" terminée dans le projet "demodulation.vcxproj".
+       Cible "AssignProjectConfiguration" ignorée. Avait été générée correctement.
+       Cible "_SplitProjectReferencesByFileExistence" ignorée. Avait été générée correctement.
+     1>Cible "BuildCompileTraverse" dans le fichier "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "BuildCompile" en dépend) :
+       Tâche "MSBuild" ignorée en raison d'une fausse condition ; ('$(BuildPassReferences)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and '@(_MSBuildProjectReferenceExistent)' != ''  and '%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true') a été évaluée comme ('' == 'true' and '' != '' and '' != ''  and '' == 'true').
+     1>Génération de la cible "BuildCompileTraverse" terminée dans le projet "demodulation.vcxproj".
+       Cible "SetBuildDefaultEnvironmentVariables" ignorée. Avait été générée correctement.
+       Cible "SetUserMacroEnvironmentVariables" ignorée en raison d'une fausse condition ; ('@(BuildMacro)' != '') a été évaluée comme ('' != '').
+       Cible "PrepareForBuild" ignorée. Avait été générée correctement.
+       Cible "ResolveReferences" ignorée. Avait été générée correctement.
+     1>Cible "BeforeClCompile" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_ClCompile" en dépend) :
+     1>Génération de la cible "BeforeClCompile" terminée dans le projet "demodulation.vcxproj".
+       Cible "ComputeMIDLGeneratedCompileInputs" ignorée. Avait été générée correctement.
+     1>Cible "ComputeCLInputPDBName" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_ClCompile" en dépend) :
+     1>Génération de la cible "ComputeCLInputPDBName" terminée dans le projet "demodulation.vcxproj".
+       Cible "ResolveReferences" ignorée. Avait été générée correctement.
+     1>Cible "ComputeReferenceCLInput" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_ClCompile" en dépend) :
+       Tâche "WriteLinesToFile"
+       Exécution de la tâche "WriteLinesToFile" terminée.
+       Tâche "Message" ignorée en raison d'une fausse condition ; ('$(_REFERENCE_DEBUG)'=='true' and '%(ClCompile.CompileAsManaged)' != 'false' and '%(ClCompile.CompileAsManaged)' != '') a été évaluée comme (''=='true' and '' != 'false' and '' != '').
+       Tâche "Message" ignorée en raison d'une fausse condition ; ('$(_REFERENCE_DEBUG)'=='true' and '%(ClCompile.CompileAsManaged)' != 'false' and '%(ClCompile.CompileAsManaged)' != '') a été évaluée comme (''=='true' and 'false' != 'false' and 'false' != '').
+     1>Génération de la cible "ComputeReferenceCLInput" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "MakeDirsForCl" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_ClCompile" en dépend) :
+       Tâche "MakeDir"
+       Exécution de la tâche "MakeDir" terminée.
+     1>Génération de la cible "MakeDirsForCl" terminée dans le projet "demodulation.vcxproj".
+       Cible "PrepareForBuild" ignorée. Avait été générée correctement.
+       Cible "SetBuildDefaultEnvironmentVariables" ignorée. Avait été générée correctement.
+       Cible "SetUserMacroEnvironmentVariables" ignorée en raison d'une fausse condition ; ('@(BuildMacro)' != '') a été évaluée comme ('' != '').
+     1>Cible "_SelectedFiles" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "SelectClCompile" en dépend) :
+     1>Génération de la cible "_SelectedFiles" terminée dans le projet "demodulation.vcxproj".
+       Cible "ComputeMIDLGeneratedCompileInputs" ignorée. Avait été générée correctement.
+       Cible "ComputeCLInputPDBName" ignorée. Avait été générée correctement.
+       Cible "ComputeReferenceCLInput" ignorée. Avait été générée correctement.
+       Cible "_SelectedFiles" ignorée. Avait été générée correctement.
+     1>Cible "SelectCustomBuild" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "SelectClCompile" en dépend) :
+     1>Génération de la cible "SelectCustomBuild" terminée dans le projet "demodulation.vcxproj".
+     1>Cible "SelectClCompile" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "ClCompile" en dépend) :
+     1>Génération de la cible "SelectClCompile" terminée dans le projet "demodulation.vcxproj".
+       Cible "GenerateTargetFrameworkMonikerAttribute" ignorée en raison d'une fausse condition ; ('$(GenerateTargetFrameworkAttribute)' == 'true') a été évaluée comme ('false' == 'true').
+       Cible "ManagedIncrementalBuildPreProcessDependencyGraph" ignorée en raison d'une fausse condition ; ('@(ClCompile)' != '' and '$(EnableManagedIncrementalBuild)' == 'True') a été évaluée comme ('demodulation.cpp;dllmain.cpp;stdafx.cpp' != '' and 'false' == 'True').
+     1>Cible "ClCompile" dans le fichier "C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Platforms\Win32\Microsoft.Cpp.Win32.Targets" du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" (la cible "_ClCompile" en dépend) :
+       Tâche "Delete"
+         Le fichier "Release\demodulation.pch" n'existe pas. Ignoré.
+       Exécution de la tâche "Delete" terminée.
+       Tâche "Delete"
+       Exécution de la tâche "Delete" terminée.
+       Tâche "CL" ignorée en raison d'une fausse condition ; ('%(ClCompile.PrecompiledHeader)' == 'Create' and '%(ClCompile.ExcludedFromBuild)'!='true') a été évaluée comme ('Use' == 'Create' and ''!='true').
+       Tâche "CL" ignorée en raison d'une fausse condition ; ('%(ClCompile.PrecompiledHeader)' == 'Create' and '%(ClCompile.ExcludedFromBuild)'!='true') a été évaluée comme ('' == 'Create' and ''!='true').
+       Utilisation de la tâche "CL" à partir de l'assembly "Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Tâche "CL"
+         Variables d'environnement passées à l'outil :
+           VS_UNICODE_OUTPUT=1204
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oi /Ot /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D DEMODULATION_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\demodulation.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp /Qpar-report:2 
+         Commande de suivi :
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\Tracker.exe /d C:\Windows\Microsoft.NET\Framework\v4.0.30319\FileTracker.dll /i L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\Release /r L:\LAB_CONTROL\PYTHON\QUBIT_SETUP\MACROS\DEMODULATION\DEMODULATION_WITH_PRECALCULATED_COSINES\DEMODULATION\STDAFX.CPP /b MSBuildConsole_CancelEvent58a8d5a3bbcc4908811a09119d30ff1b  /c "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe"  /c /Zi /nologo /W3 /WX- /Od /Oi /Ot /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D DEMODULATION_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\demodulation.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp /Qpar-report:2 
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Platforms\Win32\Microsoft.Cpp.Win32.Targets(62,5): error MSB6006: Arrêt de "CL.exe" avec le code -1073741765.
+       Exécution de la tâche "CL" terminée -- ÉCHEC.
+     1>Génération de la cible "ClCompile" terminée dans le projet "demodulation.vcxproj" -- ÉCHEC.
+     1>Génération du projet "L:\lab_control\python\qubit_setup\macros\demodulation\demodulation_with_precalculated_cosines\demodulation\demodulation.vcxproj" terminée (rebuild cible(s)) -- ÉCHEC.
+
+ÉCHEC de la build.
+
+Temps écoulé 00:00:00.51

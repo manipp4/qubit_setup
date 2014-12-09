@@ -105,9 +105,12 @@ class Panel(FrontPanel):
             self.updateTraceList()
                     
     #Request a trace from the instrument.
-    def requestAcquire(self):
+    def requestAcquireM(self):
+      self.requestAcquire(fromMemory=True)
+
+    def requestAcquire(self,fromMemory=False):
       waitFullSweep=bool(self.waitFullSweepButton.isChecked())
-      self.instrument.dispatch("getTrace",waitFullSweep=waitFullSweep)
+      self.instrument.dispatch("getTrace",waitFullSweep=waitFullSweep,traceFromMemory=fromMemory)
         
     def makeReference(self,i):
       if i == None:
@@ -155,6 +158,7 @@ class Panel(FrontPanel):
           
     #Updates the properties of a trace according to the values the user entered in the table.
     def updateTraceProperties(self,i,j):
+        return
         if j == 0:
             #We change the name of the trace...
             print "Updating name..."
@@ -224,6 +228,8 @@ class Panel(FrontPanel):
         self.phase.axes.set_visible(True)
         updateButton = QPushButton("Get Trace")
         self.connect(updateButton,SIGNAL("clicked()"),self.requestAcquire)
+        updateButtonM = QPushButton("Get Trace from memory")
+        self.connect(updateButtonM,SIGNAL("clicked()"),self.requestAcquireM)
 
         subGrid = QGridLayout()
         subGrid.setSpacing(10)
@@ -264,12 +270,13 @@ class Panel(FrontPanel):
         
         self.grid.addWidget(self.tabs,0,0)
         subGrid.addWidget(updateButton,0,0)
-        subGrid.addWidget(self.waitFullSweepButton,0,1)
-        subGrid.addWidget(clearButton,0,2)
-        subGrid.addWidget(saveButton,0,3)
-        subGrid.addWidget(saveFigButton,0,4)
-        subGrid.addWidget(clearRefButton,0,5)
-        subGrid.addWidget(hideAllButton,0,6)
+        subGrid.addWidget(updateButtonM,0,1)
+        subGrid.addWidget(self.waitFullSweepButton,0,2)
+        subGrid.addWidget(clearButton,0,3)
+        subGrid.addWidget(saveButton,0,4)
+        subGrid.addWidget(saveFigButton,0,5)
+        subGrid.addWidget(clearRefButton,0,6)
+        subGrid.addWidget(hideAllButton,0,7)
 
         self.grid.addItem(subGrid,1,0)
 

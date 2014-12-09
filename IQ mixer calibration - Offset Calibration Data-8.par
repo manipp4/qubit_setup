@@ -1,0 +1,19 @@
+children: []
+meta:
+  creationTime: Fri Jun 06 16:21:55 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {}
+  fieldNames: []
+  filename: L:\lab_control\python\qubit_setup\IQ mixer calibration - Offset Calibration
+    Data-8.par
+  index: 0
+  length: 0
+  modificationTime: Fri Jun 06 16:21:55 2014
+  name: IQ mixer calibration - Offset Calibration Data
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: IQ mixer calibration - Offset Calibration Data-8.txt
+version: '0.4'

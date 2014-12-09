@@ -4,6 +4,8 @@ import re
 import struct
 import numpy
 
+from pyview.lib.datacube import Datacube
+
 sys.path.append('.')
 sys.path.append('../')
 
@@ -107,3 +109,33 @@ class Instr(VisaInstrument):
     response=self.ask(trace+":WaveForm? "+block)
     return response
     
+
+
+
+  def getWaveform(self,channel=1):
+    r=self.inspect("C%i"%channel,"DATA_ARRAY_1")[12:]
+    r=r.replace("\r\n","")
+    r=r.replace("\"","")
+    r=r.replace("  "," ")
+    r=r.replace("  "," ")
+    r=r.replace("  "," ")
+    r=r.replace("  "," ")
+    r=r.replace("  "," ")
+    r=r.split(" ")
+    r=[float(x) if x!='' else 0 for x in r]
+    d=Datacube()
+    d.createColumn("C%i"%channel,r)
+    hi=self.inspect("C%i"%channel,"HORIZ_INTERVAL")[29:]
+    hi=hi.replace("\"","")
+    hi=hi.replace(" ","")
+    hi=float(hi)
+    ho=self.inspect("C%i"%channel,"HORIZ_OFFSET")[29:]
+    ho=ho.replace("\"","")
+    ho=ho.replace(" ","")
+    ho=float(ho)
+
+    t=numpy.zeros(len(r))
+    for i in range(len(r)):
+      t[i]=ho+i*hi
+    d.createColumn('t',t)
+    return d

@@ -1,0 +1,19 @@
+children: []
+meta:
+  creationTime: Wed May 14 09:32:34 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {}
+  fieldNames: []
+  filename: \\192.168.0.100\room4-labo\lab_control\python\qubit_setup\IQ mixer calibration
+    - Sideband Mixing Calibration Data-70.par
+  index: 0
+  length: 0
+  modificationTime: Wed May 14 09:32:34 2014
+  name: IQ mixer calibration - Sideband Mixing Calibration Data
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: IQ mixer calibration - Sideband Mixing Calibration Data-70.txt
+version: '0.4'

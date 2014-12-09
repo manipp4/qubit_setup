@@ -1,6 +1,6 @@
 ##Start the instruments panel and the data manager
-import matplotlib
-matplotlib.use('module://pyview.gui.mpl.backend')
+#import matplotlib
+#matplotlib.use('module://pyview.gui.mpl.backend')
 
 from numpy import *
 from matplotlib.pyplot import *	

@@ -5,7 +5,7 @@
 
 ___TEST___ = False
 ___includeDLLMath1Module___=True    # load the GSL based mathematical module as an attribute of the acqiris instrument
-___includeModuleDLL2___=True      # load the heterodyne demodulation module
+___includeModuleDLL2___=True        # load the heterodyne demodulation module
 
 import sys
 import getopt
@@ -22,6 +22,10 @@ from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube
 
 import acqiris_ModuleDLL2
+reload(sys.modules['acqiris_ModuleDLL2'])
+import acqiris_ModuleDLL2
+
+
 
 # utility class for helping in C to python interface
 class myType:                        
@@ -366,7 +370,6 @@ class Instr(Instrument,acqiris_ModuleDLL2.ModuleDLL2):
     
     maxDelayBetweenTrigs_s=myType(100,dtype=float64)
     time_s=myType(0,float64)      
- 
     status=self.__acqiris_QuantroDLL1.AcquireTransferV4(		#calling DLL function AcquireTransferV4
       self.__instrumentID,    
       c_int(timeOut),

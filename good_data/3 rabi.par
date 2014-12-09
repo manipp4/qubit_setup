@@ -1,0 +1,18 @@
+children: []
+meta:
+  creationTime: Fri Jun 06 17:52:31 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {area1: 0, b0: 1, b1: 2, b3: 3}
+  fieldNames: [area1, b0, b1, b3]
+  filename: L:\lab_control\python\qubit_setup\good_data\3 rabi.par
+  index: 51
+  length: 51
+  modificationTime: Fri Jun 06 17:55:56 2014
+  name: 3 rabi
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: 3 rabi.txt
+version: '0.4'

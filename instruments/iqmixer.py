@@ -6,8 +6,8 @@ from pyview.lib.classes import *
 from pyview.helpers.instrumentsmanager import Manager
 from numpy import *
 register=Manager().getInstrument('register')
-if 'lib.datacube' in sys.modules:
-  reload(sys.modules['lib.datacube'])
+#if 'lib.datacube' in sys.modules:
+#  reload(sys.modules['lib.datacube'])
   
 from pyview.lib.classes import *
 from pyview.lib.datacube import Datacube

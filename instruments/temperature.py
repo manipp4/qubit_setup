@@ -13,7 +13,7 @@ class Instr(Instrument):
         	return float(sock.recv(1024))
         except:
           raise
-          return None
+          return 0
           
       def parameters(self):
         params = dict()

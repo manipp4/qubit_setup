@@ -3,6 +3,7 @@ import getopt
 import re
 import struct
 import numpy
+from pyview.lib.datacube import Datacube
 
 sys.path.append('.')
 sys.path.append('../')
@@ -97,3 +98,5 @@ class Instr(VisaInstrument):
     response=self.ask(trace+":WaveForm? "+block)
     return response
     
+
+

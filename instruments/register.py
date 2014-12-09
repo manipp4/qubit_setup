@@ -78,13 +78,14 @@ class Instr(Instrument):
     if key in self._register:
       del self._register[key]
   
-  def initialize(self,name = "register",filename =None):
+  def initialize(self,name = "register",filename =None, path=None):
     """
     Initialize the register.
     """
     if filename==None:
       filename=name
-    path = os.path.dirname(__file__)+"/"+filename
+    if path==None:
+      path = os.path.dirname(__file__)+"/"+filename
     print "Opening register with filename %s" % path
     self._register = shelve.open(path)
   

@@ -1,0 +1,21 @@
+children: []
+meta:
+  creationTime: Fri Jun 13 15:01:44 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {c: 9, f_c: 10, f_sb: 8, p_sb0: 3, p_sb1: 4, p_sb2: 5, p_sb3: 6, p_sbm1: 2,
+    p_sbm2: 1, p_sbm3: 0, phi: 7}
+  fieldNames: [p_sbm3, p_sbm2, p_sbm1, p_sb0, p_sb1, p_sb2, p_sb3, phi, f_sb, c, f_c]
+  filename: L:\lab_control\python\qubit_setup\IQ mixer calibration - Sideband Mixing
+    Calibration Data-16-f_c = 4p7 GHz-1.par
+  index: 11
+  length: 11
+  modificationTime: Fri Jun 13 15:15:15 2014
+  name: f_c = 4.7 GHz
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: IQ mixer calibration - Sideband Mixing Calibration Data-16-f_c = 4p7
+  GHz-1.txt
+version: '0.4'

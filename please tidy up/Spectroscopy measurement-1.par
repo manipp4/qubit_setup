@@ -1,0 +1,19 @@
+children: []
+meta:
+  creationTime: Wed May 14 11:01:49 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {b0: 1, b1: 2, b2: 3, b3: 4, b3fit: 5, frequency: 0}
+  fieldNames: [frequency, b0, b1, b2, b3, b3fit]
+  filename: \\192.168.0.100\room4-labo\lab_control\python\qubit_setup\Spectroscopy
+    measurement-1.par
+  index: 4
+  length: 4
+  modificationTime: Wed May 14 11:01:52 2014
+  name: Spectroscopy measurement
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: Spectroscopy measurement-1.txt
+version: '0.4'

@@ -200,5 +200,10 @@ class Instr(VisaInstrument):
       self._source = source
       self._visaAddress = visaAddress
       self.parameters(lazy = False)
+      self._markersPerChannel=0
     except:
-      self.statusStr("An error has occured. Cannot initialize %s." % self._name)        
+      self.statusStr("An error has occured. Cannot initialize %s." % self._name)
+
+  def  markersPerChannel(self):     
+    return self._markersPerChannel
+        

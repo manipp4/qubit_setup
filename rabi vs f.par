@@ -1,0 +1,18 @@
+children: []
+meta:
+  creationTime: Fri Jun 06 17:36:30 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {area: 0, b0: 2, b1: 3, b3: 4, f: 1}
+  fieldNames: [area, f, b0, b1, b3]
+  filename: L:\lab_control\python\qubit_setup\rabi vs f.par
+  index: 114
+  length: 114
+  modificationTime: Fri Jun 06 17:42:27 2014
+  name: rabi vs f
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: rabi vs f.txt
+version: '0.4'

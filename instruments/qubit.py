@@ -9,7 +9,13 @@ import scipy
 from pyview.lib.classes import *
 from pyview.helpers.instrumentsmanager import Manager
 from pyview.lib.smartloop import *
+
+
 from pyview.lib.datacube import Datacube
+
+from macros.fit_functions import *
+reload(sys.modules["macros.fit_functions"])
+from macros.fit_functions import *
 
 #This is a virtual instrument representing a Quantum Bit.
 #This class provides convenience functions for setting the Qubit parameters and for
@@ -27,6 +33,8 @@ class Instr(Instrument):
     self._params = state
 
   def initialize(self,name, jba, pulseGenerator):
+
+
     manager=Manager()
     if not hasattr(self,'_params'):
       print("reseting self._params dictionnary")
@@ -35,6 +43,7 @@ class Instr(Instrument):
       self._jba=manager.getInstrument(jba)
       self._params['pulseGenerator']=pulseGenerator
       self._pulseGenerator=manager.getInstrument(pulseGenerator)
+      self.gaussianParameters={'sigma':10,'maxHeight':1,'cutOff':2}
 
   def measureT1(self,delays,data=None,t1Parameters=None, dataParameters=None):
     """
@@ -88,9 +97,10 @@ class Instr(Instrument):
       data.set(**result)
       data.set(delay=delay)
       data.commit()
-
-    [y0,dy,T1],yfit=fitT1(data['delay'],data['b0'])
-    data.createColumn("b0fit",yfit)
+    
+    columnName="b%i"%self._jba.bit
+    [y0,dy,T1],yfit=fitT1(data['delay'],data[columnName])
+    data.createColumn("fit",yfit)
     
     self._params['T1']=T1
 
@@ -129,30 +139,97 @@ class Instr(Instrument):
     else: offsetDelay=20
 
     if data==None:
-      data=Datacube("Rabi Measurement")
+      data=Datacube("Rabi %s dBm"%power)
       if dataParameters['addToDataManager']:data.toDataManager()
 
 
     if power !="stay":self._pulseGenerator._MWSource.setPower(power)
-  
+    self._pulseGenerator._MWSource.turnOn()
     for duration in durations:
-      self._pulseGenerator.clearPulse()
-      self._pulseGenerator.generatePulse(duration=duration, frequency=frequency, DelayFromZero=10000-duration-offsetDelay,useCalibration=False)
-      self._pulseGenerator.sendPulse()
-
+      self.clearPulses()
+      self.generateRabiPulse(duration=duration, frequency=frequency, offsetDelay=offsetDelay,useCalibration=rabiParameters['useCalibration'])
       result=self._jba.measure(nLoops=nLoops,fast=True)[0]
       data.set(**result)
       data.set(duration=duration)
       data.commit() 
 
     #Fit
-    period= estimatePeriod(data['duration'],data['b0'])
-    [y0,dy,piRabi,t10],yfit=fitRabi(data['duration'],data['b0'],period=period)
-    data.createColumn("b0fit",yfit)
-
+    try:
+      columnName="b%i"%self._jba.bit
+      period= estimatePeriod(data['duration'],data[columnName])
+      [y0,dy,piRabi,t10],yfit=fitRabi(data['duration'],data[columnName],period=period)
+      data.createColumn("%sfit"%columnName,yfit)
+    except:
+      print 'fit error'
+      piRabi=0
+    if dataParameters['save']:data.savetxt()
     self._params['piRabiTime']=piRabi
 
+    return data,piRabi
+
+  def measureRabiArea(self,areas,data=None,rabiParameters=None, dataParameters=None):
+    """
+    Measure a rabi, will use what is in dictionnary if power/frequency/useCalibration/nLoops are not set
+    Fit and save the period in the Qubit dictionnary under piRabiTime
+    Return the datacube and rabiPeriod
+    """
+
+    if dataParameters==None:
+      dataParameters=dict()
+      dataParameters['addToDataManager']=True
+      dataParameters['save']=True
+
+    if rabiParameters==None:
+      if self._params.has_key('rabiParameters'):
+        rabiParameters=self._params['rabiParameters']
+      else: raise Exception("Unable to find rabi parameters... Exiting... ")
+
+    useCalibration=rabiParameters['useCalibration']
+    frequency=rabiParameters['frequency']
+    if frequency=="f01":frequency=self.frequency01()
+
+    nLoops=rabiParameters['nLoops']
+
+    if rabiParameters.has_key('remember'):
+      if rabiParameters['remember']: self._params['rabiParameters']=rabiParameters
+
+    if rabiParameters.has_key('maxHeight'):
+      maxHeight=rabiParameters['maxHeight']
+
+    if rabiParameters.has_key('shape'):
+      shape=rabiParameters['shape']
+
+    if self._params.has_key('offsetDelay'):
+      offsetDelay=self._params['offsetDelay']
+    else: offsetDelay=0
+
+    if data==None:
+      data=Datacube("Rabi")
+      if dataParameters['addToDataManager']:data.toDataManager()
+
+
+    self._pulseGenerator._MWSource.turnOn()
+    for area in areas:
+
+
+      self.clearPulses()
+      self.generateRabiPulseArea(area=area, frequency=frequency,maxHeight=maxHeight, offsetDelay=offsetDelay,useCalibration=rabiParameters['useCalibration'],shape=shape)
+      result=self._jba.measure(nLoops=nLoops,fast=True)[0]
+      data.set(**result)
+      data.set(area=area)
+      data.commit() 
+
+    #Fit
+    try:
+      columnName="b%i"%self._jba.bit
+      period= estimatePeriod(data['duration'],data[columnName])
+      [y0,dy,piRabi,t10],yfit=fitRabi(data['duration'],data[columnName],period=period)
+      data.createColumn("%sfit"%columnName,yfit)
+    except:
+      print 'fit error'
+      piRabi=0
     if dataParameters['save']:data.savetxt()
+    self._params['piRabiTime']=piRabi
 
     return data,piRabi
 
@@ -177,9 +254,10 @@ class Instr(Instrument):
     if spectroscopyParameters.has_key('remember'):self._params['spectroscopyParameters']=spectroscopyParameters
 
     useCalibration=spectroscopyParameters['useCalibration']
-    power=spectroscopyParameters['power']
     nLoops=spectroscopyParameters['nLoops']
     duration=spectroscopyParameters['duration']
+    if spectroscopyParameters.has_key('power'): self._pulseGenerator._MWSource.setPower(spectroscopyParameters['power'])
+    amplitude = spectroscopyParameters['amplitude'] if spectroscopyParameters.has_key('amplitude') else 0
 
 
     if data==None:
@@ -187,25 +265,33 @@ class Instr(Instrument):
       if dataParameters['addToDataManager']:data.toDataManager()
 
 
+
     if self._params.has_key('offsetDelay'):
       offsetDelay=self._params['offsetDelay']
     else: offsetDelay=20
 
-    if power!="stay":self._pulseGenerator._MWSource.setPower(power)
 
-    self._pulseGenerator.clearPulse()
-    self._pulseGenerator.generatePulse(duration=duration, frequency=5, DelayFromZero=10000-duration-offsetDelay,useCalibration=False)
-    self._pulseGenerator.sendPulse()
-    
+    first=True
     for frequency in frequencies:
       self._pulseGenerator._MWSource.setFrequency(frequency)
+      if first: # i.e. generate a rabi pulse on the AWG only the first time (no need to re-generate an AWG pulse every time)
+        self._pulseGenerator.pulseList=()
+        self.generateRabiPulse(duration=duration,amplitude=amplitude,offsetDelay=offsetDelay,useCalibration=useCalibration,frequency=frequency)
+        first=False
+
+
       time.sleep(0.2)
       data.set(frequency=frequency)
       data.set(**self._jba.measure(nLoops=nLoops,fast=True)[0])
       data.commit()
 
-    [dy,f0,df,y0],yfit=fitLorentzian(data['frequency'],data['b0'])
-    data.createColumn("b0fit",yfit)
+    try:
+      columnName="b%i"%self._jba.bit
+      [dy,f0,df,y0],yfit=fitLorentzian(data['frequency'],data[columnName],1)
+      data.createColumn(columnName+"fit",yfit)
+    except:
+      print "fitting error"
+      [dy,f0,df,y0]=[0]*4
 
     if dataParameters['save']:data.savetxt()
 
@@ -220,88 +306,117 @@ class Instr(Instrument):
   def frequency01(self):
     return self._params['frequency01']
 
-def fitLorentzian(x,y,orientation=-1):
-  """
-  fit a lorentzian peak with x and y as data
-  formula : p[3]+orientation*p[0]/(1.0+pow((x-p[1])/p[2],2.0))
-  norm : 2
-  return parameters and fit
-  """
-
-  def bounds(p,x,y):
-    if abs(p[0])>1 or abs(p[3])>1:  return 1e12
-    if p[1]>max(x) or p[1]<min(x):     return 1e12
-    if abs(p[2])>abs(max(x)-min(x)):   return 1e12
-    return 0
+  def rabiPeriod(self):
+    try:
+      return self._params["rabiPeriod"]
+    except:
+      return 0
 
 
-  (xmin,ymin)=sorted(zip(x,y),key = lambda t: t[1])[(orientation-1)/2]
-  ymean=mean(y)
+  def setRabiPeriod(self,period):
+    self._params["rabiPeriod"]=period
 
-  fitfunc = lambda p, x: p[3]+orientation*p[0]/(1.0+pow((x-p[1])/p[2],2.0))
-  errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y,2),2.0)+bounds(p,x,y)
+  def clearPulses(self):
+    self._pulseGenerator.clearPulse()
 
-  pi=[ymin-ymean,xmin,0.001,ymean]
-  print "initial guess :"
-  print pi 
-  
-  p1s = scipy.optimize.fmin(errfunc, pi,args=(x,y,fitfunc))
-  print "fit result :"
-  print p1s
-  yfit=[fitfunc(p1s,xv) for xv in x]
+  def rabiArea(self):
+      return self._params["rabiArea"]
 
-  return p1s,yfit
-  
+  def setRabiArea(self, area):
+    self._params["rabiArea"]=float(area)
+
+  def rabiAmplitude(self, amp=None):
+    if amp!=None:
+      self._params["amplitude"]=amp
+      return amp
+    return self._params['amplitude'] if self._params.has_key('amplitude') else 1
+    
+  def rabiOffset(self, offsetDelay=None):
+    if offsetDelay!=None:
+      self._params["offsetDelay"]=offsetDelay
+      return offsetDelay
+    return self._params['offsetDelay'] if self._params.has_key('offsetDelay') else 0
+    
 
 
-def estimatePeriod(x,y):
-  """
-  Estimate the period of a signal (approximative), do NOT use this result except for a 'real' fit
-  return the period
-  """
-  fft=numpy.fft.rfft(y)
-  fft[0]=0
-  return x[-1]/argmax(fft)/2     
+  def generateRabiPulse(self,duration=None,amplitude=None,offsetDelay=None,useCalibration=False,clear=True,frequency=None):
+    if frequency==None:frequency=self.frequency01()
+    if duration==None:duration=self.rabiPeriod()
+    if clear:self._pulseGenerator.pulseList=()
+    if amplitude==None: amplitude=self.rabiAmplitude()
+    if offsetDelay==None: offsetDelay=self.rabiOffset()
 
-def fitRabi(x,y,period=20):
-  """
-  fit a rabi with x and y as data and period as initial value for the period
-  formula : p[0]+p[1]*cos(math.pi*x/p[2])*exp(-x/p[3])
-  return parameters and fit
-  """
-  # initial guessing
-  pi=[0.5,0.1,period,200]
-  print "initial guess :"
-  print pi 
+    self._pulseGenerator._MWSource.turnOn()
+    self._pulseGenerator.generatePulse(duration=duration,amplitude=amplitude, frequency=frequency, DelayFromZero=10000-duration-offsetDelay,useCalibration=useCalibration)
+    self._pulseGenerator.sendPulse()
 
-  fitfunc = lambda p, x: p[0]+p[1]*cos(math.pi*x/p[2])*exp(-x/p[3])
-  errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y,2),2.0)
+  def generateRabiPulseArea(self,area=None,maxHeight=None,offsetDelay=None,useCalibration=True,frequency=None,shape=None,clear=True,phase=0):
+    if frequency==None:frequency=self.frequency01()
+    if area==None:duration=self.rabiArea()
+    if shape==None:shape='square'
+    if maxHeight==None: maxHeight=self.rabiAmplitude()
+    if offsetDelay==None: offsetDelay=self.rabiOffset()
+    sigma=self.gaussianParameter('sigma')
+    cutOff=self.gaussianParameter('cutOff')
 
-  p1s = scipy.optimize.fmin(errfunc, pi,args=(x,y,fitfunc))
-  print "fit result :"
-  print p1s
-  yfit=[fitfunc(p1s,xv) for xv in x]
 
-  return p1s,yfit
+    if clear:self._pulseGenerator.pulseList=()
+    if shape=='gaussian':
+      self._pulseGenerator.addPulse(generatorFunction="gaussianSlopePulse",frequency=frequency,end=10000-offsetDelay,sigma=sigma,maxHeight=maxHeight,cutOff=cutOff,area=area,applyCorrections=useCalibration,phase=phase)
+    elif shape=='square':
+      self._pulseGenerator.addPulse(generatorFunction="square",frequency=frequency,amplitude=maxHeight,start=10000-area/maxHeight-offsetDelay, stop=10000-offsetDelay, applyCorrections=useCalibration,phase=phase)
+    else: print "ERROR"
+    print self._pulseGenerator.pulseList
+    self._pulseGenerator.preparePulseSequence()
+    self._pulseGenerator.sendPulseSequence()
 
-def fitT1(x,y):
-  """
-  Fit a t1 in guessing all parameters
-  formula : p[0]+p[1]*exp(-x/p[2])
-  return parameters and fit
-  """
-  # initial guessing
-  pi=[0.5,0.1,200]
-  print "initial guess :"
-  print pi 
+  def measure(self, data,nLoops=None):
+    if nLoops==None:
+      nLoops = self._nLoops if hasattr(self,'_nLoops') else 10
+    data.set(**self._jba.measure(nLoops=nLoops,fast=True)[0])
+    data.commit()
 
-  fitfunc = lambda p, x: p[0]+p[1]*exp(-x/p[2])
-  errfunc = lambda p, x, y,ff: pow(numpy.linalg.norm(ff(p,x)-y,2),2.0)
 
-  p1s = scipy.optimize.fmin(errfunc, pi,args=(x,y,fitfunc))
-  print "fit result :"
-  print p1s
-  yfit=[fitfunc(p1s,xv) for xv in x]
+  def generateRabiPulseAreaDerivative(self,area=None,maxHeight=None,offsetDelay=None,useCalibration=False,frequency=None,shape=None,clear=True,phase=0,coefficient=1.):
+    if frequency==None:frequency=self.frequency01()
+    if area==None:duration=self.rabiArea()
+    if shape==None:shape='square'
+    if offsetDelay==None: offsetDelay=self.rabiOffset()
 
-  return p1s,yfit
+    sigma=self.gaussianParameter('sigma')
+    print sigma
+    if maxHeight==None:maxHeight=self.gaussianParameter('maxHeight')
+    cutOff=self.gaussianParameter('cutOff')
 
+
+    if clear:self._pulseGenerator.pulseList=()
+    if shape=='gaussian':
+      self._pulseGenerator.addPulse(generatorFunction="gaussianSlopePulseDerivative",frequency=frequency,end=10000-offsetDelay,sigma=sigma,maxHeight=maxHeight,cutOff=cutOff,area=area,applyCorrections=useCalibration,phase=phase,coefficient=coefficient)
+    elif shape=='square':
+      self._pulseGenerator.addPulse(generatorFunction="square",frequency=frequency,amplitude=maxHeight,start=10000-area/maxHeight-offsetDelay, stop=10000-offsetDelay, applyCorrections=useCalibration,phase=phase)
+    else: print "ERROR"
+    print self._pulseGenerator.pulseList
+    self._pulseGenerator.preparePulseSequence()
+    self._pulseGenerator.sendPulseSequence()
+
+  def measure(self, data,nLoops=20):
+    data.set(**self._jba.measure(nLoops=nLoops,fast=True)[0])
+    data.commit()
+
+  def gaussianParameter(self,obj):
+    return self.gaussianParameters[obj]
+
+  def setGaussianParameter(self,obj, value):
+    self.gaussianParameters[obj]=value
+
+  def generateRotation(self, mag, angle, offsetDelay,clear=False, frequency=None):
+    area=self.rabiArea()*mag/math.pi
+    print "area =" , area
+    self.generateRabiPulseArea(area=area,offsetDelay=offsetDelay,useCalibration=True,shape='gaussian',clear=clear,phase=angle,frequency=frequency)
+    self.generateRabiPulseAreaDerivative(area=area,offsetDelay=offsetDelay,useCalibration=True,shape='gaussian',clear=False,phase=angle-math.pi/2,frequency=frequency,coefficient=self.dragCoef())
+#    self.generateRabiPulseArea(area=area,offsetDelay=offsetDelay, phase=angle,shape='gaussian',clear=clear)
+
+  def setDragCoef(self,coef):
+    self._params['dragCoef']=coef
+  def dragCoef(self):
+    return self._params['dragCoef']

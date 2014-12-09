@@ -18,7 +18,7 @@ from pyview.lib.datacube import Datacube
 import sys
 import time
 
-print "iq_level_optimization reloaded"
+print "simple_level_optimization reloaded"
 
 class OffsetOptimization(Reloadable):
 
@@ -84,15 +84,12 @@ class OffsetOptimization(Reloadable):
   	
   def setupWaveforms(self):
     self._awg.write("AWGC:RMOD CONT")
- #   period = int(1.0/self._awg.repetitionRate()*1e9)
     self.period=20000
     waveformOffset = zeros((self.period))
     self._markers = zeros((self.period),dtype = uint8)
-    self._markers[1:len(self._markers)/2] = 3
-    self._awg.createRawWaveform("Offset_Calibration",waveformOffset,self._markers,"REAL")
-    self._awg.setWaveform(self._awgChannel,"Offset_Calibration")
-#    self._awg.createRawWaveform("IQ_Power_Calibration_active",waveformActive,self._markers,"REAL")
-#    self._awg.createRawWaveform("IQ_Power_Calibration_passive",waveformPassive,self._markers,"REAL")
+    self._markers[1:len(self._markers)/2] = 255
+    self._awg.createRawWaveform("Offset_Calibration",(waveformOffset+1.0)/2.0*((1<<14)-1),self._markers,"INT")
+    self._awg.setWaveform(int(self._awgChannel),"Offset_Calibration")
 
 
   def calibrateOffset(self):
@@ -120,7 +117,7 @@ class OffsetOptimization(Reloadable):
       (voltage,minimum) = self.optimizeMixerVS()
       minimum = self.measurePower(voltage)
       print "Optimum value of %g dBm at offset %g V" % (minimum,voltage[0])
-      self._offsetCalibrationData.set(i = voltage[0], minimum = minimum)
+      self._offsetCalibrationData.set(i = voltage[0], minimum = minimum,frequency=frequency)
       self._offsetCalibrationData.commit()
       self._offsetCalibrationData.savetxt()
     finally:
@@ -129,9 +126,8 @@ class OffsetOptimization(Reloadable):
   def optimizeMixerVS(self):
     self.d=Datacube()
     self.d.toDataManager()
-    self.d.plotInDataManager("iOffset","minimum",clear=True)
-    self.d.plotInDataManager("qOffset","minimum")
-    minimizer=Minimizer(lambda x: self.measurePower(x),[0.],[[-0.3,0.3]],xtol=0.001,maxfun=50,maxiter=1)
+    self.d.plotInDataManager("offset","minimum",clear=True)
+    minimizer=Minimizer(lambda x: self.measurePower(x),[0.],[[-0.1,0.1]],xtol=0.000001,maxfun=50,maxiter=5)
     minimizer.minimize()
     return minimizer.result()
 
@@ -152,6 +148,8 @@ class OffsetOptimization(Reloadable):
     self._awg.setOffset(self._awgChannel,low[0])
     minimum = self.measureAveragePower()
     print "Measuring power at %g : %g" % (low[0],minimum)
+    self.d.set(minimum=minimum, offset=low[0])
+    self.d.commit()
     linpower = math.pow(10.0,minimum/10.0)/10.0
     return minimum 
 

@@ -171,7 +171,7 @@ void Demodulator::setCorrections(double f,double offsetI, double offsetQ, double
 
 //// This function is for internal use only and should not be called by the client of the present DLL.
 //// Use demodulate1ChIQ and demodulate2ChIQ or demodulate1ChAPhi and demodulate2ChAPhi  instead.
-void Demodulator::demodulate(bool twoCh,double *ChA, double *ChB, double *horPos, double nbrSegments,double nbrSamplesPerSegment,double samplingTime,double frequency,double phase,int intervalMode,bool tryCorrec,bool averageOnly,bool APhi,int *nbrIntervalsPerSegment,double *array1,double *array2,double *arrayMean1,double *arrayMean2)
+void Demodulator::demodulate(bool twoCh,double *ChA, double *ChB, double *horPos, double nbrSegments,double nbrSamplesPerSegment,double samplingTime,double frequency,double phase,int intervalMode,bool tryCorrec,bool averageOnly,bool APhi,int *nbrIntervalsPerSegment,double *array1,double *array2,double *arrayMean1,double *arrayMean2, bool extraFast)
 {//	// cout << "PI = " << PI << endl;
 	int i,j,p,q,r,nbrSamplesPerInterval,index=-1;
 	double arg,deltaArg,I,Q,x,y,det;
@@ -288,13 +288,13 @@ void Demodulator::demodulate(bool twoCh,double *ChA, double *ChB, double *horPos
 //	arrayMeanI,arrayMeanQ: arrays of the nbrIntervalsPerSegment I and Q values averaged over the nbrSegments segments
 //	* P_Time_us: pointer to the evaluation duration of the function in 탎
 //
-void Demodulator::demodulate1ChIQ(double *ChA, double *horPos,int nbrSegments,int nbrSamplesPerSegment,double samplingTime, double frequency, double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayI,double *arrayQ,double *arrayMeanI,double *arrayMeanQ, double *P_Time_us)
+void Demodulator::demodulate1ChIQ(double *ChA, double *horPos,int nbrSegments,int nbrSamplesPerSegment,double samplingTime, double frequency, double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayI,double *arrayQ,double *arrayMeanI,double *arrayMeanQ, bool extraFast, double *P_Time_us)
 {
 	// cout << "Demodulator::demodulate1ChIQ: "<<endl;
 	LARGE_INTEGER L_Frequency,L_TmpDebut,L_TmpFin;
 	QueryPerformanceFrequency(&L_Frequency);
 	QueryPerformanceCounter(&L_TmpDebut); //start the timer
-	demodulate(false,ChA,ChA,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,false,nbrIntervalsPerSegment,arrayI,arrayQ,arrayMeanI,arrayMeanQ);
+	demodulate(false,ChA,ChA,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,false,nbrIntervalsPerSegment,arrayI,arrayQ,arrayMeanI,arrayMeanQ,extraFast);
 	QueryPerformanceCounter(&L_TmpFin);				//stop the timer...
 	*P_Time_us = 1000000.0 *(L_TmpFin.QuadPart - L_TmpDebut.QuadPart) / L_Frequency.QuadPart;//...and calculate elapsed time in 탎
 	// cout<<"OK - duration = "<<*P_Time_us<< " microsec." <<endl;
@@ -324,12 +324,12 @@ void Demodulator::demodulate1ChIQ(double *ChA, double *horPos,int nbrSegments,in
 //	arrayMeanI,arrayMeanQ: arrays of the nbrIntervalsPerSegment I and Q values averaged over the nbrSegments segments
 //	* P_Time_us: pointer to the evaluation duration of the function in 탎
 //
-void Demodulator::demodulate2ChIQ(double *ChA,double *ChB, double *horPos, int nbrSegments, int nbrSamplesPerSegment,double samplingTime,double frequency,double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayI,double *arrayQ,double *arrayMeanI,double *arrayMeanQ,double* P_Time_us)
+void Demodulator::demodulate2ChIQ(double *ChA,double *ChB, double *horPos, int nbrSegments, int nbrSamplesPerSegment,double samplingTime,double frequency,double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayI,double *arrayQ,double *arrayMeanI,double *arrayMeanQ, bool extraFast, double *P_Time_us)
 { 	// cout << "Demodulator::demodulate2ChIQ: "<<endl;
 	LARGE_INTEGER L_Frequency,L_TmpDebut,L_TmpFin;
 	QueryPerformanceFrequency(&L_Frequency);
 	QueryPerformanceCounter(&L_TmpDebut); //start the timer
-	demodulate(true,ChA,ChB,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,false,nbrIntervalsPerSegment,arrayI,arrayQ,arrayMeanI,arrayMeanQ);
+	demodulate(true,ChA,ChB,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,false,nbrIntervalsPerSegment,arrayI,arrayQ,arrayMeanI,arrayMeanQ,extraFast);
 	QueryPerformanceCounter(&L_TmpFin);				//stop the timer...
 	*P_Time_us = 1000000.0 *(L_TmpFin.QuadPart - L_TmpDebut.QuadPart) / L_Frequency.QuadPart;//...and calculate elapsed time in 탎
 	// cout<<"OK - duration = " <<*P_Time_us<< " microsec." <<endl;
@@ -359,12 +359,12 @@ void Demodulator::demodulate2ChIQ(double *ChA,double *ChB, double *horPos, int n
 //	arrayMeanA,arrayMeanPhi: arrays of the nbrIntervalsPerSegment A and Phi values averaged over the nbrSegments segments
 //	* P_Time_us: pointer to the evaluation duration of the function in 탎
 //
-void Demodulator::demodulate1ChAPhi(double *ChA, double *horPos,int nbrSegments,int nbrSamplesPerSegment,double samplingTime, double frequency, double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayA,double *arrayPhi,double *arrayMeanA,double *arrayMeanPhi,double* P_Time_us)
+void Demodulator::demodulate1ChAPhi(double *ChA, double *horPos,int nbrSegments,int nbrSamplesPerSegment,double samplingTime, double frequency, double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayA,double *arrayPhi,double *arrayMeanA,double *arrayMeanPhi, bool extraFast, double *P_Time_us)
 { 	// cout << "Demodulator::demodulate1ChAPhi: ";
 	LARGE_INTEGER L_Frequency,L_TmpDebut,L_TmpFin;
 	QueryPerformanceFrequency(&L_Frequency);
 	QueryPerformanceCounter(&L_TmpDebut);			//start the timer
-	demodulate(false,ChA,ChA,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,true,nbrIntervalsPerSegment,arrayA,arrayPhi,arrayMeanA,arrayMeanPhi);
+	demodulate(false,ChA,ChA,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,true,nbrIntervalsPerSegment,arrayA,arrayPhi,arrayMeanA,arrayMeanPhi,extraFast);
 	QueryPerformanceCounter(&L_TmpFin);				//stop the timer...
 	*P_Time_us = 1000000.0 *(L_TmpFin.QuadPart - L_TmpDebut.QuadPart) / L_Frequency.QuadPart;//...and calculate elapsed time in 탎
 	// cout<<"OK - duration = " <<*P_Time_us<< " microsec." <<endl;
@@ -394,12 +394,12 @@ void Demodulator::demodulate1ChAPhi(double *ChA, double *horPos,int nbrSegments,
 //	arrayMeanA,arrayMeanPhi: arrays of the nbrIntervalsPerSegment I and Q values averaged over the nbrSegments segments
 //	* P_Time_us: pointer to the evaluation duration of the function in 탎
 //
-void Demodulator::demodulate2ChAPhi(double *ChA, double *horPos,double *ChB, int nbrSegments, int nbrSamplesPerSegment,double samplingTime,double frequency,double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayA,double *arrayPhi,double *arrayMeanA,double *arrayMeanPhi,double* P_Time_us)
+void Demodulator::demodulate2ChAPhi(double *ChA, double *horPos,double *ChB, int nbrSegments, int nbrSamplesPerSegment,double samplingTime,double frequency,double phase,int intervalMode,bool tryCorrec,bool averageOnly,int *nbrIntervalsPerSegment,double *arrayA,double *arrayPhi,double *arrayMeanA,double *arrayMeanPhi, bool extraFast, double *P_Time_us)
 {	// cout << "Demodulator::demodulate2ChAPhi: ";
 	LARGE_INTEGER L_Frequency,L_TmpDebut,L_TmpFin;
 	QueryPerformanceFrequency(&L_Frequency);
 	QueryPerformanceCounter(&L_TmpDebut);			//start the timer
-	demodulate(true,ChA,ChB,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,true,nbrIntervalsPerSegment,arrayA,arrayPhi,arrayMeanA,arrayMeanPhi);
+	demodulate(true,ChA,ChB,horPos,nbrSegments,nbrSamplesPerSegment,samplingTime,frequency,phase,intervalMode,tryCorrec,averageOnly,true,nbrIntervalsPerSegment,arrayA,arrayPhi,arrayMeanA,arrayMeanPhi,extraFast);
 	QueryPerformanceCounter(&L_TmpFin);				//stop the timer...
 	*P_Time_us = 1000000.0 *(L_TmpFin.QuadPart - L_TmpDebut.QuadPart) / L_Frequency.QuadPart;//...and calculate elapsed time in 탎
 	// cout<<"OK - duration = " <<*P_Time_us<< " microsec." <<endl;

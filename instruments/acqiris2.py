@@ -43,7 +43,10 @@ class Instr(Instrument):
     """
     Initializes the Acqiris virtual instruments and the Acqiris board.
     """
-    self.__instrumentID = c_uint32()
+    self.__instrumentID = c_uint32(0) 
+    self.__numInstruments = c_uint32()
+    self.__nbrOfChannels  =  c_uint32()
+    self.__nbrADCBits = c_uint32()
     self.__temperature = c_int32()
     self.__time_us = c_double()
     
@@ -55,10 +58,9 @@ class Instr(Instrument):
          try:
            print "\nLoading basic oscilloscope DLL 'Acqiris_QuantroDLL1.dll...'"
            print os.path.dirname(os.path.abspath(__file__))+'/Acqiris_QuantroDLL1.dll'
-           self.__acqiris_QuantroDLL1= windll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'/Acqiris_QuantroDLL1.dll')
+           self.__acqiris_QuantroDLL1= windll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'\Acqiris_QuantroDLL1.dll')
            print "Finding and testing board..."
-           self.__acqiris_QuantroDLL1.FindDevicesV1(byref(self.__instrumentID),byref(self.__temperature))
-           self.__acqiris_QuantroDLL1.TemperatureV1(self.__instrumentID,byref(self.__temperature))
+           self.reinit()
            print "OK"
          except ImportError:
            print "Cannot load DLL Acqiris_QuantroDLL1.dll!"
@@ -87,9 +89,15 @@ class Instr(Instrument):
         print sys.exc_info()
         return False    
      
-    #Acqiris parameters defined in a in a dictionary.
+    # Acqiris constants defined in a first dictionary constants.
+    self._constants = dict()
+    self._constants["nbrOfChannels"] = int(self.__nbrOfChannels.value)
+    self._constants["nbrADCBits"] = int(self.__nbrADCBits.value)
+    
+    # Acqiris parameters defined in a second  dictionary params.
     self._params = dict()
-    self._params["synchro"] = True
+    # self._params["synchro"] = True        # obsolete replaced by clock
+    self._params["clock"]=2
     self._params["trigSource"] = -1
     self._params["trigCoupling"] = 3
     self._params["trigLevel1"] = 500        #in mV
@@ -112,7 +120,7 @@ class Instr(Instrument):
     self._params['nLoops']=1                # actually number of acquisition or of banks in SAR mode
     self._params["transferAverage"]=False   # transfer average only
     
-    # Parameters of the last acquired sequence are defined below as global variables 
+    # Last acquired sequence defined below as global variables 
     self.lastWaveIdentifier=0
     self.lastTransferredChannel=0					  # code of transferred channels
     self.lastTransferAverage=False
@@ -148,6 +156,14 @@ class Instr(Instrument):
     print "\nPreconfiguring the digitizer..."
     self.ConfigureAllInOne()  #preconfigure the acquisition board at initialization
 
+  def reinit(self,*args):
+    if self.__instrumentID.value != 0:
+      self.__acqiris_QuantroDLL1.FinishApplicationV1(self.__instrumentID)
+    self.__acqiris_QuantroDLL1.FindDevicesV1(byref(self.__instrumentID),byref(self.__numInstruments))
+    self.__acqiris_QuantroDLL1.NbrChannels(self.__instrumentID,byref(self.__nbrOfChannels))
+    self.__acqiris_QuantroDLL1.NbrADCBits(self.__instrumentID,byref(self.__nbrADCBits))
+    self.TemperatureV1()
+     
   def transformErr2Str(self,*args):
     """
     Transform acqiris error codes into string describing the error.
@@ -164,10 +180,17 @@ class Instr(Instrument):
     self._params=state
     self.ConfigureAllInOne()
     
+  def constants(self):
+    """
+    Returns the constants of the Acqiris card.
+    """
+    return self._constants
+  
   def parameters(self):
     """
     Returns the parameters of the Acqiris card.
     """
+    #print "in instrument.parameter()"
     return self._params
     
   def updateParameters(self,*args,**kwargs):
@@ -202,7 +225,8 @@ class Instr(Instrument):
     """
     self.updateParameters(*args,**kwargs)
     #We create ctypes objects for all the parameters to be passed to acqiris_QuantroDLL1.DLL's functions :
-    sync=c_bool(self._params["synchro"])
+    clock = c_int32(self._params["clock"])
+    sync=c_bool(self._params["clock"]==2) # to be replaced by clock in a new version of ConfigureAllInOne and ConfigureV4
     trig = c_int32(self._params["trigSource"])
     trig_coupling = c_int32(self._params["trigCoupling"])
     trig_slope = c_int32(self._params["trigSlope"])
@@ -249,7 +273,7 @@ class Instr(Instrument):
     #We call the ConfigureAllInOne DLL function that configures all the acquisition parameters
     status = self.__acqiris_QuantroDLL1.ConfigureAllInOne(
       self.__instrumentID
-      ,byref(sync)
+      ,byref(clock)
       ,byref(used_channels)
       ,byref(converters_per_channel)
       ,byref(mem)
@@ -517,7 +541,7 @@ class Instr(Instrument):
     """
     self.__acqiris_QuantroDLL1.FinishApplicationV1(self.__instrumentID)
   
-  def TemperatureV1(self,*args):
+  def TemperatureV1(self):
     """
     Returns the temperature of the Acqiris card.
     """
@@ -526,6 +550,7 @@ class Instr(Instrument):
     else:
        self.__acqiris_QuantroDLL1.TemperatureV1(self.__instrumentID,byref(self.__temperature))
     #We send out a notification that the temperature variable has changed.
-    self.notify("temperature",self.__temperature.value)
-    return self.__temperature.value       
+    #self.notify("temperature",self.__temperature.value)
+    return self.__temperature.value
+   
         

@@ -29,7 +29,7 @@ class Instr(Instrument):
     """
     Add a new frequency to the analyser
     """
-    self._frequencies[name]=[abs(f),True,bit]
+    self._frequencies[name]=[f,True,bit]
     return True
         
   def startAnalyseFrequency(self,name):
@@ -126,6 +126,7 @@ class Instr(Instrument):
     instrumentManager=Manager()
     self._name=name
     self._acqiris=instrumentManager.getInstrument(acqiris)
+#    self._acqiris("moduleDLL2.setChannels("+str(acqirisChannels[0])+","+str(acqirisChannels[1])+")")
     self._acqiris.setChannels(acqirisChannels[0],acqirisChannels[1])
     self._MWSource=instrumentManager.getInstrument(MWSource)
     self._pulseGenerator=instrumentManager.getInstrument(pulse_generator)

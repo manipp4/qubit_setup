@@ -20,6 +20,8 @@ from pyview.lib.classes import VisaInstrument
 #from lib.swig.tools import numerical
 import numpy
 
+__DEBUG__=True
+
 class Waveform:
 
     def __init__(self):
@@ -137,6 +139,8 @@ class Instr(VisaInstrument):
       markers[:10000]=3
     data = self.writeIntData((waveform+1.0)/2.0*((1<<14)-1),markers)
     self.createWaveform(waveformName,data,"INT")
+#    data = self.writeRealData((waveform+1.0)/2.0*((1<<14)-1),markers)
+#    self.createWaveform(waveformName,data,"REAL")
     self.setWaveform(channel,waveformName)
     
 
@@ -558,9 +562,13 @@ class Instr(VisaInstrument):
       self._waitTime = waitTime
       self._name = "Tektronix AWG"
       self._visaAddress = visaAddress
+      self._markersPerChannel=2
       print "Initializing AWG with address %s" % visaAddress
     except:
-      self.statusStr("An error has occured. Cannot initialize %s." % self._name)        
+      self.statusStr("An error has occured. Cannot initialize %s." % self._name)
+
+  def  markersPerChannel(self):     
+    return self._markersPerChannel
 
 
 ##########################################################################
@@ -593,3 +601,60 @@ class Instr(VisaInstrument):
     self.setWaveform(channels[1],waveformNames[1])
   
     return len(qData)  
+
+
+
+
+
+
+
+
+
+  def loadComplexWaveforms(self,complexWaveform, channels=(1,2), markers = None,waveformNames=('i','q')):
+    iChannel = numpy.zeros(len(complexWaveform),dtype = numpy.float32)
+    qChannel = numpy.zeros(len(complexWaveform),dtype = numpy.float32)
+    iChannel[:] = numpy.real(complexWaveform)
+    qChannel[:] = numpy.imag(complexWaveform)
+    self.load2RealWaveforms(waveforms=[iChannel,qChannel],channels=channels, markers = markers,waveformNames=waveformNames)
+
+  def load2RealWaveforms(self,waveforms, channels=[1,2], markers = None,waveformNames=('i','q')):
+    self.loadRealWaveform(realWaveform=waveforms[0],channel=channels[0],markers=markers[0], waveformName=waveformNames[0])
+    self.loadRealWaveform(realWaveform=waveforms[1],channel=channels[1],markers=markers[1], waveformName=waveformNames[1])
+
+
+  def loadRealWaveform2(self, waveform, channel=1, markers=None, waveformName='i'):
+    def reverse( n, p):
+      return sum(1<<(n-1-i) for i in range(n) if p>>i&1)
+#    data=self.writeRealData(waveform,markers)
+    dataD = ""
+    dataM = ""
+
+    if __DEBUG__:t0=time.time()
+
+    print "loading channel ",channel, ",  mean=", numpy.mean(waveform)
+
+    valuesFloat = numpy.zeros(len(waveform),dtype = numpy.float32)
+    markersInt = numpy.zeros(len(markers),dtype = numpy.uint8)
+
+    valuesFloat[:] = waveform[:]
+    markersInt[:]=markers[:]
+
+    print "loading channel ",channel, ",  mean=", numpy.mean(valuesFloat)
+
+    for i in range(0,len(waveform)):
+#      output+=struct.pack("<f",((marker & 3) << 14) + (value & (0xFFFF >> 2)))
+      dataD+=struct.pack("<f",valuesFloat[i])
+      dataD+=struct.pack("<b",0)
+      dataM+=struct.pack("<B",reverse(8,markersInt[i]))
+
+    size=len(dataD)/5
+    wavetype='REAL'
+    self.write("WLIST:WAVEFORM:NEW \"%s\",%d,%s" %(waveformName,size,wavetype))     
+    headerD = "#%d%d" % (len("%d" % len(dataD)),len(dataD))
+    self.write("WLIST:WAVEFORM:DATA \"%s\",0,%d," %(waveformName,size)+headerD+dataD)
+    headerM = "#%d%d" % (len("%d" % len(dataM)),len(dataM))
+    self.write("WLIST:WAVEFORM:MARKER:DATA \"%s\",0,%d," %(waveformName,size)+headerM+dataM)
+
+
+   
+

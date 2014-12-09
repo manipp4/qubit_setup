@@ -1,0 +1,18 @@
+children: []
+meta:
+  creationTime: Thu Jul 03 14:59:55 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {}
+  fieldNames: []
+  filename: \\192.168.0.100\room4-labo\lab_control\python\qubit_setup\debug vs.par
+  index: 0
+  length: 0
+  modificationTime: Thu Jul 03 15:00:16 2014
+  name: datacube
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: debug vs.txt
+version: '0.4'

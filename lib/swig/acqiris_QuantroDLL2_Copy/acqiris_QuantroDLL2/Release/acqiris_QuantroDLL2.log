@@ -1,0 +1,52 @@
+﻿La génération a démarré 28/04/2014 10:02:44.
+     1>Projet "L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\acqiris_QuantroDLL2\acqiris_QuantroDLL2.vcxproj" sur le nœud 2 (rebuild cible(s)).
+     1>_PrepareForClean:
+         Suppression du fichier "Release\acqiris_QuantroDLL2.lastbuildstate".
+       InitializeBuildStatus:
+         Création de "Release\acqiris_QuantroDLL2.unsuccessfulbuild", car "AlwaysCreate" a été spécifié.
+       CustomBuild:
+         Performing Custom Build Tools
+       GenerateTargetFrameworkMonikerAttribute:
+       La cible est ignorée "GenerateTargetFrameworkMonikerAttribute", car tous les fichiers de sortie sont à jour par rapport aux fichiers d'entrée.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\_acqiris_QuantroDLL2.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt Stdafx.cpp /clr:nostdlib 
+         Stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\_acqiris_QuantroDLL2.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt acqiris_QuantroDLL2.cpp AssemblyInfo.cpp /clr:nostdlib 
+         acqiris_QuantroDLL2.cpp
+     1>acqiris_QuantroDLL2.cpp(30): warning C4018: '<' : incompatibilité signed/unsigned
+     1>acqiris_QuantroDLL2.cpp(44): warning C4018: '<' : incompatibilité signed/unsigned
+     1>acqiris_QuantroDLL2.cpp(51): warning C4018: '<' : incompatibilité signed/unsigned
+     1>acqiris_QuantroDLL2.cpp(113): warning C4018: '<' : incompatibilité signed/unsigned
+     1>acqiris_QuantroDLL2.cpp(199): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+     1>acqiris_QuantroDLL2.cpp(469): warning C4244: '+=' : conversion de 'double' en 'int', perte possible de données
+         AssemblyInfo.cpp
+         Génération de code en cours...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\python27\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /Ox /Ob1 /Oi /Ot /Oy /GT /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D EXAMPLE_EXPORTS /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt acqiris_QuantroDLL2_wrap.cxx /clr:nostdlib 
+         acqiris_QuantroDLL2_wrap.cxx
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /clr /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /analyze- /errorReport:prompt "C:\Users\manipp4\AppData\Local\Temp\.NETFramework,Version=v4.0.AssemblyAttributes.cpp"
+         .NETFramework,Version=v4.0.AssemblyAttributes.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Release\app.res" app.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.pyd" /INCREMENTAL:NO /NOLOGO /MANIFEST /ManifestFile:"Release\_acqiris_QuantroDLL2.pyd.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.pdb" /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 /DLL Release\app.res
+         Release\acqiris_QuantroDLL2.obj
+         Release\acqiris_QuantroDLL2_wrap.obj
+         Release\AssemblyInfo.obj
+         Release\Stdafx.obj
+         "Release\.NETFramework,Version=v4.0.AssemblyAttributes.obj"
+            Création de la bibliothèque L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.lib et de l'objet L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.exp
+         acqiris_QuantroDLL2.vcxproj -> L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.pyd
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.pyd;#2" /manifest Release\_acqiris_QuantroDLL2.pyd.intermediate.manifest
+       PostBuildEvent:
+         copy L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\Release\_acqiris_QuantroDLL2.pyd  L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\acqiris_QuantroDLL2.dll
+         :VCEnd
+                 1 file(s) copied.
+       FinalizeBuildStatus:
+         Suppression du fichier "Release\acqiris_QuantroDLL2.unsuccessfulbuild".
+         Mise à jour de l'horodatage "Release\acqiris_QuantroDLL2.lastbuildstate".
+     1>Génération du projet "L:\lab_control\python\qubit_setup\lib\swig\acqiris_QuantroDLL2_Copy\acqiris_QuantroDLL2\acqiris_QuantroDLL2.vcxproj" terminée (rebuild cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:24.91

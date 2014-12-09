@@ -1,0 +1,19 @@
+children: []
+meta:
+  creationTime: Fri Sep 12 15:04:05 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {}
+  fieldNames: []
+  filename: \\quantro-room4\room4-labo\lab_control\python\qubit_setup\mixer calibration
+    - Offset Calibration Data-4.par
+  index: 0
+  length: 0
+  modificationTime: Fri Sep 12 15:04:05 2014
+  name: mixer calibration - Offset Calibration Data
+  parameters: {}
+  tags: ''
+parameters: {}
+tablefilename: mixer calibration - Offset Calibration Data-4.txt
+version: '0.4'

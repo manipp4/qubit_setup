@@ -10,7 +10,7 @@ import os
 #*******************************************************************************
 #*  BELOW is the post-processing of acquired traces by the mathematical dll 
 #* Acqiris_QuantroDLLMath1, which is based on the GSL library
-# (see dll functions syntax below)                  
+#* (see dll functions syntax below)                  
 #*******************************************************************************
     
 class DLLMath1Module():
@@ -111,13 +111,13 @@ class DLLMath1Module():
     use dllAndArrayName as the name of the dll and of the array in which results are stored  
     """      
     lastIdentifier=self.acqirisInstr.lastWaveIdentifier
-    lastTranferred=self.acqirisInstr.lastWave['transferedChannels']
-    lastAveraged=self.acqirisInstr.lastWave['transferAverage']
-    nbrSamplesPerSeg=self.acqirisInstr.lastWave['nbrSamplesPerSeg']
+    lastTranferred=self.acqirisInstr.lastTransferredChannel 
+    lastAveraged=self.acqirisInstr.lastTransferAverage
+    nbrSamplesPerSeg=self.acqirisInstr.lastNbrSamplesPerSeg
     if lastAveraged:
       nbrSegmentArray=[1,1,1,1] 
     else:
-      nbrSegmentArray=self.acqirisInstr.lastWave['nbrSegmentArray'] 
+      nbrSegmentArray=self.acqirisInstr.lastNbrSegmentsArray 
     for i in range(4):
       if lastTranferred & targettedWaveform & (1 << i):
         nbrSegment=nbrSegmentArray[i]
@@ -172,14 +172,14 @@ class DLLMath1Module():
     TargettedWaveform is the Sum(an 2^n) for n=0 to 3 the channel number and an=1 for targetted channels and zero otherwise 
     Stores the results in the 4 element python array boxcarMean.
     """
-    lastTranferred=self.acqirisInstr.lastWave['transferedChannels']
+    lastTranferred=self.acqirisInstr.lastTransferredChannel
     targettedWaveform=lastTranferred & targettedWaveform
-    lastAveraged=self.acqirisInstr.lastWave['transferAverage']
-    nbrSamplesPerSeg=self.acqirisInstr.lastWave['nbrSamplesPerSeg']
+    lastAveraged=self.acqirisInstr.lastTransferAverage
+    nbrSamplesPerSeg=self.acqirisInstr.lastNbrSamplesPerSeg
     if lastAveraged:
       nbrSegmentArray=[1,1,1,1] 
     else:
-      nbrSegmentArray=self.acqirisInstr.lastWave['nbrSegmentArray'] 
+      nbrSegmentArray=self.acqirisInstr.lastNbrSegmentsArray
     for i in range(4):
       if  targettedWaveform & (1 << i):
         nbrSegment=nbrSegmentArray[i]
@@ -230,13 +230,13 @@ class DLLMath1Module():
     Waveform1 and waveform 2 are the channel number 0,1,2,or 3
     Stores the results in cov.
     """
-    lastTranferred=self.acqirisInstr.lastWave['transferedChannels']
-    lastAveraged=self.acqirisInstr.lastWave['transferAverage']
-    nbrSamplesPerSeg=self.acqirisInstr.lastWave['nbrSamplesPerSeg']
+    lastTranferred=self.acqirisInstr.lastTransferredChannel
+    lastAveraged=self.acqirisInstr.lastTransferAverage
+    nbrSamplesPerSeg=self.acqirisInstr.lastNbrSamplesPerSeg
     if lastAveraged:
       nbrSegmentArray=[1,1,1,1] 
     else:
-      nbrSegmentArray=self.acqirisInstr.lastWave['nbrSegmentArray']
+      nbrSegmentArray=self.acqirisInstr.lastNbrSegmentsArray
     sameLength=nbrSegmentArray[waveform1]==nbrSegmentArray[waveform2]
     waveform1Transferred=lastTranferred & (1 << waveform1)
     waveform2Transferred=lastTranferred & (1 << waveform2)
@@ -258,13 +258,13 @@ class DLLMath1Module():
     Waveform1 and waveform 2 are the channel number 0,1,2,or 3
     Stores the results in covMatrix.
     """
-    lastTranferred=self.acqirisInstr.lastWave['transferedChannels']
-    lastAveraged=self.acqirisInstr.lastWave['transferAverage']
-    nbrSamplesPerSeg=self.acqirisInstr.lastWave['nbrSamplesPerSeg']
+    lastTranferred=self.acqirisInstr.lastTransferredChannel
+    lastAveraged=self.acqirisInstr.lastTransferAverage
+    nbrSamplesPerSeg=self.acqirisInstr.lastNbrSamplesPerSeg
     if lastAveraged:
       nbrSegmentArray=[1,1,1,1] 
     else:
-      nbrSegmentArray=self.acqirisInstr.lastWave['nbrSegmentArray']
+      nbrSegmentArray=self.acqirisInstr.lastNbrSegmentsArray
     sameLength=nbrSegmentArray[waveform1]==nbrSegmentArray[waveform2]
     waveform1Transferred=lastTranferred & (1 << waveform1)
     waveform2Transferred=lastTranferred & (1 << waveform2)
@@ -309,10 +309,10 @@ class DLLMath1Module():
     or using both ch1 and ch2 for modulus 1 and ch3 and ch4 for modulus 2 if targettedWaveform =  15.
     Results are overwritten in the first waveform channel of each pair.
     """
-    lastTranferred=self.acqirisInstr.lastWave['transferedChannels']
+    lastTranferred=self.acqirisInstr.lastTransferredChannel
     targettedWaveform=lastTranferred & targettedWaveform
-    lastAveraged=self.acqirisInstr.lastWave['transferAverage']
-    waveSizes=self.acqirisInstr.lastWave['waveSizes']
+    lastAveraged=self.acqirisInstr.lastTransferAverage
+    waveSizes=self.acqirisInstr.lastWaveformArraySizes
     i=0
     while i<4:
       while (not(targettedWaveform & (1 << i))and i<=4) : i+=1
@@ -334,10 +334,10 @@ class DLLMath1Module():
     thresholderOfLastWaveForms(threshold='auto',targettedWaveform=15):
     Overwrite values of dataArray with 0's or 1's if value is below and strictly above the threshold, respectively
     """
-    lastTranferred=self.acqirisInstr.lastWave['transferedChannels']
+    lastTranferred=self.acqirisInstr.lastTransferredChannel
     targettedWaveform=lastTranferred & targettedWaveform
-    lastAveraged=self.acqirisInstr.lastWave['transferAverage']
-    waveSizes=self.acqirisInstr.lastWave['waveSizes']
+    lastAveraged=self.acqirisInstr.lastTransferAverage
+    waveSizes=self.acqirisInstr.lastWaveformArraySizes
     for i in range(4):
       if targettedWaveform & (1 << i):
         pointer=self.acqirisInstr.lastWaveformArray[waveform1].ctypes.data
@@ -355,8 +355,9 @@ class DLLMath1Module():
     """
     for i in range(4):
       if (targettedWaveform & (1 << i) and getattr(self,propertyArray)[i]!=None):
+        print "i=",i
         pointerData=getattr(self,propertyArray)[i].ctypes.data
-        size= c_long(len(getattr(self,propertyArray)[i]))
+        size=c_long(len(getattr(self,propertyArray)[i]))
         min1=mini
         if mini=="auto": min1=self._dll.minArray(pointerData,size)
         max1=maxi
@@ -368,9 +369,8 @@ class DLLMath1Module():
         if mini=="auto": min1=min1-(max1-min1)/binNumber
         if maxi=="auto": max1=max1+(max1-min1)/binNumber
         self.histoArray[i]=zeros(binNumber)
-        pointerHisto=self.histoArray[i].ctypes.data  
-        self._dll.histo1D(pointerData,size,c_double(min1),c_double(max1),c_ulonglong(binNumber), pointerHisto )
-    print "histo1DProperty() not debugged yet"
+        pointerHisto=self.histoArray[i][0:].ctypes.data
+        self._dll.histo1D(pointerData,size,c_double(min1),c_double(max1),c_ulong(binNumber),pointerHisto)
     return
     
   def thresholderProperty(self,propertyArray=mean,threshold="auto",targettedWaveform=15):

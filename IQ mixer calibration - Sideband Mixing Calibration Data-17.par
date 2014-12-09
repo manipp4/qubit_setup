@@ -1,0 +1,26 @@
+children:
+- attributes: {f_c: 7.77, row: 0}
+  path: IQ mixer calibration - Sideband Mixing Calibration Data-17-f_c = 7p77 GHz-0
+meta:
+  creationTime: Fri Jun 06 16:32:07 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {f_c: 0}
+  fieldNames: [f_c]
+  filename: L:\lab_control\python\qubit_setup\IQ mixer calibration - Sideband Mixing
+    Calibration Data-17.par
+  index: 1
+  length: 1
+  modificationTime: Tue Jul 08 16:54:58 2014
+  name: IQ mixer calibration - Sideband Mixing Calibration Data
+  parameters: {}
+  tags: ''
+parameters:
+  awg: Tektronix AWG
+  channels: !!python/tuple [1, 2]
+  fsp: Rhode & Schwarz FSP
+  mwg: MWsource JBA
+  power: 13.0
+tablefilename: IQ mixer calibration - Sideband Mixing Calibration Data-17.txt
+version: '0.4'

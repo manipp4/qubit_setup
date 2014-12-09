@@ -11,9 +11,9 @@ if not os.path.realpath(__file__+'../../../') in sys.path:
 	sys.path.append(os.path.realpath(__file__+'../../../'))
 
 from pyview.helpers.instrumentsmanager import *
-if 'pyview.lib.datacube' in sys.modules:
-  reload(sys.modules['pyview.lib.datacube'])
-from pyview.lib.datacube import *
+#if 'pyview.lib.datacube' in sys.modules:
+#  reload(sys.modules['pyview.lib.datacube'])
+#from pyview.lib.datacube import *
 from pyview.config.parameters import params
 
 print "Initializing instruments..."
@@ -35,104 +35,117 @@ instruments = [
       'name' : 'fsp',
       'serverAddress': serverAddress
     },
-    {
-      'name' : 'temperature',
-      'serverAddress': serverAddress,
-      'kwargs' : {}
+    #{
+    #  'name' : 'temperature',
+    #  'serverAddress': serverAddress,
+    #  'kwargs' : {}
+    #},
+    #{
+    #  'name' : 'helium_level',
+    #  'serverAddress': serverAddress
+    #},
+    #{
+    #  'name' : 'acqiris22',
+   	#  'class' : 'acqiris2',
+    #  'serverAddress' : 'rip://192.168.0.22:8000',
+    #  'kwargs' : {'name': 'Acqiris Card','__includeModuleDLL2__':False}
+    #},
+     {
+      'name' : 'acqiris34',
+   	  'class' : 'acqiris3',
+      'serverAddress' : 'rip://192.168.0.34:8000',
+      'kwargs' : {'name': 'Acqiris Card','___includeDLLMath1Module___':True}
     },
-    {
-      'name' : 'helium_level',
-      'serverAddress': serverAddress
-    },
-    {
-      'name' : 'acqiris',
-      'class' : 'acqiris2',
-      'serverAddress' : 'rip://192.168.0.22:8000',
-      'kwargs' : {'name': 'Acqiris Card','__includeModuleDLL2__':False}
-    },
-    {
-      'name' : 'awgMW',
-      'class' : 'awg',
-      'serverAddress' : serverAddress,
-      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.14::inst0"}#192.168.0.14::inst0
-    },
+    #{
+      #'name' : 'acqiris19',
+   	  #'class' : 'acqiris3',
+     # 'serverAddress' : 'rip://192.168.0.19:8000',
+    #  'kwargs' : {'name': 'Acqiris Card','__includeModuleDLL2__':False}
+   # },
+   # {
+   #   'name' : 'awgMW',
+   #   'class' : 'awg',
+   #   'serverAddress' : serverAddress,
+   #   'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.14::inst0"}#192.168.0.14::inst0
+   # },
      {
       'name' : 'awgMW2',
       'class' : 'awgV2',
       'serverAddress' : serverAddress,
-      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.14::inst0"}#192.168.0.14::inst0
+      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.5::inst0"}#192.168.0.14::inst0
     },
     {
-      'name' : 'MWSource_Qubit',
+      'name' : 'MWSource1',
       'class' : 'anritsu_mwg',
       'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "GPIB0::4"}
     },
     {
-      'name' : 'MWSource_cavity',
+      'name' : 'MWSource_Qubit',
+      'class' : 'rohdeschwarz_mwg',
+      'serverAddress' : serverAddress,
+      'kwargs' : {'visaAddress' : "GPIB0::28"}
+    },
+    {
+      'name' : 'MWSource2',
       'class' : 'anritsu_mwg',
       'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "GPIB0::19"}
     },
+
     {
-      'name' : 'MWSource_Qubit2',
+      'name' : 'MWSource_Cavity',
       'class' : 'agilent_mwg',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'MWSource_qubit2','visaAddress' : "TCPIP::192.168.0.25."}
+      'kwargs' : {'name' : 'MWSource_qubit2','visaAddress' : "TCPIP::192.168.0.16"}
     },
+    #{
+     # 'name' : 'IQMixer_Cav',
+     # 'class' : 'iqmixer',
+     # 'kwargs' : {'name' : 'MixerCavity', 'MWSource':'MWSource_Cavity', 'AWG':'awgMW2', 'AWGChannels':(1,2), 'fsp':'fsp'}
+    #},
     {
-      'name' : 'IQMixer_Cav',
-      'class' : 'iqmixer',
-      'kwargs' : {'name' : 'MixerJBA', 'MWSource':'MWSource_cavity', 'AWG':'awgMW', 'AWGChannels':(1,2), 'fsp':'fsp'}
-    },
-    {
-      'name':'PG_Cavity',
-      'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator Cavity', 'MWSource':'MWSource_cavity', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW2', 'AWGChannels':(1)}
-    },
-     {
-      'name':'PG_Cavity_switch',
-      'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator Cavity Switch', 'MWSource':'MWSource_cavity', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW2', 'AWGChannels':(2)}
+      'name' : 'mixerCav',
+      'class' : 'simplemixer',
+      'kwargs' : {'name' : 'mixerCav', 'MWSource':'MWSource_Cavity', 'AWG':'awgMW2', 'AWGChannel':(1), 'fsp':'fsp'}
     },
     {
       'name' : 'mixerQB',
       'class' : 'simplemixer',
-      'kwargs' : {'name' : 'mixerQB', 'MWSource':'MWSource_Qubit', 'AWG':'awgMW', 'AWGChannel':(3), 'fsp':'fsp'}
-    }
-    ,
+      'kwargs' : {'name' : 'mixerQB', 'MWSource':'MWSource_Qubit', 'AWG':'awgMW2', 'AWGChannel':(3), 'fsp':'fsp'}
+    },
+    #{
+    #  'name':'PG_Cavity',
+    #  'class':'pulse_generator',
+    #  'kwargs':{'name':'Pulse Generator Cavity', 'MWSource':'MWSource_Cavity', 'mixer':'IQMixer_Cav', 'modulationMode':'IQMixer', 'formGenerator':'awgMW2', 'AWGChannels':(1,2)}
+    #},
+    {
+      'name':'PG_Cav',
+      'class':'pulse_generator',
+      'kwargs':{'name':'Pulse Generator QB', 'MWSource':'MWSource_Qubit', 'mixer':'mixerCav', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW2', 'AWGChannels':(1)}
+    },
     {
       'name':'PG_QB',
       'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator QB', 'MWSource':'MWSource_Qubit2', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW2', 'AWGChannels':(3)}
+      'kwargs':{'name':'Pulse Generator QB', 'MWSource':'MWSource_Qubit', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW2', 'AWGChannels':(3)}
     },
-    {
-      'name':'PG_SWITCH',
-      'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator SW', 'MWSource':'MWSource_Qubit', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(4)}
-    },
-    {
-      'name':'PG_QU_GENE_SW',
-      'class':'pulse_generator',
-      'kwargs':{'name':'Pulse Generator SW', 'MWSource':'MWSource_Qubit', 'mixer':'mixerQB', 'modulationMode':'SimpleMixer', 'formGenerator':'awgMW', 'AWGChannels':(2)}
-    },
-    {
+	{
       'name' : 'Yoko3',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Yoko3','visaAddress' : 'GPIB0::3'}
+      'kwargs' : {'name' : 'Yoko2','visaAddress' : 'GPIB0::22'}
     },
-        {
+    {
       'name' : 'Yoko1',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Yoko1','visaAddress' : 'GPIB0::11'}
+      'kwargs' : {'name' : 'Yoko1','visaAddress' : 'GPIB0::1'}
     },
     {
       'name' : 'Keithley2400',
       'class' : 'keithley2400',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Keithley2400','visaAddress' : 'GPIB0::9'}
+      'kwargs' : {'name' : 'Keithley2400','visaAddress' : 'GPIB0::24'}
     }    
 ]
 instrumentManager.initInstruments(instruments,globalParameters = {'forceReload' : True} )

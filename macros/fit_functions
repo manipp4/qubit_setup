@@ -1,0 +1,81 @@
+def fitLorentzian(y,x='',initialBase='',initialHeight='',initialPosition='',initialWidth='',direction='',debug=False):
+	""" fitLorentzian(y,x='',initialBase='',initialHeight='',initialPosition='',initialWidth='',direction='',debug=False) finds the fitting parameters of a lorentzian peak"""
+	if debug : print 'Entering fitLorentzian...'
+	# generate the x if not defined
+	indexes=''			# variable to store the initial order of x values
+	if x=='':										
+		x=range(len(y))							
+	else: 				#sort x and y by ascending x but memorize the initial order
+		x,y,indexes=sortV1V2AscendingV1(x,y)
+	# analyze the shape by findind the min, max and mean values
+	xMax,yMax,indexMax= extremum(x,y,minOrMax="max")
+	xMin,yMin,indexMin= extremum(x,y,minOrMax="min")
+	yMean=mean(y)
+	# guess the direction (upward or downward peak)
+	if direction=='':
+		if yMax-yMean>yMean-yMin:	direction='up'
+		else: 	direction='down'
+	# find the peak value if position is imposed
+	yLine=''
+	if initialPosition!='' and initialHeight=='': yLine=numpy.interp(initialPosition, x,y)
+	# find the baseline, positive or negative height, and position of the line
+	if direction=='up':		# upward peak
+		if initialBase=='': initialBase=yMin
+		if initialHeight=='':
+			if yLine=='':
+				yLine=yMax
+				initialHeight =yLine-yMin
+		initialHeight=abs(initialHeight)
+		if initialPosition=='':initialPosition=xMax
+	else: 						#downward peak
+		if initialBase=='': initialBase=yMax
+		if initialHeight=='':
+			if yLine=='':
+				yLine=yMin
+				initialHeight =yLine-yMax
+		initialHeight=-abs(initialHeight)
+		if initialPosition=='':initialPosition=xMin
+	# guess the width
+	if initialWidth=='' or initialWidth==0:
+		indexLine=closestXYofTargetX(x,y,initialPosition)[2]			# find the index of the line in the x y lists
+		middle=initialBase+initialHeight/2							# find the level at mid-height
+		x1=x[0]
+		if indexLine!=0:												# find the closest x on the left that corresponds to mid-height	
+			#x1=closestXYofTargetY(x[:indexLine],y[:indexLine],middle)[0]
+			x1=firstXCrossTargetYFromAnEnd(y[:indexLine+1],yTarget=middle,x=x[:indexLine+1],direction='rightToLeft')[0]
+		x2=x[-1]
+		if indexLine!=len(x)-1:										# find the closest x on the right that corresponds to mid-height
+			#x2=closestXYofTargetY(x[indexLine:],y[indexLine:],middle)[0]
+			x2=firstXCrossTargetYFromAnEnd(y[indexLine:],yTarget=middle,x=x[indexLine:])[0]							 
+		initialWidth=(x2-x1)											# calulate the width
+		if initialWidth==0:
+			index=indexLine
+			if indexLine==0:index+=1
+			initialWidth=abs(x[index]-x[index-1])/2
+	paramGuess=[initialBase,initialHeight,initialPosition,initialWidth]
+	LorentzGuess=Lorenzian(paramGuess[0],paramGuess[1],paramGuess[2],paramGuess[3])
+	if debug: 
+		print "initial Lorentz guess [y0,yAmp,x0, width] = ",paramGuess 
+		figure()
+		figNumber=gcf().number
+		title('fitLorentzian')
+		pl=plot(x,y,'ro')
+		xPlot=linspace(min(x),max(x),500)
+		yGuessPlot=LorentzGuess(xPlot)
+		pl1=plot(xPlot,yGuessPlot,'--')
+		show()
+	# fit
+	def fitfunc(x,y0,yAmp,x0,width):
+		return Lorenzian(y0,yAmp,x0,width)(x)							#y0+yAmp/(1.0+pow(2.0*(x-x0)/width,2)) 
+	paramFit,fitCovariances =scipy.optimize.curve_fit(fitfunc, x, y,p0=paramGuess)
+	LorentzFit=Lorenzian(paramFit[0],paramFit[1],paramFit[2],paramFit[3])
+	if debug:  
+		print "fit Lorentz result [y0,yAmp,x0, width] = ",paramFit
+		figure(figNumber)
+		yFitPlot=LorentzFit(xPlot)
+		pl2=plot(xPlot,yFitPlot)
+		show()
+	if indexes!='': x=[x[i] for i in argsort(indexes)]	# reorder according to inital x if sorted	
+	yFitGuess=[LorentzGuess(xv) for xv in x]
+	yFit=[LorentzFit(xv) for xv in x]
+	return paramFit,yFit,yFitGuess

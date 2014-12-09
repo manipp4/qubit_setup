@@ -1,18 +1,19 @@
 children: []
 meta:
-  creationTime: Thu Nov 28 17:57:21 2013
+  creationTime: Fri Jun 06 16:21:42 2014
   dataType: !!python/name:numpy.float64 ''
   defaults: {}
   description: ''
   fieldMap: {}
   fieldNames: []
-  filename: L:\python\qubit_setup\mixer calibration - Offset Calibration Data.par
+  filename: L:\lab_control\python\qubit_setup\mixer calibration - Offset Calibration
+    Data.par
   index: 0
   length: 0
-  modificationTime: Thu Nov 28 17:57:21 2013
+  modificationTime: Fri Jun 06 16:21:42 2014
   name: mixer calibration - Offset Calibration Data
   parameters: {}
   tags: ''
 parameters: {}
 tablefilename: mixer calibration - Offset Calibration Data.txt
-version: '0.3'
+version: '0.4'

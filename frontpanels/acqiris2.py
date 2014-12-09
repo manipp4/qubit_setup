@@ -50,7 +50,8 @@ class Panel(FrontPanel):
       for i in range(0,4):
         if self.activated[i].isChecked():
           params["usedChannels"]+=1<<i
-      params["synchro"] = bool(self.synchro.checkState())           # external synchro
+      #params["synchro"] = bool(self.synchro.checkState())           # external synchro
+      params["clock"] = self.clock.itemData(self.clock.currentIndex()).toInt()[0]   # clock mode code
       params["sampleInterval"] = float(self.sampleInterval.text())  # sampling interval in s
       params["trigSource"] = self.trigSource.itemData(self.trigSource.currentIndex()).toInt()[0]        # trigger source code
       if params["trigSource"] == 0:      
@@ -70,7 +71,30 @@ class Panel(FrontPanel):
       params["nLoops"]= int(self.nLoops.text())                                           # number of acquisition loops (or banks in SAR mode)
       params["transferAverage"]= bool(self.transferAverage.isChecked())                  # transfer averaged trace only
       return params
+        
     
+    def requestInitialize(self):
+      """
+      (re)initialize the Acqiris board.
+      """
+      #print "calling instrument.dispatch(""reinit"")"
+      self.instrument.dispatch("reinit")
+      
+    def requestTemperature(self):
+      """
+      Get and display the temperature of board.
+      """
+      temp=self.instrument.TemperatureV1()
+      print temp
+      palette = QPalette()
+      if temp<=55:
+        palette.setColor(0,QColor('blue'))
+      else:
+        palette.setColor(0,QColor('red'))
+      self.labelTemp.setPalette(palette)
+      self.labelTemp.setText('\t'+str(temp)+ u'\N{DEGREE SIGN}'+'C')
+      self.labelTemp.show()
+      
     def requestCalibrate(self):
       """
       Requests a calibration of the Acqiris board.
@@ -82,6 +106,7 @@ class Panel(FrontPanel):
       for i in range(0,4):
         if self.activated[i].isChecked():
           usedChannels+=1<<i
+      #print "calling instrument.dispatch(""CalibrateV1"")"
       self.instrument.dispatch("CalibrateV1",option=1,channels=usedChannels)      #channel
       
     def requestConfigure(self):
@@ -89,7 +114,8 @@ class Panel(FrontPanel):
       Configures the Acqiris board with the parameters that are displayed in the frontend.
       """
       params = self.getParameters()
-      self.instrument.dispatch("ConfigureAllInOne",**params)  #self.instrument.dispatch("Configure",**params)
+      #print "calling instrument.dispatch(""ConfigureAllInOne"")"
+      self.instrument.dispatch("ConfigureAllInOne",**params)
         
     def requestAcquire(self):
       """
@@ -108,13 +134,15 @@ class Panel(FrontPanel):
       self.messageString.setText("Acquiring new data...")
       self.messageString.repaint()  
       self.instrument.AcquireTransferV4(wantedChannels=params["usedChannels"],transferAverage=params["transferAverage"],nLoops=params["nLoops"])
-      #self.instrument.dispatch("AcquireTransferV4", wantedChannels=params["usedChannels"],transferAverage=params["transferAverage"],nLoops=params["nLoops"])
       #self.instrument.dispatchCB("AcquireTransferV4", "newDataArrived", wantedChannels=params["usedChannels"],transferAverage=params["transferAverage"],nLoops=params["nLoops"])
      
       self.messageString.setText("Acquisition done.")
       self.newDataArrived() 
         
     def newDataArrived(self,dispatchID=None,result=None):
+      """
+      Call the proper update plot functions when new data arrived.
+      """
       # print "new dataarrived"
       if self.lastWave["identifier"]==-1: self.lastWave["identifier"]=0
       if self.transferAverage.isChecked() and self.plotTabs.currentIndex()!=3:
@@ -122,11 +150,17 @@ class Panel(FrontPanel):
       else: self.updatePlotTab()
     
     def updatePlotTab(self):
+      """
+      Call the plot function if plots need to be updated
+      """
       # print "updateplottab"
       if bool(self.updatePlots.isChecked()):
           self.plotData()
           
     def plotData(self):
+      """
+      Plot new data
+      """
       # print "plotdata"
       self.colors=['b','g','r','c','m','k']
       id=self.lastWave["identifier"]
@@ -169,6 +203,9 @@ class Panel(FrontPanel):
         self.messageString.repaint()
       
     def plotSequence(self):
+      """
+      Plot the whole sequence in the Sequence tab.
+      """
       # print "plotSequence"
       if not(self.lastWave['transferAverage']):
         channels2Plot=0
@@ -205,6 +242,9 @@ class Panel(FrontPanel):
         self.segmentPlot.draw()
   
     def plotAverage(self):
+      """
+      Plot or replot averages in the average tab.
+      """
       #print "plotAverage"
       if not(self.lastWave['transferAverage']) and not(self.lastWave['averageCalculated']) and self.forceCalc.isChecked():
         self.instrument.calculateAverage()
@@ -219,9 +259,15 @@ class Panel(FrontPanel):
       self.averagePlot.draw()
       
     def forceCalcNow(self):
+      """
+      Call the function that calculates and plots averages
+      """
       if self.forceCalc.isChecked(): self.plotAverage()   
           
-    def plotTimeStamps(self): 
+    def plotTimeStamps(self):
+      """
+      Plot the time array
+      """ 
       if self.lastWave['timeStampsSize']!=0:
         if self.deltaTimestamps.isChecked():
           self.timeStampsPlot.axes.plot(self.lastWave['timeStamps'][1:]-self.lastWave['timeStamps'][:-1])
@@ -241,20 +287,28 @@ class Panel(FrontPanel):
       """
       Processes status updates from the Acqiris card and updates the frontpanel information accordingly.
       """
+      #print "in updatedGui()with property", property
       if subject==self.instrument:
         if property == "temperature":
+          #print "pass temperature from updatedGui()"
           pass
         elif property == "AcquireV1":
+          #print "pass AcquireV1 from updatedGui()"
           pass # DV 11/03/2012
           #self.instrument.dispatch("DMATransferV1",transferAverage = bool(self.transferAverage.isChecked()))
         elif property == "DMATransferV1":
+          #print "in DMATransferV1 case from updatedGui()"
           if self.updatePlots.isChecked():
             self._updatePlots = True
         elif property == "AcquireTransferV4":
+          #print "pass AcquireTransferV4 from updatedGui()"
           pass
           #if self.updatePlots.isChecked():
           #  self._updatePlots = True
         elif property == "parameters":
+          #print "debugParam=",self.debugParam
+          #self.debugParam=self.debugParam+1
+          #print "calling updateParameters(**value) from updatedGui()"
           self.updateParameters(**value)
         elif not "ask":
           print "bad message %s"%property
@@ -263,11 +317,15 @@ class Panel(FrontPanel):
       if self._updatePlots:
         self._updatePlots = False
         self.plotData()
+      
+    def onTimer2(self):
+      self.requestTemperature()
           
     def updateParameters(self,**params):
       """
       Updates the frontpanel information according to a given set of parameters.
       """
+      #print "in updateParameters"
       if "couplings" in params and len(params["couplings"])==4:
         for i in range(0,4):
           self.couplings[i].setCurrentIndex(int(params["couplings"][i]))
@@ -286,7 +344,7 @@ class Panel(FrontPanel):
       for key in ["sampleInterval","numberOfPoints","trigDelay","numberOfSegments","trigLevel1","trigLevel2"]:
         if key in params and hasattr(self,key):
           getattr(self,key).setText(str(params[key]))
-      for key in ["memType","trigCoupling","trigSlope"]:
+      for key in ["memType","trigCoupling","trigSlope","clock"]:
         if key in params and hasattr(self,key):
           getattr(self,key).setCurrentIndex(int(params[key]))   
       if "trigSource" in params:
@@ -294,7 +352,7 @@ class Panel(FrontPanel):
           self.trigSource.setCurrentIndex(int(params["trigSource"]))
         else:
           self.trigSource.setCurrentIndex(0)
-      for key in ["synchro","transferAverage"]:
+      for key in ["synchro","transferAverage"]:  # synchro obsolete
         if key in params and hasattr(self,key):
           getattr(self,key).setChecked(bool(params[key]))
           
@@ -304,6 +362,17 @@ class Panel(FrontPanel):
       while self.runCheckbox.isChecked():
         self.requestAcquire()
         QCoreApplication.processEvents()
+
+    
+    #
+    def plottedDatacube():
+      if   self.plotTabs.currentIndex()==0: return self.timeStampDatacube 
+      elif self.plotTabs.currentIndex()==1: return self.sequenceDatacube
+      elif self.plotTabs.currentIndex()==2: return self.segmentDatacube
+      elif self.plotTabs.currentIndex()==3: return self.averageDatacube 
+      elif self.plotTabs.currentIndex()==4: return self.propertyDatacube
+
+
 
     #Saves the displayed traces to an ascii file.
     def saveData(self):
@@ -316,11 +385,9 @@ class Panel(FrontPanel):
       filename = str(self.fileDialog.getSaveFileName())
       if len(filename) > 0:
         self._workingDirectory = str(self.fileDialog.directory().dirName())
-        if self.plotTabs.currentIndex()==0: datacube=self.segmentDatacube
-        elif self.plotTabs.currentIndex()==1: datacube=self.sequenceDatacube
-        elif self.plotTabs.currentIndex()==2: datacube=self.averageDatacube
-        elif self.plotTabs.currentIndex()==3: datacube=self.timeStampDatacube
-        datacube.savetxt(filename)
+        cube=self.plottedDatacube()
+        if cube:
+          cube.savetxt(filename)
 
       
     #Save the displayed plot to an image file (PDF, PNG, EPS, ...)  
@@ -338,35 +405,41 @@ class Panel(FrontPanel):
           self._workingDirectory = str(self.fileDialog.directory().dirName())
           plot.figure.savefig(filename)
 
-          
     def __init__(self,instrument,parent=None):
       """
       Initializes the frontpanel
       """
+      self.debugParam=0
+      
       super(Panel,self).__init__(instrument,parent)
-      self.setWindowTitle("Acqiris DC282 Control Panel")
+      self.setWindowTitle("Acqiris Control Panel")
       self._workingDirectory = ''
       self.fileDialog = QFileDialog()
       self.lastWave=dict()     # create the lastWave dictionary to avoid errors before very first transfer
       self.lastWave['identifier']=-1
       
-      #The grid layout channelGrid that contains the parameters for the different channels.
-      self.channelGrid = QGridLayout()
-      self.channelGrid.setVerticalSpacing(2)
-      self.channelGrid.setHorizontalSpacing(10)
+      # access directly to instruments constants to adapt the gui definition to the number of channels
+      #self.constants=self.instrument.constants() 
+      #self.nbrOfChannels=self.constants["nbrOfChannels"]
       
-        #Lists containing the parameters controls of the different channels.
+      #Lists containing the parameters controls of the different channels.
       self.couplings = list()
       self.fullScales = list()
       self.offsets = list()
       self.bandwidths = list()
       self.activated = list()
-            
-        #Here we generate the parameter controls of the 4 channels.
+           
+      #The grid layout channelGrid that contains the parameters for the different channels.
+      self.channelGrid = QGridLayout()
+      self.channelGrid.setVerticalSpacing(2)
+      self.channelGrid.setHorizontalSpacing(10)
+      
+      #Here we generate the parameter controls of the 4 channels.
       self.chCombine = QComboBox()
       self.chCombine.addItem("1 ADC per channel (0)",0)
       self.chCombine.addItem("ADC pairs on CH 1 and 2 (1)",1)
       self.chCombine.addItem("ADC pairs on CH 1 and 3 (2)",2)
+      self.chCombine.addItem("ADC pairs on CH 2 and 3 (4)",4)
       self.chCombine.addItem("ADC pairs on CH 1 and 4 (3)",3)
       self.chCombine.addItem("ADC pairs on CH 2 and 3 (4)",4)
       self.chCombine.addItem("ADC pairs on CH 2 and 4 (5)",5)
@@ -452,16 +525,13 @@ class Panel(FrontPanel):
             self.activated[i].setDisabled(True)
         self.sampleInterval.setFocus()
         self.sampleInterval.clearFocus()
-
-      self.connect(self.chCombine,SIGNAL("currentIndexChanged(int)"),chCombineChanged)
+      
       
       self.colors=['blue','green','red','cyan']
       for i in range(0,4):
         myWidth=80
         activated = QCheckBox("Active")
         activated.setChecked(True)
-        #def activatedChanged(self,i):
-        #self.connect(self.activated,SIGNAL("stateChanged()"),activatedChanged)
           
         fullScale=QLineEdit("5.0")
         fullScale.setMaximumWidth(myWidth)
@@ -486,7 +556,7 @@ class Panel(FrontPanel):
         bandwidth.addItem("35  MHz (5)",5)
         bandwidth.setCurrentIndex(3)
         bandwidth.setMaximumWidth(myWidth)
-                  
+            
         self.activated.append(activated)
         self.couplings.append(coupling)
         self.fullScales.append(fullScale)
@@ -506,6 +576,9 @@ class Panel(FrontPanel):
         self.channelGrid.addWidget(self.offsets[i],8,i)
         self.channelGrid.addWidget(QLabel("Bandwidth "+str(i+1)),9,i)
         self.channelGrid.addWidget(self.bandwidths[i],10,i)
+
+      self.connect(self.chCombine,SIGNAL("currentIndexChanged(int)"),chCombineChanged)
+      
 
       #The parameter grid paramsGrid that contains all the global parameters of the card.
       self.paramsGrid = QGridLayout()
@@ -634,10 +707,19 @@ class Panel(FrontPanel):
       self.nLoops.setMaximumWidth(myWidth)  
       self.paramsGrid.addWidget(QLabel("Acqs or banks/acq"),8,1)
       self.paramsGrid.addWidget(self.nLoops,9,1)
-        # Ext sync and other config parameters
-      self.synchro = QCheckBox("Ext 10MHz sync")
-      self.synchro.setChecked(True)
-      self.paramsGrid.addWidget(self.synchro,0,2)
+      # Ext sync and other config parameters
+      #self.synchro = QCheckBox("Ext 10MHz sync")   # synchro obsolete replaced by clock
+      #self.synchro.setChecked(True)
+      #self.paramsGrid.addWidget(self.synchro,0,2)
+      self.clock = QComboBox()     
+      self.clock.addItem("Int clk",0)
+      self.clock.addItem("Ext clk",1)
+      self.clock.addItem("Ext Ref 10MHz",2)
+      self.clock.addItem("Ext clk Start/Stop",3)
+      self.clock.setCurrentIndex(2)
+      self.clock.setMaximumWidth(myWidth+10)     
+      self.paramsGrid.addWidget(QLabel("Clocking"),0,2)
+      self.paramsGrid.addWidget(self.clock,1,2)
       
       self.memType = QComboBox()     
       self.memType.addItem("default",0)
@@ -806,6 +888,8 @@ class Panel(FrontPanel):
       self.connect(self.plotTabs,SIGNAL("currentChanged(int)"),self.updatePlotTab)
       
       #Some buttons and checkboxes, their grid, and corresponding functions
+      initializeButton = QPushButton("(Re)Init")
+      temperatureButton = QPushButton("Temperature")
       calibrateButton = QPushButton("Calibrate")
       configureButton = QPushButton("Configure")
       acquireButton = QPushButton("Acquire && transfer")
@@ -815,20 +899,29 @@ class Panel(FrontPanel):
       self.updatePlots = QCheckBox("auto",checked=True)
       saveDataButton = QPushButton("Save data...")
       saveFigButton = QPushButton("Save fig...")
+      self.labelTemp=QLabel('\t')
   
-      # button grid
-      buttonGrid = QBoxLayout(QBoxLayout.LeftToRight)
-      buttonGrid.addWidget(calibrateButton)
-      buttonGrid.addWidget(configureButton)
-      buttonGrid.addWidget(acquireButton)
-      buttonGrid.addWidget(self.transferAverage)
-      buttonGrid.addWidget(self.runCheckbox)      
-      buttonGrid.addWidget(plotButton)
-      buttonGrid.addWidget(self.updatePlots)
-      buttonGrid.addWidget(saveDataButton)
-      buttonGrid.addWidget(saveFigButton)
-      buttonGrid.addStretch()
+      # button grid 1
+      buttonGrid1 = QBoxLayout(QBoxLayout.LeftToRight)
+      buttonGrid1.addWidget(initializeButton)
+      buttonGrid1.addWidget(temperatureButton)
+      buttonGrid1.addWidget(calibrateButton)
+      buttonGrid1.addWidget(configureButton)
+      buttonGrid1.addWidget(self.labelTemp)
+      buttonGrid1.addStretch()
+      # button grid 2
+      buttonGrid2 = QBoxLayout(QBoxLayout.LeftToRight)
+      buttonGrid2.addWidget(acquireButton)
+      buttonGrid2.addWidget(self.transferAverage)
+      buttonGrid2.addWidget(self.runCheckbox)      
+      buttonGrid2.addWidget(plotButton)
+      buttonGrid2.addWidget(self.updatePlots)
+      buttonGrid2.addWidget(saveDataButton)
+      buttonGrid2.addWidget(saveFigButton)
+      buttonGrid2.addStretch()
         # connections between buttons' clicked() signals and corresponding functions
+      self.connect(initializeButton,SIGNAL("clicked()"),self.requestInitialize)
+      self.connect(temperatureButton,SIGNAL("clicked()"),self.requestTemperature)
       self.connect(calibrateButton,SIGNAL("clicked()"),self.requestCalibrate)
       self.connect(configureButton,SIGNAL("clicked()"),self.requestConfigure)
       self.connect(acquireButton,SIGNAL("clicked()"),self.requestAcquire)
@@ -854,20 +947,27 @@ class Panel(FrontPanel):
       self.grid = QGridLayout()
       self.grid.setHorizontalSpacing(20)
       
-      self.grid.addItem(self.channelGrid,0,0)
-      self.grid.addWidget(self.plotTabs,1,0,1,2)
-      self.grid.addItem(self.paramsGrid,0,1)        
-      self.grid.addItem(buttonGrid,2,0,1,2)
-      self.grid.addItem(self.messageGrid,3,0,1,2)
+      self.grid.addItem(buttonGrid1,0,0,1,2)
+      self.grid.addItem(self.channelGrid,1,0)
+      self.grid.addWidget(self.plotTabs,2,0,1,2)
+      self.grid.addItem(self.paramsGrid,1,1)        
+      self.grid.addItem(buttonGrid2,3,0,1,2)
+      self.grid.addItem(self.messageGrid,4,0,1,2)
 
       self.qw.setLayout(self.grid)
       
       self._updatePlots = False
-      #We request the current parameters from the card.
+      print "calling instrument.dispatch(""parameters"")"
       self.instrument.dispatch("parameters")
-     
+      
       # auto refresh of front panel based on a timer
       timer = QTimer(self)
       timer.setInterval(500)
       timer.start()
       self.connect(timer,SIGNAL("timeout()"),self.onTimer)
+      
+      #timer2 = QTimer(self)
+      #timer2.setInterval(60000)
+      #timer2.start()
+      #self.connect(timer2,SIGNAL("timeout()"),self.onTimer2)
+      

@@ -1,0 +1,24 @@
+children: []
+meta:
+  creationTime: Fri Jun 06 16:32:05 2014
+  dataType: !!python/name:numpy.float64 ''
+  defaults: {}
+  description: ''
+  fieldMap: {frequency: 1, lowI: 3, lowQ: 0, minimum: 2}
+  fieldNames: [lowQ, frequency, minimum, lowI]
+  filename: L:\lab_control\python\qubit_setup\IQ mixer calibration - Offset Calibration
+    Data-16.par
+  index: 2
+  length: 2
+  modificationTime: Fri Jun 13 15:01:43 2014
+  name: IQ mixer calibration - Offset Calibration Data
+  parameters: {}
+  tags: ''
+parameters:
+  awg: Tektronix AWG
+  channels: !!python/tuple [3, 4]
+  fsp: Rhode & Schwarz FSP
+  mwg: MWsource QB
+  power: 22.0
+tablefilename: IQ mixer calibration - Offset Calibration Data-16.txt
+version: '0.4'

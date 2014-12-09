@@ -12,6 +12,13 @@ import os.path
 from numpy import *
 from numpy.random import *
 
+___mixture_Available___=False
+try:
+    from sklearn import mixture     # clustering library sklearn
+except:
+    pass
+    ___mixture_Available___=True
+
 from pyview.gui.mpl.canvas import MatplotlibCanvas as Canvas
 from pyview.gui.frontpanel import *
 
@@ -22,6 +29,7 @@ class Panel(FrontPanel):
   """
   
   def __init__(self,instrument,parent = None):
+    print "loading JBA FrontPanel"
     FrontPanel.__init__(self,instrument,parent)
 
     #GUI elements
@@ -39,6 +47,7 @@ class Panel(FrontPanel):
     self.accuracyEdit = QLineEdit("0.02")        
     self.setLevelButton = QPushButton("Set Level")
     self.StopButton = QPushButton("Stop")
+    self.squareIQ = QCheckBox("Square IQ plots")
 
     self.frequencyEdit=QLineEdit("10")
     self.setFrequencyButton=QPushButton("Set")
@@ -76,6 +85,7 @@ class Panel(FrontPanel):
     buttonsLayout1.addWidget(self.updateButton)
     buttonsLayout1.addWidget(self.measureSCurveButton)
     buttonsLayout1.addWidget(self.StopButton)
+    buttonsLayout1.addWidget(self.squareIQ)
     buttonsLayout1.addStretch()
     buttonsLayout2.addWidget(QLabel("p:"))
     buttonsLayout2.addWidget(self.levelEdit)
@@ -240,7 +250,7 @@ class Panel(FrontPanel):
   def calibrate(self):
     self.disableButtons()
     lastTab = self.tabs.currentIndex()
-    self.tabs.setCurrentWidget(self.variance)
+    self.tabs.setCurrentWidget(self.iqP)
     self.instrument.dispatch("calibrate",bounds=[float(self.vStartEdit.text()),float(self.vStopEdit.text()),float(self.numberOfVEdit.text())],level = float(self.levelEdit.text()),accuracy = float(self.accuracyEdit.text()))
     #self.calibrateButton.setEnabled(False)
     #self.calibrateStopButton.setEnabled(True)
@@ -252,22 +262,31 @@ class Panel(FrontPanel):
     
   def updateGraphs(self):
     #self.disableButtons()
-    (p,o1,trends) = self.instrument.getThisMeasure(10)
+    #(p,o1,trends) = self.instrument.getThisMeasure(10)
+
+    (components,results,rotatedComponents,clicks,probasInDict)=self.instrument.measure()
+    components=components[self.instrument.bit]
+    rotatedComponents=rotatedComponents[self.instrument.bit]
+    print results
+    results=results['b%i'%self.instrument.bit]
+    
+
+
     self.histograms.axes.cla()
-    range=max(abs(min(trends[0])),abs(max(trends[0])))
-    self.histograms.axes.hist(trends[0],normed = True,bins = 40,range=(-range,range))
+    range=max(abs(min(rotatedComponents[0])),abs(max(rotatedComponents[0])))
+    self.histograms.axes.hist(rotatedComponents[0],normed = True,bins = 40,range=(-range,range))
     self.histograms.axes.axvline(0,ls = ":")
 #    self.histograms.axes.hist(trends[1],normed = True,bins = 30)
     self.histograms.draw()
     self.iq.axes.cla()
-    self.iq.axes.plot(trends[0],trends[1],'o',markersize=2)
+    self.iq.axes.plot(components[0],components[1],'o',markersize=2)
     self.iq.axes.axvline(0,ls = ":")
     self.iq.axes.axhline(0,ls = ":")
     self.iqR.axes.cla()
-#    self.iqR.axes.plot(rTrends[0],rTrends[1],'o',markersize=2)
+    self.iqR.axes.plot(rotatedComponents[0],rotatedComponents[1],'o',markersize=2)
     self.iqR.axes.axvline(0,ls = ":")
     self.iqR.axes.axhline(0,ls = ":")
-    self.updateStatus("Switching probability: %g percent" % (p*100.0))
+    self.updateStatus("Switching probability: %g percent" % (results*100.0))
     self.iq.draw()
     self.iqR.draw()
     self.enableButtons()
@@ -310,11 +329,13 @@ class Panel(FrontPanel):
       elif property == "iqP":
         if value==0:
           self.iqP.axes.cla()
+          self.iqP.squared=True
+          self.iqP.centered=False
           self.iqP.draw()
         else:
           (x,y,color)=value
           self.iqP.axes.plot(x,y,'o',markersize=3,color=color)
-          self.iqP.draw()
+          self.iqP.redraw()
       elif property == "iqPaxes":
         (i0,q0,angle)=value
         self.iqP.axes.plot([i0-cos(angle),i0+cos(angle)],[q0-sin(angle),q0+sin(angle)],linewidth=2,color=((0,0,0)))
@@ -347,7 +368,16 @@ class Panel(FrontPanel):
         self.goto.draw()
       elif property=="status":
         self.updateStatus(value)
-        
+      elif property=="centersIQ":
+        print "plotting centers"
+        sepCenters=value[0]
+        centers=value[1]
+        self.iqP.axes.plot(sepCenters[0],sepCenters[1],'o',markersize=10,color=(1,1,0))
+
+        self.iqP.axes.plot(centers[0],centers[1],'o',markersize=10,color=(0,1,1))
+        #self.iqP.axes.plot(c2[0],c2[1],'o',markersize=10,color=(0,1,1))
+        self.iqP.draw()
+
         
       
   def startJBA(self):
@@ -383,10 +413,6 @@ class Panel(FrontPanel):
     self.setFrequencyButton.setEnabled(False)
     self.startButton.setEnabled(True)
     self.stopButton.setEnabled(False)
-      
-    
-    
-      
       
       
       

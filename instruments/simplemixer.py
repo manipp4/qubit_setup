@@ -34,7 +34,8 @@ class Instr(Instrument):
         Re-create calibration file and store filenames in the register
         """
         register["%s OffsetCal" % self._name]=self._calibration.initCalibrationData()
-        
+        self._calibration=OffsetOptimization(fsp=self._fsp, awg=self._AWG, mwg=self._MWSource, channels=self._params["AWGChannel"])
+
               
       def parameters(self): 
         """

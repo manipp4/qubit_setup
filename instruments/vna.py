@@ -59,7 +59,7 @@ class Instr(VisaInstrument):
       return float(self.ask("SA1?"))
     
     def setTotalPower(self, totalPower):
-      power=totalPower%10
+      power=totalPower%10-10
       attenuation=totalPower-power
       self.setAttenuation(-attenuation)
       time.sleep(0.3)
@@ -163,7 +163,7 @@ class Instr(VisaInstrument):
                  
       
     #Get a trace from the instrument and store it to a local array.
-    def getTrace(self,correctPhase = False,waitFullSweep = False,timeOut = 1600, addedAttenuators=0.):
+    def getTrace(self,correctPhase = False,waitFullSweep = False,timeOut = 1600, addedAttenuators=0.,traceFromMemory=False):
       print "Getting trace..."
       trace = Datacube()
       if DEBUG:
@@ -174,7 +174,12 @@ class Instr(VisaInstrument):
 #        freqs = self.ask_for_values("HLD;TRS;WFS;fma;msb;OFV;") 2011/12 VS 
         self.write("TRS;WFS;")
       freqs = self.ask_for_values("fma;msb;OFV;")
-      data = self.ask_for_values("fma;msb;OFD;")
+      data = self.write("fma;msb;")
+      if(traceFromMemory):
+        data = self.ask_for_values("MEM;OFD;")
+        self.write("DTM;")
+      else: 
+        data = self.ask_for_values("OFD;")
       freqs.pop(0)
       data.pop(0)
       mag = []
