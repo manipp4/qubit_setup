@@ -65,6 +65,12 @@ class Panel(FrontPanel):
 					
 
 			self.plot._fig.axes[i].xaxis.grid(True)
+			li=self.plot._fig.axes[i].get_ylim()
+			#set new lim
+			c=(li[1]+li[0])/2
+			l=li[1]-li[0]
+			print "old lim: ", li, "newylim : ", [c-l/2*1.2,c+l/2*1.2]
+			self.plot._fig.axes[i].set_ylim([c-l/2*1.2,c+l/2*1.2])
 			i+=1
 
 		self.plot._fig.subplots_adjust(hspace=self._hspace)

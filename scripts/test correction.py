@@ -2,9 +2,7 @@ from pyview.helpers.instrumentsmanager import Manager
 from pyview.lib.datacube import Datacube
 import numpy as np
 import time
-scope=Manager().getInstrument('scope')
-scope.inspect()
-u0=62+100*5
+
 ##
 t=scope.getWaveform(1)
 d=Datacube()
@@ -40,19 +38,26 @@ dc.createColumn("correction",mc)
 
 ##
 
-pg_f1=Manager().getInstrument('pg_f1')
-def generateFunc(mc):
+pg_f3=Manager().getInstrument('pg_f3')
+def generateFunc():
 	cor=np.zeros(20000)
-	cor[-999:]=mc[:]
+	cor[-2]=1+0.04
+	for i in range(1,18000):
+		cor[-(i+2)]=-0.04*np.exp(-i/20.)/20.
+	cor/=sum(cor)
 	
 	def myCorrFunc(ishape):
 		shape=np.zeros(20000)
 		for i in range(1,20000):
-			if(abs(cor[-(i+1)])<1e-5):continue
+			if(abs(cor[-(i+1)])<1e-7):continue
 			shape[i-1:-1]+=ishape[:-(i)]*cor[-(i+1)]
 		return shape
 		
 	return myCorrFunc
+	
+f=generateFunc()	
+print f
+pg_f3.pulseCorrectionFunction=f
 ##
 acqiris=Manager().getInstrument('acqiris')
 print acqiris.Temperature()

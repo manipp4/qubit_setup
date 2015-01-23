@@ -25,17 +25,23 @@ instrumentManager = Manager()
 instruments = [
     {
       'name' : 'register',
-      'serverAddress': serverAddress
+      #'serverAddress': serverAddress
     },
     {
      'name' : 'acqiris22',
    	  'class' : 'acqiris3',
       'serverAddress' : 'rip://192.168.0.22:8000',
       'kwargs' : {'name': 'Acqiris Card','__includeModuleDLL2__':True}
+    },
+    {
+      'name' : 'fsp',
+      #'serverAddress': serverAddress,
+      'kwargs' : {'visaAddress' : 'TCPIP0::192.168.0.38::inst0'}
     } 
 ]
 instrumentManager.initInstruments(instruments,globalParameters = {'forceReload' : True} )
 
 for name in instrumentManager.instrumentNames():
   globals()[name] = instrumentManager.getInstrument(name)
+ 
   

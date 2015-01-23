@@ -16,10 +16,12 @@ class Panel(FrontPanel):
     def updateValues(self):
       self.instrument.dispatch("voltage")
       self.instrument.dispatch("output")
-    
-    
+     
     def changeVoltage(self):
-      self.instrument.dispatch("setVoltage",self.VoltageEdit.getValue())
+      if not self.Slew.isChecked():
+        self.instrument.dispatch("setVoltage",self.VoltageEdit.getValue())
+      else:
+        self.instrument.dispatch("setVoltage",self.VoltageEdit.getValue(),slewRate=self.SlewRateEdit.getValue())
     
     def toggleOutput(self):
       if self.outputStatus == False: 
@@ -34,10 +36,10 @@ class Panel(FrontPanel):
         if property == "turnOn" or property == "turnOff" or property == "output":
           self.outputStatus = value
           if value == False:
-            self.OutputButton.setStyleSheet("background-color:#00FF00;")
+            self.OutputButton.setStyleSheet("background-color:#FF0000;")
             self.OutputButton.setText("OFF")
           else:
-            self.OutputButton.setStyleSheet("background-color:#FF0000;")
+            self.OutputButton.setStyleSheet("background-color:#00FF00;")
             self.OutputButton.setText("ON")
     
     def onReload(self):
@@ -56,6 +58,10 @@ class Panel(FrontPanel):
         self.VoltageEdit = NumericEdit()
         self.SetButton = QPushButton("Sets")
         self.UpdateButton = QPushButton("Update")
+        self.Slew=QCheckBox('Slew rate:')
+        self.SlewRateEdit = NumericEdit()
+        self.SlewRateEdit.setValue(1.)
+        self.SlewRateEdit.setVisible(False)
         self.OutputButton = QPushButton("UNDEFINED")
         self.OutputButton.setStyleSheet("background-color:#CCCCCC; width:100px;")
         
@@ -69,11 +75,14 @@ class Panel(FrontPanel):
         self.grid.addWidget(self.title,0,0,1,2)
         self.grid.addWidget(QLabel("Voltage"),1,0)
         self.grid.addWidget(self.VoltageEdit,1,1)
+        self.grid.addWidget(self.Slew,2,0)
+        self.grid.addWidget(self.SlewRateEdit,2,1)
         self.grid.addLayout(buttonsLayout,3,0,1,2)
                 
         self.connect(self.SetButton,SIGNAL("clicked()"),self.changeVoltage)
         self.connect(self.OutputButton,SIGNAL("clicked()"),self.toggleOutput)
         self.connect(self.UpdateButton,SIGNAL("clicked()"),self.updateValues)
+        self.connect(self.Slew,SIGNAL('stateChanged(int)'),lambda: self.SlewRateEdit.setVisible(self.Slew.isChecked()))
         
         self.qw.setLayout(self.grid)
 

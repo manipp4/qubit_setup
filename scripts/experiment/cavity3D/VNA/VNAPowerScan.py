@@ -8,7 +8,7 @@ dataManager = DataManager()
 instrumentManager=Manager()
 mw_cav=Manager().getInstrument('MWSource_Cavity')
 mw_qb=Manager().getInstrument('MWSource_Qubit')
-vna=instrumentManager.getInstrument('vna')
+vna=instrumentManager.getInstrument('vnak2')
 fsp=instrumentManager.getInstrument('fsp')
 coil=instrumentManager.getInstrument('Yoko3')
 mmr3_module2=Manager().getInstrument('mmr3_module2')
@@ -17,41 +17,7 @@ print vna
 import math
 import datetime
 ##
-print mmr3_module1.temperature(thermometerIndex=3)
-##
-print fsp.getValueAtMarker()
-##
-print thermometer.temperature()
-##
-def setMyVNAPower(power):
-	atten=-20*math.modf(power/20.)[1]
-	pow=power+atten-5
-	vna.setAttenuation(atten)
-	vna.setPower(pow)	
-
-##
-#for Anritsu 37397C
-def setMyVNAPower2(power):              
-	atten=-20*math.modf(power/20.)[1]
-	pow=power+atten+7
-	vna.setAttenuation(atten)
-	vna.setPower(pow)	
-# DV 08/11/2014
-import math
-def setMyVNAPower(power):              
-	offsetVNA=-7
-	power=power-offsetVNA
-	if -80<=power<=0:
-		atten,pow=divmod(power,-10)
-		atten*=10
-		if atten>60:
-			atten=60
-			pow=power+60
-		print 'atten='+str(atten)+'dB and power='+str(pow)+'dB'
-		vna.setAttenuation(atten)
-		vna.setPower(pow)
-	else:
-		print 'target power out of range'	
+print vna.setTotalPower(-30)
 ##
 data=Datacube('ParaAmp at working pointm, No Pump')
 dataManager.addDatacube(data)
@@ -62,10 +28,9 @@ powers=arange(-20,0.5,0.5)
 #vna.setVideoBW(10)
 
 for power in powers:
-	print "Power=%f"%power
-	vna.setPower(power)
+	print "Power=%f"%vna.setTotalPower(power)
 	time.sleep(0.5)
-	child1=vna.getTrace(waitFullSweep=True)
+	child1=vna.getFreqMagPhase(waitFullSweep=True)
 	child1.setName("power=%f"%power)
 	data.addChild(child1)
 	data.set(i=i,power=power)
@@ -73,9 +38,6 @@ for power in powers:
 	#child.savetxt()
 	i+=1
 data.savetxt()
-##
-setMyVNAPower2(-46)
-
 ##
 data=Datacube('ParaAmp stability test')
 data.toDataManager()
@@ -111,42 +73,13 @@ child.createCol(name='Power',values=fsp.getTrace()[1])
 ##
 trace=fsp.getTrace()
 ##
-print mw_cav.setPower()
-
-##zero before cooling cooling
-data=Datacube('baseLine')
-data=vna.getTrace()
-data.toDataManager()
-##spectra during cooling
-import pyview.lib.smartloop as sl
-data=Datacube('warmup')
-data.toDataManager()
-megaLoop=sl.SmartLoop(132,1,1000000,name="megaLoop")
-for index in megaLoop:
-	t1=datetime.datetime.now().time()
-	t2=time.time()
-	print 'scan ',index,' time = ',t1,' = ',t2
-	child=vna.getTrace(waitFullSweep=True)
-	child.setName("index=%f"%index)
-	data.set(index=index,time=t2,MC_RuO2=mmr3_module2.temperature(thermometerIndex=3),MC_cernox=mmr3_module1.temperature(thermometerIndex=3),commit=True)
-	data.addChild(child)
-##
-vna.setStartFrequency(7.05)
-vna.setStopFrequency(7.55)
-vna.setNumberOfPoints(401)
-vna.setTotalPower(-30)
-data=vna.getTrace(waitFullSweep = True)
-data.setName('readoutLinem30dBm')
-data.toDataManager()
-
-##
 vna.setStartFrequency(6.431100)
 vna.setStopFrequency(6.431450)
 vna.s  etNumberOfPoints(201)
 powerLoop=sl.SmartLoop(0,-30,-30,name="powerLoop")
 for power in powerLoop:
 	vna.setTotalPower(power)
-	data=vna.getTrace(waitFullSweep = True)
+	data=vna.getFreqMagPhase(waitFullSweep = True)
 	data.setName('storageLine'+str(power)+'dBm')
 	data.toDataManager()
 
@@ -157,7 +90,7 @@ vna.setNumberOfPoints(201)
 powerLoop=sl.SmartLoop(0,-30,-30,name="powerLoop")
 for power in powerLoop:
 	vna.setTotalPower(power)
-	data=vna.getTrace(waitFullSweep = True)
+	data=vna.getFreqMagPhase(waitFullSweep = True)
 	data.setName('fundamental'+str(power)+'dBm')
 	data.toDataManager()
 
@@ -165,16 +98,16 @@ for power in powerLoop:
 coil.setVoltage(10.06,slewRate=0.2)
 print coil.voltage()
 ##
-data=Datacube('readout_coilAt6p5V')
+data=Datacube('readout_coilAtm21Vb')
 data.toDataManager()
-powerMin=-50
-powerMax=-30
+powerMin=-60
+powerMax=-20
 powerStep=1
 powers=SmartLoop(powerMin,powerStep,powerMax,name="vnaPower")
 for power in powers:
+	power=vna.setTotalPower(power)
 	print "power=%f"%power
-	setMyVNAPower(power)
-	child1=vna.getTrace(waitFullSweep=True)
+	child1=vna.getFreqMagPhase(waitFullSweep=True)
 	child1.setName("power=%f"%power)
 	data.addChild(child1)
 	#time.sleep(4)

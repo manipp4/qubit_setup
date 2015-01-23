@@ -22,7 +22,7 @@ import time
 
 print "iq_level_optimization reloaded"
 
-__DEBUG__=True
+__DEBUG__=False
 
 class IqOptimization():
   
@@ -115,7 +115,7 @@ class IqOptimization():
     print "Config Done"
   	
   def setupWaveforms(self):
-    self._awg.write("AWGC:RMOD CONT")
+    #self._awg.write("AWGC:RMOD CONT")
  #   period = int(1.0/self._awg.repetitionRate()*1e9)
     self.period=20000
     waveformOffset = zeros((self.period))

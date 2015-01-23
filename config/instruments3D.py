@@ -29,11 +29,22 @@ instruments = [
     },
     {
       'name' : 'vna',
-      'kwargs' : {'visaAddress' : "GPIB0::6"}
+      'kwargs' : {'visaAddress' : "GPIB0::6",'powerParams':{'offset':-7}}
+    },
+    {
+      'name' : 'vnaK1',
+      'class' : 'vna-keysight',
+      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.71::inst0"}
+    },
+    {
+      'name' : 'vnaK2',
+      'class' : 'vna-keysight',
+      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.72::inst0"}
     },
     {
       'name' : 'fsp',
-      'serverAddress': serverAddress
+      #'serverAddress': serverAddress
+      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.27::inst0"}
     },
     #{
     #  'name' : 'temperature',
@@ -71,32 +82,32 @@ instruments = [
      {
       'name' : 'awgMW2',
       'class' : 'awgV2',
-      'serverAddress' : serverAddress,
+      #'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.5::inst0"}#192.168.0.14::inst0
     },
     {
       'name' : 'MWSource1',
       'class' : 'anritsu_mwg',
-      'serverAddress' : serverAddress,
+     #'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "GPIB0::4"}
     },
     {
       'name' : 'MWSource_Qubit',
       'class' : 'rohdeschwarz_mwg',
-      'serverAddress' : serverAddress,
+     	#'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "GPIB0::28"}
     },
     {
       'name' : 'MWSource2',
       'class' : 'anritsu_mwg',
-      'serverAddress' : serverAddress,
+      #'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "GPIB0::19"}
     },
 
     {
       'name' : 'MWSource_Cavity',
       'class' : 'agilent_mwg',
-      'serverAddress' : serverAddress,
+      #'serverAddress' : serverAddress,
       'kwargs' : {'name' : 'MWSource_qubit2','visaAddress' : "TCPIP::192.168.0.16"}
     },
     #{
@@ -132,19 +143,19 @@ instruments = [
 	{
       'name' : 'Yoko3',
       'class' : 'yokogawa',
-      'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Yoko2','visaAddress' : 'GPIB0::22'}
+      #'serverAddress' : serverAddress,
+      'kwargs' : {'name' : 'Yoko3','visaAddress' : 'GPIB0::22'}
     },
     {
       'name' : 'Yoko1',
       'class' : 'yokogawa',
-      'serverAddress' : serverAddress,
+      #'serverAddress' : serverAddress,
       'kwargs' : {'name' : 'Yoko1','visaAddress' : 'GPIB0::1'}
     },
     {
       'name' : 'Keithley2400',
       'class' : 'keithley2400',
-      'serverAddress' : serverAddress,
+      #'serverAddress' : serverAddress,
       'kwargs' : {'name' : 'Keithley2400','visaAddress' : 'GPIB0::24'}
     }    
 ]

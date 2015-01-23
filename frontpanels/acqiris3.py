@@ -1,11 +1,7 @@
-___DEBUG___ = True
-
-
 import sys
 import time
 import numpy as np
 from PyQt4 import QtGui
-
 
 sys.path.append('.')
 sys.path.append('../')
@@ -31,12 +27,138 @@ class Panel(FrontPanel):
     Description:
       This frontpanel is a GUI allowing the user to see and set the acqiris parameters, to control the board via the acqiris instrument, and display the aquired data.
     """
+    def __init__(self,instrument,parent=None):
+      """
+      Initializes the frontpanel
+      """       
+      super(Panel,self).__init__(instrument,parent)
+      self.setWindowTitle("Acqiris Control Panel")
+      self._workingDirectory = ''
+      self.fileDialog = QFileDialog()
+      self.lastWave=dict()     # create the lastWave dictionary to avoid errors before very first transfer
+      self.lastWave['identifier']=-1
+      self.colors=['b','g','r','c','m','k']
+      
+      # access directly to instruments constants to adapt the gui definition to the number of channels
+      self.constants=self.instrument.constants() 
+      self.nbrOfChannels=self.constants["nbrOfChannels"]
+      
+      #Lists containing the parameters controls of the different channels.
+      self.couplings = list()
+      self.fullScales = list()
+      self.offsets = list()
+      self.bandwidths = list()
+      self.activated = list()
+           
+      #The grid layout channelGrid that contains the parameters for the different channels.
+      self.channelGrid = QGridLayout()
+      self.channelGrid.setVerticalSpacing(2)
+      self.channelGrid.setHorizontalSpacing(10)
+      
+      self.chCombineGUI()
+      self.channelGrid.addWidget(QLabel("Channel config:"),0,0)
+      self.channelGrid.addWidget(self.chCombine,0,1,1,max(1,self.nbrOfChannels-1))
+      self.colors=['blue','green','red','cyan','blue','green','red','cyan']
+      for i in range(0,self.nbrOfChannels):
+        self.channelParamGUI(i)
+      
+      #The grid layout paramsGrid that contains all the global parameters of the card.
+      self.paramsGrid = QGridLayout()
+      self.paramsGrid.setVerticalSpacing(2)
+      self.paramsGrid.setHorizontalSpacing(10)
+      myWidth=90
     
+      #trigger parameters
+      self.triggerGUI(myWidth)
+      self.paramsGrid.addWidget(QLabel("Trigger source"),0,0)
+      self.paramsGrid.addWidget(self.trigSource,1,0)    
+      self.paramsGrid.addWidget(QLabel("Trigger Coupling"),2,0)
+      self.paramsGrid.addWidget(self.trigCoupling,3,0)
+      self.paramsGrid.addWidget(QLabel("Trigger event"),4,0)
+      self.paramsGrid.addWidget(self.trigSlope,5,0)
+      self.paramsGrid.addWidget(QLabel("Trigger levels (mV)"),6,0)
+      self.paramsGrid.addItem(self.triggerLevelGrid,7,0)
+      self.paramsGrid.addWidget(QLabel("Trigger delay (s)"),8,0)
+      self.paramsGrid.addWidget(self.trigDelay,9,0)
+      
+      # horizontal parameters
+      self.horizParamsGUI(myWidth)
+      self.paramsGrid.addWidget(QLabel("Sampling time (s)"),0,1)
+      self.paramsGrid.addWidget(self.sampleInterval,1,1)
+      self.paramsGrid.addWidget(QLabel("Samples/segment"),2,1)
+      self.paramsGrid.addWidget(self.numberOfPoints,3,1)
+      self.paramsGrid.addWidget(QLabel("Segments/bank"),4,1)
+      self.paramsGrid.addWidget(self.numberOfSegments,5,1)
+      self.paramsGrid.addWidget(QLabel("Memory bank(s)"),6,1)
+      self.paramsGrid.addWidget(self.numberOfBanks,7,1)  
+      self.paramsGrid.addWidget(QLabel("Acqs or banks/acq"),8,1)
+      self.paramsGrid.addWidget(self.nLoops,9,1)
+      
+      # clocking and memory parameters
+      self.clockMemGUI(myWidth)
+      self.paramsGrid.addWidget(QLabel("Clocking"),0,2)
+      self.paramsGrid.addWidget(self.clock,1,2)
+      self.paramsGrid.addWidget(QLabel("Memory used"),2,2)
+      self.paramsGrid.addWidget(self.memType,3,2)
+      self.paramsGrid.addWidget(QLabel("Config mode"),4,2)
+      self.paramsGrid.addWidget(self.configMode,5,2)    
+
+      #Several plots in a QTabWidget.
+      self.plotTabGUI()
+      self.plotTabs = QTabWidget()
+      self.plotTabs.setMinimumHeight(350)
+      self.plotTabs.addTab(self.timestampTab,"TimeStamps")
+      self.plotTabs.addTab(self.sequenceTab,"Sequences")
+      self.plotTabs.addTab(self.segmentTab,"Segments")
+      self.plotTabs.addTab(self.averageTab,"Average")
+      #if self.mathModule:
+      self.plotTabs.addTab(self.trendTab,"Segment property trend")
+      self.plotTabs.setCurrentIndex(2)
+      for i in range(0,5):
+        self.plotTabs.setTabEnabled (i,False)
+      
+      self.connect(self.plotTabs,SIGNAL("currentChanged(int)"),self.updatePlotTabs)
+      
+      #Some buttons and checkboxes, their grid, and corresponding functions
+      self.buttonGrid1 = QBoxLayout(QBoxLayout.LeftToRight)
+      self.buttonGrid2 = QBoxLayout(QBoxLayout.LeftToRight)
+      self.ButtonGUI()
+
+      #The grid layout for delivering messages: messageGrid.
+      self.MessageGUI()
+
+      #The grid layout of the whole frontpanel:
+      self.grid = QGridLayout()
+      self.grid.setHorizontalSpacing(20)
+      
+      self.grid.addItem(self.buttonGrid1,0,0,1,2)
+      self.grid.addItem(self.channelGrid,1,0)
+      self.grid.addWidget(self.plotTabs,2,0,1,2)
+      self.grid.addItem(self.paramsGrid,1,1)        
+      self.grid.addItem(self.buttonGrid2,3,0,1,2)
+      self.grid.addItem(self.messageGrid,4,0,1,2)
+
+      self.qw.setLayout(self.grid) # now the interface exists
+      
+      self._updatePlots = False
+      # Now call the instrument.parameters functions that will call back with a message
+      # "parameters" and a value containing all the parameters. The message is received by the frontpanel,
+      # which as a member of the 'observer' class, will run the updatedGui function
+      self.debugPrint('calling instrument.parameters()')
+      self.instrument.parameters()
+      self.requestTemperature()
+      
+      # auto refresh of front panel based on a timer
+      timer = QTimer(self)
+      timer.setInterval(500)
+      timer.start()
+      self.connect(timer,SIGNAL("timeout()"),self.onTimer)
+
     def setFrontPanelFromParams(self,**params):
       """
       Updates the frontpanel GUI according to the given dictionary params.
       """
-      if ___DEBUG___:  print "in setFrontPanelFromParams"
+      self.debugPrint('in setFrontPanelFromParams')
       if "couplings" in params and len(params["couplings"])>=self.nbrOfChannels:
         for i in range(0,self.nbrOfChannels):
           self.couplings[i].setCurrentIndex(int(params["couplings"][i]))
@@ -135,14 +257,14 @@ class Panel(FrontPanel):
       """
       (re)initialize the Acqiris board.
       """
-      if ___DEBUG___ : print "calling instrument.reinit()"
+      self.debugPrint('calling instrument.reinit()')
       self.instrument.reinit()
       
     def requestTemperature(self):
       """
       Get and display the temperature of board.
       """
-      if ___DEBUG___ : print "calling instrument.Temperature()"
+      self.debugPrint('calling instrument.Temperature()')
       self.instrument.Temperature()
       
     def displayTemperature(self,temp):
@@ -164,7 +286,7 @@ class Panel(FrontPanel):
       if result != QMessageBox.Ok:
         return
       params = self.getParamsFromFrontPanel()
-      if ___DEBUG___ : print "calling instrument.Calibrate()"
+      self.debugPrint('calling instrument.Calibrate()')
       self.instrument.Calibrate(option=1,channels=params["wantedChannels"])      #channel
       
     def requestSetConfig(self):
@@ -217,7 +339,7 @@ class Panel(FrontPanel):
       """
       Update the GUI after new data arrived in the instrument.
       """
-      if ___DEBUG___ : print "in newDataAvailableInInstrument()"
+      self.debugPrint('in newDataAvailableInInstrument()')
       self.resetTrend()# reset the data analysis
       # get a copy of LastWave
       self.messageString.setText("Transferring new data...")
@@ -243,7 +365,7 @@ class Panel(FrontPanel):
         plot.redraw()
 
     def updatePlotTabs(self):
-      if ___DEBUG___ : print "in updatePlotTabs()"
+      self.debugPrint('in updatePlotTabs()')
       self.messageString.setText("Plotting data #%i..."%(self.lastWave["identifier"]))
       self.messageString.repaint()
       if self.plotTabs.currentIndex()==0: self.updateTimeStampsTab() 
@@ -255,7 +377,7 @@ class Panel(FrontPanel):
       self.messageString.repaint()  
       
     def updateTimeStampsTab(self):
-      if ___DEBUG___ : print "in updateTimeStampsTab()"
+      self.debugPrint('in updateTimeStampsTab()')
       self.plotTimeStamps()
     
     def updateSequenceTab(self):
@@ -288,7 +410,7 @@ class Panel(FrontPanel):
       """
       Plot the time array
       """
-      if ___DEBUG___ : print "in plotTimeStamps" 
+      self.debugPrint('in plotTimeStamps()')
       ax=self.timeStampsPlot.axes
       if ax.get_xlabel()=='': ax.set_xlabel("segment index")
       if ax.get_ylabel()=='': ax.set_ylabel("t or Delta t (s)")
@@ -305,7 +427,7 @@ class Panel(FrontPanel):
       """
       Plot the whole sequence in the Sequence tab.
       """
-      if ___DEBUG___ : print "in plotSequence"
+      self.debugPrint('in plotSequence()')
       ax=self.sequencePlot.axes
       if ax.get_xlabel()=='': ax.set_xlabel("sample index")
       if ax.get_ylabel()=='': ax.set_ylabel("voltage (V)")
@@ -330,7 +452,7 @@ class Panel(FrontPanel):
         self.sequencePlot.redraw()
 
     def plotSegment(self):
-      if ___DEBUG___ : print "in plotSegment"
+      self.debugPrint('in plotSegment()')
       ax=self.segmentPlot.axes
       if ax.get_xlabel()=='': ax.set_xlabel('sample index (samp. time = '+str.format('{0:.3e}',self.lastWave['samplingTime'])+' s)')
       if ax.get_ylabel()=='': ax.set_ylabel("voltage (V)")
@@ -352,7 +474,7 @@ class Panel(FrontPanel):
       """
       Plot or replot averages in the average tab.
       """
-      if ___DEBUG___ : print "in plotAverage"
+      self.debugPrint('in plotAverage()')
       ax=self.averagePlot.axes
       if ax.get_xlabel()=='': ax.set_xlabel('sample index (samp. time = '+str.format('{0:.3e}',self.lastWave['samplingTime'])+' s)')
       if ax.get_ylabel()=='': ax.set_ylabel("voltage (V)")
@@ -380,7 +502,7 @@ class Panel(FrontPanel):
       if self.forceCalc.isChecked(): self.plotAverage()   
     
     def plotTrend(self):
-      if ___DEBUG___ : print "in plotTrend" #; print self.trend
+      self.debugPrint('in plotTrend()')
       ax=self.trendPlot.axes
       ax.lines=[]
       ax.patches=[]
@@ -422,7 +544,7 @@ class Panel(FrontPanel):
       """
       Process notifications from the Acqiris instrument and updates the frontpanel accordingly.
       """
-      if ___DEBUG___ : print "updatedGui()called with property ", property, "and value",value
+      self.debugPrint("updatedGui()called with property ", property, "and value",value)
       if subject==self.instrument:
         if property == "Temperature":
           self.displayTemperature(value)
@@ -442,7 +564,7 @@ class Panel(FrontPanel):
           
     # run Acquire and transfer in a loop
     def runOscillo(self):
-      if ___DEBUG___ : print "entering in run oscillo"
+      self.debugPrint('entering in run oscillo')
       while self.runCheckbox.isChecked():
         self.requestAcquire()
         QCoreApplication.processEvents()
@@ -996,132 +1118,3 @@ class Panel(FrontPanel):
       self.mess.setMaximumWidth(70)
       self.messageGrid.addWidget(self.mess,0,0)
       self.messageGrid.addWidget(self.messageString,0,1)
-    
-    def __init__(self,instrument,parent=None):
-      """
-      Initializes the frontpanel
-      """
-            
-      super(Panel,self).__init__(instrument,parent)
-      self.setWindowTitle("Acqiris Control Panel")
-      self._workingDirectory = ''
-      self.fileDialog = QFileDialog()
-      self.lastWave=dict()     # create the lastWave dictionary to avoid errors before very first transfer
-      self.lastWave['identifier']=-1
-      self.colors=['b','g','r','c','m','k']
-      
-      # access directly to instruments constants to adapt the gui definition to the number of channels
-      self.constants=self.instrument.constants() 
-      self.nbrOfChannels=self.constants["nbrOfChannels"]
-      
-      #Lists containing the parameters controls of the different channels.
-      self.couplings = list()
-      self.fullScales = list()
-      self.offsets = list()
-      self.bandwidths = list()
-      self.activated = list()
-           
-      #The grid layout channelGrid that contains the parameters for the different channels.
-      self.channelGrid = QGridLayout()
-      self.channelGrid.setVerticalSpacing(2)
-      self.channelGrid.setHorizontalSpacing(10)
-      
-      self.chCombineGUI()
-      self.channelGrid.addWidget(QLabel("Channel config:"),0,0)
-      self.channelGrid.addWidget(self.chCombine,0,1,1,max(1,self.nbrOfChannels-1))
-      self.colors=['blue','green','red','cyan','blue','green','red','cyan']
-      for i in range(0,self.nbrOfChannels):
-        self.channelParamGUI(i)
-      
-      #The grid layout paramsGrid that contains all the global parameters of the card.
-      self.paramsGrid = QGridLayout()
-      self.paramsGrid.setVerticalSpacing(2)
-      self.paramsGrid.setHorizontalSpacing(10)
-      myWidth=90
-    
-      #trigger parameters
-      self.triggerGUI(myWidth)
-      self.paramsGrid.addWidget(QLabel("Trigger source"),0,0)
-      self.paramsGrid.addWidget(self.trigSource,1,0)    
-      self.paramsGrid.addWidget(QLabel("Trigger Coupling"),2,0)
-      self.paramsGrid.addWidget(self.trigCoupling,3,0)
-      self.paramsGrid.addWidget(QLabel("Trigger event"),4,0)
-      self.paramsGrid.addWidget(self.trigSlope,5,0)
-      self.paramsGrid.addWidget(QLabel("Trigger levels (mV)"),6,0)
-      self.paramsGrid.addItem(self.triggerLevelGrid,7,0)
-      self.paramsGrid.addWidget(QLabel("Trigger delay (s)"),8,0)
-      self.paramsGrid.addWidget(self.trigDelay,9,0)
-      
-      # horizontal parameters
-      self.horizParamsGUI(myWidth)
-      self.paramsGrid.addWidget(QLabel("Sampling time (s)"),0,1)
-      self.paramsGrid.addWidget(self.sampleInterval,1,1)
-      self.paramsGrid.addWidget(QLabel("Samples/segment"),2,1)
-      self.paramsGrid.addWidget(self.numberOfPoints,3,1)
-      self.paramsGrid.addWidget(QLabel("Segments/bank"),4,1)
-      self.paramsGrid.addWidget(self.numberOfSegments,5,1)
-      self.paramsGrid.addWidget(QLabel("Memory bank(s)"),6,1)
-      self.paramsGrid.addWidget(self.numberOfBanks,7,1)  
-      self.paramsGrid.addWidget(QLabel("Acqs or banks/acq"),8,1)
-      self.paramsGrid.addWidget(self.nLoops,9,1)
-      
-      # clocking and memory parameters
-      self.clockMemGUI(myWidth)
-      self.paramsGrid.addWidget(QLabel("Clocking"),0,2)
-      self.paramsGrid.addWidget(self.clock,1,2)
-      self.paramsGrid.addWidget(QLabel("Memory used"),2,2)
-      self.paramsGrid.addWidget(self.memType,3,2)
-      self.paramsGrid.addWidget(QLabel("Config mode"),4,2)
-      self.paramsGrid.addWidget(self.configMode,5,2)    
-
-      #Several plots in a QTabWidget.
-      self.plotTabGUI()
-      self.plotTabs = QTabWidget()
-      self.plotTabs.setMinimumHeight(350)
-      self.plotTabs.addTab(self.timestampTab,"TimeStamps")
-      self.plotTabs.addTab(self.sequenceTab,"Sequences")
-      self.plotTabs.addTab(self.segmentTab,"Segments")
-      self.plotTabs.addTab(self.averageTab,"Average")
-      #if self.mathModule:
-      self.plotTabs.addTab(self.trendTab,"Segment property trend")
-      self.plotTabs.setCurrentIndex(2)
-      for i in range(0,5):
-        self.plotTabs.setTabEnabled (i,False)
-      
-      self.connect(self.plotTabs,SIGNAL("currentChanged(int)"),self.updatePlotTabs)
-      
-      #Some buttons and checkboxes, their grid, and corresponding functions
-      self.buttonGrid1 = QBoxLayout(QBoxLayout.LeftToRight)
-      self.buttonGrid2 = QBoxLayout(QBoxLayout.LeftToRight)
-      self.ButtonGUI()
-
-      #The grid layout for delivering messages: messageGrid.
-      self.MessageGUI()
-
-      #The grid layout of the whole frontpanel:
-      self.grid = QGridLayout()
-      self.grid.setHorizontalSpacing(20)
-      
-      self.grid.addItem(self.buttonGrid1,0,0,1,2)
-      self.grid.addItem(self.channelGrid,1,0)
-      self.grid.addWidget(self.plotTabs,2,0,1,2)
-      self.grid.addItem(self.paramsGrid,1,1)        
-      self.grid.addItem(self.buttonGrid2,3,0,1,2)
-      self.grid.addItem(self.messageGrid,4,0,1,2)
-
-      self.qw.setLayout(self.grid) # now the interface exists
-      
-      self._updatePlots = False
-      # Now call the instrument.parameters functions that will call back with a message
-      # "parameters" and a value containing all the parameters. The message is received by the frontpanel,
-      # which as a member of the 'observer' class, will run the updatedGui function
-      if ___DEBUG___ : print "calling instrument.parameters()"
-      self.instrument.parameters()
-      self.requestTemperature()
-      
-      # auto refresh of front panel based on a timer
-      timer = QTimer(self)
-      timer.setInterval(500)
-      timer.start()
-      self.connect(timer,SIGNAL("timeout()"),self.onTimer)
-

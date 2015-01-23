@@ -50,28 +50,24 @@ def fvsIcoil(I):
 	return f
 ##	single tone spec
 data=Datacube('resSpec %.16s' % datetime.datetime.now())
-f_center=7.38
-f_span=0.15
+f_center=7.36
+f_span=0.08
 f_step=0.001
-coilVoltage=11.15
-resSpec(fcenter=f_center,fspan=f_span,fstep=f_step,data=data,setReadoutPar=False,useDict=False,parSubDict=None,resVVAVoltage=None,useParamp=None,coilVoltage=coilVoltage,setPulse=None,setAcqiris=None, fit=True,autoPlot=True,autoClear=False,dataSave=True,savePar=True)
+resSpec(data=data,fcenter=f_center,fspan=f_span,fstep=f_step,paramp=True,fit=True,autoPlot=True,autoClear=True,dataSave=True,savePar=True)
 
 ## 2 tone spec continous
 data=Datacube('qbSpecCont %.16s' % datetime.datetime.now())
-f_center=7.0
+f_center=8.2
 f_span=0.4
-f_step=0.001
-resFrequency=7.3719
-qbSpecContinuous(fcenter=f_center,fspan=f_span,fstep=f_step, data=data,setReadoutPar=True,useDict=False, parSubDict=None, qbVVAVoltage=None, resFrequency=resFrequency, resVVAVoltage=None, coilVoltage=None, useParamp=None, setPulse=None,setAcqiris=None,fit=False,autoPlot=True,autoClear=False,dataSave=True,savePar=False)
+f_step=0.001	
+qbSpecContinous(data=data,fcenter=f_center,fspan=f_span,fstep=f_step,fit=False,autoPlot=True,autoClear=True,dataSave=True)
 
 ## 2 tone spec pulsed with saturation pulse
-data=Datacube('qbSpecPulsed %.16s' % datetime.datetime.now())
-f_center=6.57
-f_span=0.4
+data=Datacube('qbSpecPulsed1 %.16s' % datetime.datetime.now())
+f_center=6.1
+f_span=0.05
 f_step=0.001
-resFrequency=7.366	
-qbSpecPulsed(fcenter=f_center,fspan=f_span,fstep=f_step, data=data,setReadoutPar=True, qbPulseLength=None, useDict=False, parSubDict=None, qbVVAVoltage=0.3, resFrequency=resFrequency, resVVAVoltage=None, coilVoltage=None, useParamp=None, setPulse=None,setAcqiris=None,fit=True,autoPlot=True,autoClear=False,dataSave=True,savePar=False)
-
+qbSpecPulsed(data=data,fcenter=f_center,fspan=f_span,fstep=f_step,fit=True,autoPlot=True,autoClear=True,dataSave=True)
 
 ## 2 tone spec pulsed with Pi pulse
 data=Datacube('qbSpecPiPulsed1 %.16s' % datetime.datetime.now())
@@ -90,18 +86,18 @@ qbSpecPiPulsedWithResPulse(data=data,fcenter=f_center,fspan=f_span,fstep=f_step,
 
 ## Photon qubit spectroscopy where a cavity pulse with a variable height is put on at the same time as the qubit is driven 
 data=Datacube('photonNumberSplittingAmp %.16s' % datetime.datetime.now())
-f_center=6.075
-f_span=0.12
+f_center=6.0
+f_span=0.28
 f_step=0.001
-cavPulse_start=0.5
-cavPulse_step=0.1
+cavPulse_start=0.0
+cavPulse_step=0.05
 cavPulse_stop=1
 photonNumberSplittingAmp(data=data,ampStart=cavPulse_start,ampStep=cavPulse_step, ampStop=cavPulse_stop,fcenter=f_center,fspan=f_span,fstep=f_step,fit=False,autoPlot=False,autoClear=False,dataSave=True,savePar=True)
 
 ## Photon qubit spectroscopy where a cavity pulse with a variable length is put on at the same time as the qubit is driven 
 data=Datacube('photonNumberSplittingLength %.16s' % datetime.datetime.now())
-f_center=6.075
-f_span=0.15
+f_center=6.7
+f_span=0.28
 f_step=0.001
 cavPulseLen_start=0.0
 cavPulseLen_step=50
@@ -117,13 +113,11 @@ vCoil_start=-0.5
 vCoil_step=0.1
 vCoil_stop=0.5
 qbPiSpecVsCoilVolt(data=data,VStart=vCoil_start,VStep=vCoil_step, VStop=vCoil_stop,fcenter=f_center,fspan=f_span,fstep=f_step,fit=False,autoPlot=False,autoClear=False,dataSave=True,savePar=True)
-
+##
 
 reload(sys.modules["macros.UtilityFunctions3D_fitting"])
 reload(sys.modules["macros.UtilityFunctions3D_ExperimentRecipies"])
-################################
-## Time resolved measurements ##
-################################
+
 ## Rabi measurement
 data=Datacube('Rabi_qb %.16s' % datetime.datetime.now())
 QBpower=''
@@ -146,12 +140,5 @@ step=50
 stop=9000
 ramseyMeas(data=data,start=start,stop=stop,step=step,fit=True,autoPlot=True,autoClear=False,dataSave=True)
 
-#########
-## Loop	##
-#########
-# functionList is a list of lists. The first element is a name of a function (an experiment), the second is a name of a variable that can be adjusted (followed) during the coil sweep
-functionList=[[resSpec,'fcenter',7.373,'f_Res'],[qbSpecPulsed,'fcenter',6.821,'f_qb']]	
-coilSweepLoopAdaptive(functionList,data='',feedbackPar='f_qb',VStart=10.72,VStep=-0.05, VStop=9, setReadoutPar=True, useDict=False, adaptParameters=True,dataSave=True)
-##
 
-,[rabiMeas,'piEst',200,'piPulse'],[t1MeasFast,'T1Est',1600,'T1']
+

@@ -86,7 +86,10 @@ class DLLMath1Module():
     self.aboveThresholdFrequencyArray=[None]*4
     self._dll.aboveThresholdFrequency.restype=c_double
     
-    self.histoArray=[None]*4
+    self.histoArray=[None]*4           # List of four 1D histograms initialized to None
+    self.binCentersArray=[None]*4      # List of four 1D bin center arrays initialized to None
+    self.histo2DArray=[None]*2         # List of two 2D histograms initialized to None
+    self.binCentersXYArray=[None]*2    # List of two 2D bin center arrays initialized to None
       
   def mathDLLVersion(self):
     """
@@ -355,19 +358,19 @@ class DLLMath1Module():
     """
     for i in range(4):
       if (targettedWaveform & (1 << i) and getattr(self,propertyArray)[i]!=None):
-        print "i=",i
         pointerData=getattr(self,propertyArray)[i].ctypes.data
         size=c_long(len(getattr(self,propertyArray)[i]))
         min1=mini
-        if mini=="auto": min1=self._dll.minArray(pointerData,size)
+        if mini=="auto": min1=min(getattr(self,propertyArray)[i])
         max1=maxi
-        if maxi=="auto": max1=self._dll.maxArray(pointerData,size)
-        if min1>max1 :
-          u= max1
-          max1=min1
-          min1=u
-        if mini=="auto": min1=min1-(max1-min1)/binNumber
-        if maxi=="auto": max1=max1+(max1-min1)/binNumber
+        if maxi=="auto": max1=max(getattr(self,propertyArray)[i])
+        if min1>max1 : max1,min1=min1,max1
+        binWidth0=(max1-min1)/binNumber
+        if mini=="auto": min1=min1-binWidth0/2
+        if maxi=="auto": max1=max1+binWidth0/2
+        binWidth=(max1-min1)/binNumber
+        centers=array([min1+(j+0.5)*binWidth for j in range(binNumber)])
+        self.binCentersArray[i]=array([min1+(j+0.5)*binWidth for j in range(binNumber)])
         self.histoArray[i]=zeros(binNumber)
         pointerHisto=self.histoArray[i][0:].ctypes.data
         self._dll.histo1D(pointerData,size,c_double(min1),c_double(max1),c_ulong(binNumber),pointerHisto)
@@ -400,7 +403,43 @@ class DLLMath1Module():
         if threshold=="auto": threshold1=(self._dll.maxArray(pointer,size)+self._dll.minArray(pointer,size))/2
         self.aboveThresholdFrequencyArray[i]=self._dll.aboveThresholdFrequency(pointer,size,c_double(threshold1))
     return
-     
+
+  def histo2DProperty(self,propertyArray='mean',minMax="auto",binNumbers=[10,10],channels=[0,1],histo2DMemory=0):
+    """
+    histo2DProperty(propertyArray='mean',minMax="auto",binNumbers=[10,10],channels=[0,1],histo2DMemory=0):
+    Do a 2D histogram of the two 1D arrays propertyArray[channel1],propertyArray[channel2] by calling the histo2D() function of the DLL.
+    minMax is a 2d list of the form [[min1,max1],[min2,max2]] specifying the minima and maxima along the two axes, where any value or list can be replaced by "auto".
+    histo2DMemory= 0 or 1 = either one of the possible 2D histogram memories.
+    reshape2D shape the final 2D histograms as a 2D array instead of 1D array
+    """
+    if all([getattr(self,propertyArray)[channel]!=None for channel in channels]):                           # first check that data exist in the two requested channels
+      pointerData1,pointerData2=[getattr(self,propertyArray)[channel].ctypes.data for channel in channels]  # get pointers to the x and y data
+      size=c_long(min([len(getattr(self,propertyArray)[channel]) for channel in channels]))                 # Take the common length of of x and y channels
+      if minMax=="auto" : minMax=["auto","auto"]                                                            # Caclulate min max specifications in case "auto" has been used somewhere
+      if len(minMax)==2 and len(binNumbers)==2:                                                             
+        if minMax[0]=="auto" :  minMax[0]=["auto","auto"]
+        if minMax[1]=="auto" :  minMax[1]=["auto","auto"]
+        minMaxStart=minMax
+        if minMax[0][0]=="auto":       minMax[0][0]= min(getattr(self,propertyArray)[channels[0]])
+        if minMax[0][1]=="auto":       minMax[0][1]= max(getattr(self,propertyArray)[channels[0]]) 
+        if minMax[1][0]=="auto":       minMax[1][0]= min(getattr(self,propertyArray)[channels[1]]) 
+        if minMax[1][1]=="auto":       minMax[1][1]= max(getattr(self,propertyArray)[channels[1]])
+        if minMax[0][0]>minMax[0][1] : minMax[0][0],minMax[0][1]=minMax[0][1],minMax[0][0]
+        if minMax[0][0]>minMax[0][1] : minMax[1][0],minMax[1][1]=minMax[1][1],minMax[1][0]
+        binWidths=[(minMax[0][1]-minMax[0][0])/binNumbers[0],(minMax[1][1]-minMax[1][0])/binNumbers[1]]
+        if minMaxStart[0][0]=="auto": minMax[0][0]=minMax[0][0]-binWidths[0]/2
+        if minMaxStart[0][1]=="auto": minMax[0][1]=minMax[0][1]+binWidths[0]/2
+        if minMaxStart[1][0]=="auto": minMax[1][0]=minMax[1][0]-binWidths[1]/2
+        if minMaxStart[1][0]=="auto": minMax[1][1]=minMax[1][1]+binWidths[1]/2
+        binWidths=[(minMax[0][1]-minMax[0][0])/binNumbers[0],(minMax[1][1]-minMax[1][0])/binNumbers[1]]
+      self.binCentersXYArray[histo2DMemory]=array([[minMax[0][0]+(i+0.5)*binWidths[0] for i in range(binNumbers[0])],[minMax[1][0]+(i+0.5)*binWidths[1] for i in range(binNumbers[1])]])
+      self.histo2DArray[histo2DMemory]=zeros(binNumbers[0]*binNumbers[1])                                    # Initialize the 2D array as a 1 d array
+      pointerHisto2D=self.histo2DArray[histo2DMemory][0:].ctypes.data                                        # defines the pointer to be passed to the DLL and call the DLL
+      self._dll.histo2D(pointerData1,pointerData2,size,c_double(minMax[0][0]),c_double(minMax[0][1]),c_ulong(binNumbers[0]),c_double(minMax[1][0]),c_double(minMax[1][1]),c_ulong(binNumbers[1]),pointerHisto2D)
+      # the histo is a 1D array with [Y1 column, Y2 column,Y3 column,...]
+      # reshape it as [[X1 line],[X1 line],[X1 line],... ] if requested 
+      self.histo2DArray[histo2DMemory]=self.histo2DArray[histo2DMemory].reshape((binNumbers[0],binNumbers[1]))
+    return
      
 '''**************************************************************************************
  BELOW IS THE SYNTAX OF THE QUANTRO_DLLMATH1 FUNCTIONS

@@ -28,7 +28,7 @@ attenuator=Manager().getInstrument('Yoko3')
 register=Manager().getInstrument('register')
 
 ##
-
+print datetime.datetime.now()
 ##
 print fvsVcoil(0)
 ## All functions

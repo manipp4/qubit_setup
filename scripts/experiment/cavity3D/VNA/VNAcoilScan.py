@@ -11,6 +11,7 @@ instrumentManager=Manager()
 vna=instrumentManager.getInstrument('vna')
 print vna
 coil=instrumentManager.getInstrument('Yoko3')
+fluxLine=instrumentManager.getInstrument('Yoko2')
 mmr3_module2=Manager().getInstrument('mmr3_module2')
 import math
 ##
@@ -32,27 +33,34 @@ def setMyVNAPower(power):
 	else:
 		print 'target power out of range'
 
-
 ##
-data=Datacube('readout_m57dBm')
+coil.setVoltage(-6.75,slewRate=0.5)
+print coil.voltage()
+##
+cubeName='readoutVsCoil'
+#yoko=fluxLine
+yoko=coil
+#xName='fluxLine_Voltage'
+xName='coil_Voltage'
+xMin,xMax,xStep=-32,32,1
+slewRate=0.5
+
+data=Datacube(cubeName)
 data.toDataManager()
-xMin=-17
-xMax=+17
-xStep=0.5
 #currents1=arange(iMin,iMax,iStep)
 #currents2=arange(iMax,iMin,-iStep)
 #currents3=SmartLoop(-2.5,0.5,2.5,name="coilVoltages")
 #currents=concatenate([currents1,currents2])
-voltages=SmartLoop(xMin,xStep,xMax,name="coilVoltages")
-coil.turnOn()
-for volt in voltages:
-	print "Voltage=%f"%volt
-	coil.setVoltage(volt,slewRate=0.2)
+xList=SmartLoop(xMin,xStep,xMax,name=xName)
+#coil.turnOn()
+for x in xList:
+	print xName," = ", x
+	yoko.setVoltage(x,slewRate=slewRate)
 	child1=vna.getTrace(waitFullSweep=True)
-	child1.setName("Voltage=%f"%volt)
+	child1.setName(xName+"=%f"%x)
 	data.addChild(child1)
 	#time.sleep(4)
-	data.set(voltage=volt,temperature=mmr3_module2.temperature(thermometerIndex=3))	
+	data.set(voltage=x,temperature=mmr3_module2.temperature(thermometerIndex=3))	
 	data.commit()
 data.savetxt()
 #coil.setVoltage(0,slewRate=0.0005)
@@ -60,6 +68,12 @@ data.savetxt()
 ### demagnetizing ###
 iMax=0.1
 iStep=0.005
+periodDegredation=0.2
+loops=iMax/periodDegredation
+currents=[]
+for i in range(loops):
+	newCurrents=arange((-1)**(i+1)*(1-i)*iMax,(-1)**i*(1-i)*iMax,(-1)**i*iStep)
+	currents=concatenate([currents,newCurrents])
 currents1=arange(0,iMax,iStep)
 currents2=arange(iMax,-0.8*iMax,-iStep)
 currents3=arange(-0.8*iMax,0.6*iMax,iStep)
@@ -68,6 +82,7 @@ currents5=arange(-0.4*iMax,0.2*iMax,iStep)
 currents6=arange(0.2*iMax,-0.0*iMax,-iStep)
 currents=concatenate([currents1,currents2,currents3,currents4,currents5,currents6])
 #currents=arange(iMin,iMax,iStep)
+periodStep=0.2*iMax
 coil.turnOn()
 for curr in currents:
 	print "Current=%f"%curr
@@ -80,3 +95,26 @@ t1=time.time()
 vna.getTrace(waitFullSweep=True)
 t2=time.time()
 print t2-t1
+##
+iMax=1
+iStep=0.005
+periodDegredation=0.2
+loops=int(iMax/periodDegredation)
+currents=[]
+for x in np.nditer(a, op_flags=['readwrite']): 
+for i in range(loops):
+	newCurrents=arange((-1)**(i+1)*(1-i)*iMax,(-1)**i*(1-i)*iMax,(-1)**i*iStep)
+	currents.concatenate(newCurrents)
+print currents
+##
+currents1=arange(0,iMax,iStep)
+##
+iMax=1
+iStep=0.005
+periodDegredation=0.2
+loops=int(iMax/periodDegredation)
+currents=[]
+for i in range(loops):
+	newCurrents=arange(0,10,1)
+	currents.append(newCurrents)
+print currents

@@ -54,20 +54,40 @@ def setMyVNAPower(power):
 		print 'target power out of range'	
 
 ##
+
 vna.setStartFrequency(4.3728)
 vna.setStopFrequency(4.3738)
 vna.setNumberOfPoints(201)
-
 ##
-data=Datacube('fundamental_coilAt0V')
+p1=-27
+p2=-37
+p3=-47
+def setVNAAveraging(power):
+	if power >= p1:
+		print 'case1'
+		vna.setAveraging(False)
+		vna.setVideoBW(10)
+	elif p1>power>=p2:
+		print 'case2'
+		vna.setNumberOfAveraging(100)
+		vna.setVideoBW(10)
+	elif p2>power>=p3:
+		vna.setNumberOfAveraging(1000)
+		vna.setVideoBW(10)
+	elif p3>power:
+		vna.setNumberOfAveraging(4000)
+		vna.setVideoBW(10)
+##
+data=Datacube('readoutVsPower_coilAt0V')
 data.toDataManager()
-powerMin=-57
-powerMax=-45
-powerStep=1
+powerMin=-17
+powerMax=-57
+powerStep=-2
 powers=SmartLoop(powerMin,powerStep,powerMax,name="vnaPower")
 for power in powers:
 	print "power=%f"%power
 	setMyVNAPower(power)
+	setVNAAveraging(power)
 	child1=vna.getTrace(waitFullSweep=True)
 	child1.setName("power=%f"%power)
 	data.addChild(child1)
@@ -76,4 +96,3 @@ for power in powers:
 	data.commit()
 data.savetxt()
 ##
-print mmr3_module1.temperature(thermometerIndex=3)

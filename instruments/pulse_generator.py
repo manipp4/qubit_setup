@@ -159,7 +159,6 @@ class Instr(Instrument):
         """
         returns the params dictionary
         """
-        print self._params
         return self._params
 
       def restoreState(self,state):

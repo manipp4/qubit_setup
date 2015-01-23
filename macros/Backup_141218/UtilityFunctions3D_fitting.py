@@ -5,27 +5,17 @@ import scipy
 import scipy.optimize
 import scipy.interpolate
 from pyview.lib.datacube import *
-from matplotlib.pyplot import *
-
 
 ##
 
 # Lorentzian pure function
 def Lorenzian(y0,yAmp,x0,width):
 	return lambda x: y0+yAmp/(1.0+pow(2.0*(x-x0)/width,2)) 
-	
-# Resonance phase, arctangent
-def ResonancePhase(y0,yAmp,x0,Q):
-	return lambda x: y0-yAmp*arctan(2*Q*(x-x0)/x0) 
-	
+
 # Cosine pure function
 def cosine(y0,yAmp,x0,period):
 	return lambda x: y0+yAmp*cos(2*math.pi*(x-x0)/period)
 	
-# square pulse function	
-def square(start,stop,height,off):
-	return lambda x: height+off if start<x<stop else off
-#	
 # exponentially decaying cosine pure function
 def cosineExp(y0,yAmp,x0,period,xc):
 	return lambda x: y0+yAmp*cos(2*math.pi*(x-x0)/period)*exp(-x/xc)
@@ -207,6 +197,7 @@ def myFFT(y,x='',forceX=False):
 			numpy.interp(range(), x, y)[source]	
 		result=1
 	return result
+
 def estimatePeriodByFFT(y,method='',debug=False):
 	if debug:	print 'Entering estimatePeriodByFFT...'
 	fft=numpy.fft.rfft(y)
@@ -220,45 +211,7 @@ def estimatePeriodByFFT(y,method='',debug=False):
 	else:	estimatedPeriod=len(y)/argmax(fft) # default method returns the index of fft maximum
 	if debug: print "Estimated period = ", estimatedPeriod,' points'
 	return estimatedPeriod
-def fitResonancePhase(y,x='',initialY0='',initialYAmp='',initialX0='',initialQ='',debug=False):
-	if debug: print 'Entering fitCosine...'
-	if x=='':	x=range(len(y))		# generate  x if not defined
-	yMax=max(y)
-	yMin=min(y)
-	if initialY0=='': initialY0=(yMax+yMin)/2
-	if initialYAmp=='': initialYAmp=(yMax-yMin)/pi
-	if initialX0=='': initialX0=extremum(x,abs(y-y0),minOrMax="min")[0]
-	if initialQ=='':
-		initialXplus=extremum(x,(y-y0)/2+pi/4,minOrMax="min")[0]
-		initialXminus=extremum(x,(y-y0)/2-pi/4,minOrMax="min")[0]
-		initialQ=initialX0/abs(initialXplus-initialXminus)
-	paramGuess=[initialY0,initialYAmp,initialX0,initialQ]
-	ResonancePhaseGuess=ResonancePhase(paramGuess[0],paramGuess[1],paramGuess[2],paramGuess[3])
-	if debug:
-		print "initial cosine guess [y0,yAmp,x0,period] = ",paramGuess 
-		figure()
-		figNumber=gcf().number
-		title('fitCosine')
-		pl=plot(x,y,'ro')
-		xPlot=linspace(min(x),max(x),500)
-		yGuessPlot=cosineGuess(xPlot)
-		pl1=plot(xPlot,yGuessPlot,'--')
-		show()
-	# fit
-	def fitfunc(x,y0,yAmp,x0,Q):
-		return ResonancePhase(y0,yAmp,x0,Q)(x)							#y0+yAmp*arctan(2*Q*(x-x0)/x0) 
-	paramFit,fitCovariances =scipy.optimize.curve_fit(fitfunc, x, y,p0=paramGuess)
-	ResonancePhaseFit=ResonancePhase(paramFit[0],paramFit[1],paramFit[2],paramFit[3])
-	if debug: 
-		print "fit cosine result [y0,yAmp,x0,Q] = ",paramFit
-		figure(figNumber)
-		yFitPlot=ResonancePhaseFit(xPlot)
-		pl2=plot(xPlot,yFitPlot)
-		show()
-	yFitGuess=[ResonancePhaseGuess(xv) for xv in x]
-	yFit=[ResonancePhaseFit(xv) for xv in x]
-	return paramFit,yFit,yFitGuess
-	
+
 def fitCosine(y,x='',initialY0='',initialYAmp='',initialX0='',initialPeriod='',debug=False):
 	if debug: print 'Entering fitCosine...'
 	if x=='':	x=range(len(y))		# generate  x if not defined
@@ -291,7 +244,8 @@ def fitCosine(y,x='',initialY0='',initialYAmp='',initialX0='',initialPeriod='',d
 		yGuessPlot=cosineGuess(xPlot)
 		pl1=plot(xPlot,yGuessPlot,'--')
 		show()
-		# fit
+	
+	# fit
 	def fitfunc(x,y0,yAmp,x0,period):
 		return cosine(y0,yAmp,x0,period)(x)							#y0+yAmp*cos(2*math.pi*(x-x0)/period) 
 	paramFit,fitCovariances =scipy.optimize.curve_fit(fitfunc, x, y,p0=paramGuess)

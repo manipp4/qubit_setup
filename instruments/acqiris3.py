@@ -111,8 +111,8 @@ class Instr(Instrument):
           reload("acqiris_ModuleDLL2")
         else:
           import acqiris_ModuleDLL2 
-#        print "\nLoading SWIG DLL 'acqiris_QuantroDLL2.dll'"
-#        acqiris_ModuleDLL2.ModuleDLL2.__init__(self)
+        #print "\nLoading SWIG DLL 'acqiris_QuantroDLL2.dll'"
+        #acqiris_ModuleDLL2.ModuleDLL2.__init__(self)
         self.moduleDLL2=acqiris_ModuleDLL2.ModuleDLL2(self)
         self.setChannels=self.moduleDLL2.setChannels
         self.frequenciesAnalyse=self.moduleDLL2.frequenciesAnalyse
@@ -238,6 +238,7 @@ class Instr(Instrument):
     set a single parameter dictionary of the instrument.
     """
     self._params[arg] = value
+    return self._params
     
   # calibrate function
   CAL_FULL=0               # full calibration code

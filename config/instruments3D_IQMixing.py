@@ -28,11 +28,26 @@ instruments = [
     },
     {
       'name' : 'vna',
-      'kwargs' : {'visaAddress' : "GPIB0::6"}
+      'kwargs' : {'visaAddress' : "GPIB0::6",'powerParams':{'offset':-7}}
     },
     {
+      'name' : 'vnaK1',
+      'class' : 'vna-keysight',
+      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.71::inst0"}
+    },
+    {
+      'name' : 'vnaK2',
+      'class' : 'vna-keysight',
+      'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.72::inst0"}
+    },
+    #{
+    #  'name' : 'vnaK1',
+    #  'class' : 'vna-keysight',
+    #  'kwargs' : {'visaAddress' : "TCPIP0::vna-keysight-1::inst0::INSTR"}
+    #},
+    {
       'name' : 'fsp',
-      'serverAddress': serverAddress,
+      #'serverAddress': serverAddress,
       'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.27::inst0"}
     },
     {
@@ -81,12 +96,6 @@ instruments = [
       'serverAddress' : serverAddress,
       'kwargs' : {'visaAddress' : "TCPIP0::192.168.0.28::inst0"}#192.168.0.14::inst0
     },
-    #{
-    #  'name' : 'MWSource1',
-    #  'class' : 'anritsu_mwg',
-    #  'serverAddress' : serverAddress,
-    #  'kwargs' : {'visaAddress' : "GPIB0::4"}
-    #},
     {
       'name' : 'MWSource_Paramp',
       'class' : 'rohdeschwarz_mwg',
@@ -101,10 +110,16 @@ instruments = [
     },
     {
       'name' : 'MWSource_Qubit',
-      'class' : 'agilent_mwg',
+      'class' : 'anritsu_mwg',
       'serverAddress' : serverAddress,
-      'kwargs' : {'visaAddress' : "TCPIP::192.168.0.35"}
+      'kwargs' : {'visaAddress' : "GPIB0::18"}
     },
+    #{
+    #  'name' : 'MWSource_Qubit',
+    #  'class' : 'agilent_mwg',
+    #  'serverAddress' : serverAddress,
+    #  'kwargs' : {'visaAddress' : "TCPIP::192.168.0.35"}
+    #},
     {
       'name' : 'IQMixer_Cav',
       'class' : 'iqmixer',
@@ -139,7 +154,7 @@ instruments = [
       'name' : 'Yoko3',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Yoko2','visaAddress' : 'GPIB0::22'}
+      'kwargs' : {'name' : 'Yoko3','visaAddress' : 'GPIB0::22'}
     },
     {
       'name' : 'Yoko1',
@@ -151,13 +166,19 @@ instruments = [
       'name' : 'Yoko2',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Yoko1','visaAddress' : 'GPIB0::19'}
+      'kwargs' : {'name' : 'Yoko2','visaAddress' : 'GPIB0::19'}
     },
     {
       'name' : 'Yoko4',
       'class' : 'yokogawa',
       'serverAddress' : serverAddress,
-      'kwargs' : {'name' : 'Yoko1','visaAddress' : 'GPIB0::4'}
+      'kwargs' : {'name' : 'Yoko4','visaAddress' : 'GPIB0::4'}
+    },
+    {
+      'name' : 'Gaussmeter',
+      'class' : 'lakeshore455',
+      'serverAddress' : serverAddress,
+      'kwargs' : {'name' : 'lakeshore455','visaAddress' : 'GPIB0::12'}
     },
     #{
     #  'name' : 'Keithley2400',

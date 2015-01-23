@@ -10,7 +10,7 @@ import datetime
 dataManager = DataManager()
 instrumentManager=Manager()
 
-vna=instrumentManager.getInstrument('vna')
+vna=instrumentManager.getInstrument('vnaK2')
 print vna
 coil=instrumentManager.getInstrument('Yoko3')
 mmr3_module1=Manager().getInstrument('mmr3_module1')
@@ -37,7 +37,7 @@ data=Datacube('baseLine')
 data=vna.getTrace()
 data.toDataManager()
 ##spectra during cooling
-data=Datacube('cooling21Nov2014')
+data=Datacube('cooling09Jan2015')
 data.toDataManager()
 megaLoop=sl.SmartLoop(0,1,1000000,name="megaLoop")
 for index in megaLoop:
@@ -57,4 +57,22 @@ data=vna.getTrace(waitFullSweep = True)
 data.setName('readoutLinem30dBm')
 data.toDataManager()
 ##
-print mmr3_module2.temperature(thermometerIndex=3)
+print mmr3_module1.temperature(thermometerIndex=3)
+##
+child1=vna.getTrace(waitFullSweep=True)
+##
+print child1[0]
+##spectra during cooling using keysight VNA
+data=Datacube('cooling09Jan2015')
+data.toDataManager()
+megaLoop=sl.SmartLoop(0,1,1000000,name="megaLoop")
+for index in megaLoop:
+	t1=datetime.datetime.now().time()
+	t2=time.time()
+	print 'scan ',index,' time = ',t1,' = ',t2
+	child=Datacube("index=%f"%index)
+	childdata=vna.getTrace(waitFullSweep=True)
+	child.createCol(name='freq',values=childdata[0])
+	child.createCol(name='mag',values=childdata[1])
+	data.set(index=index,time=t2,HT3=mmr3_module1.temperature(thermometerIndex=3),BT3=mmr3_module2.temperature(thermometerIndex=3),commit=True)
+	data.addChild(child)

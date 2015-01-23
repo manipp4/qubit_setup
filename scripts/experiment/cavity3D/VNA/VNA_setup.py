@@ -18,18 +18,18 @@ def setMyVNAPower(power):
 	else:
 		print 'target power out of range'
 ##
-setMyVNAPower(-27)
+setMyVNAPower(-57)
 print vna.attenuation()
 print vna.power()
 ##
-vna.setCenterFrequency(7.31)
+vna.setCenterFrequency(7.36)
 print vna.centerFrequency()
-vna.setSpanFrequency(0.025)
+vna.setSpanFrequency(0.400)
 print vna.spanFrequency()
 vna.setAttenuation(0)
 print vna.attenuation()
-vna.setNumberOfPoints(1601)
+vna.setNumberOfPoints(401)
 vna.setAveraging(True)
 vna.setAveraging(False)
-vna.setNumberOfAveraging(500)
+vna.setNumberOfAveraging(4000)
 print vna.numberOfAveraging()

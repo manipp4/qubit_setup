@@ -294,6 +294,7 @@ class Instr(Instrument):
       [dy,f0,df,y0]=[0]*4
 
     if dataParameters['save']:data.savetxt()
+    d0.setParameters(Manager().saveState('currentState'))
 
     return data, f0
 

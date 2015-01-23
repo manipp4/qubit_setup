@@ -21,7 +21,7 @@ pg_cav=Manager().getInstrument('pg_cav')
 ### Helping functions here below ###
 ####################################
 
-def pulsePlot(wave,marker1,marker2):
+def pulsePlot(wave,marker1=None,marker2=None):
 	x=range(20000)
 	#wave=waveform[0]
 	#marker1=waveform[1]
@@ -29,10 +29,12 @@ def pulsePlot(wave,marker1,marker2):
 	figure()
 	subplot(311)
 	plot(x,wave)
-	subplot(312)
-	plot(x,marker1)
-	subplot(313)
-	plot(x,marker2)
+	if marker1!=None:
+		subplot(312)
+		plot(x,marker1)
+	if marker2!=None:
+		subplot(313)
+		plot(x,marker2)
 	show()
 def send2AWG(waveform):
 	wave=waveform[0]
@@ -171,17 +173,17 @@ def sinWaveform(frequency,phase=0,height=1,name='sin',markerOffset1=0,markerOffs
 #send2AWG(wf1)
 #loadWF2Channel(3,wf1[2])
 ##
-wf1=readoutWaveform(10000)
+wf1=readoutWaveform(15000)
 send2AWG(wf1)
 loadWF2Channel(1,wf1[2])
 ##
-wf2=readoutWaveform(10000)
+wf2=markerOnly()
 send2AWG(wf2)
 loadWF2Channel(2 ,wf2[2])
 ##
 wf3=openMixer()
 send2AWG(wf3)
-loadWF2Channel(4 ,wf3[2])
+loadWF2Channel(1 ,wf3[2])
 #wf2=sinWaveform(0.02,phase=-90,name='cos')
 #send2AWG(wf2)
 #loadWF2Channel(2 ,wf2[2])
